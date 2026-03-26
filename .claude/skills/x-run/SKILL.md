@@ -23,10 +23,11 @@ moyuchi の X 投稿を生成する全自動パイプライン。
 
 必ず最初に以下を読み込む:
 
-- `context/profile.md` — X アカウント設計・ポジショニング
-- `context/strategy.md` — ツイートタイプ・運用戦略
+- `context/x-profile.md` — X アカウント設計・ポジショニング
+- `context/x-strategy.md` — ツイートタイプ・運用戦略
 - `context/voice-samples.md` — X 用文体サンプル・NG パターン
-- `context/performance.md` — 過去の成功パターン（あれば）
+- `context/x-performance.md` — 過去の成功パターン（あれば）
+- `context/x-hook-formulas.md` — フック型 10 種の定義（YOU MUST: ツイート生成前に必ず参照すること）
 
 ### Notion から「未投稿」記事を取得
 
@@ -113,9 +114,20 @@ Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a
 - Tips・ノウハウ（1つの技術・工夫）
 - 実績報告（スキ数・案件・PV）
 
-### Step 2: ツイート生成
+### Step 2: フック型選択 → ツイート生成
 
-`context/voice-samples.md` のサンプルを参考に生成。単発 or スレッドを判断して出力。
+**YOU MUST: ツイートを書く前に `context/x-hook-formulas.md` からフック型を 1 つ選び、宣言してから書くこと。**
+
+```
+フック型選択フロー:
+1. ネタの性質を確認（実績/ノウハウ/速報/実況/問いかけ）
+2. x-hook-formulas.md の 10 型から最も合うものを選ぶ
+3. 「使用フック型: ○○型」と宣言する
+4. 型のテンプレートに沿って 1 行目を書く
+5. 必要なら 2〜3 バリエーションを生成して最良を選ぶ
+```
+
+`context/voice-samples.md` のサンプルと照らし合わせてトーンを整え、単発 or スレッドを判断して出力する。
 
 ---
 
@@ -126,8 +138,20 @@ Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a
 WebSearch で以下を検索（過去 24〜48 時間）:
 
 ```
+# 公式・リリース情報
 "Claude Code" OR "Anthropic" OR "Claude" new release announcement
-"Claude Code" tips OR tutorial OR workflow
+"Claude" site:anthropic.com announcement OR update
+
+# コミュニティ動向（日本語）
+"Claude Code" 使い方 OR 活用 site:note.com OR site:zenn.dev
+"Claude Code" tips OR ノウハウ lang:ja
+
+# GitHub リポジトリ動向（注目度急上昇を検知）
+"obra/superpowers" OR "claude-code-hooks" trending
+"claude-code" site:github.com new release OR update
+
+# X トレンド
+"Claude Code" OR "Anthropic" site:x.com lang:ja
 ```
 
 ### Step 2: ツイートアイデア生成
@@ -153,6 +177,53 @@ Notionのネタ帳に追加しますか？
 - ソース: **X発案**
 - ステータス: 未使用
 - メモ: X でのトレンド情報、スキャン日時
+
+---
+
+## ビジュアルカード生成（任意・推奨）
+
+X はテキストのみより画像付きの方がリーチが高い。ノウハウ系スレッドと速報ツイートでは積極的に使う。
+
+### カード仕様
+
+- サイズ: **1200×675px（16:9・X 最適）**
+- テキスト: **入れる**（note サムネとは逆。X カードは文字で情報を先出し）
+- ツールオプション: Gemini ImageFX、Canva MCP（`mcp__claude_ai_Canva__generate-design`）
+
+### タイプ別プロンプト構造
+
+**ノウハウ系（疑似 UI / 図解カード）:**
+```
+[テーマ: {ツイートのキーワード}]
+Style: clean flat illustration, dark navy background, electric cyan accent
+Content: minimal text overlay showing "{フックの核心 15文字以内}", subtitle "{サブテキスト}"
+Layout: centered, large text dominant, small icon or diagram, no photography
+Spec: 1200x675px, no real people, no complex illustrations
+Negative: busy, cluttered, stock-photo-look, gradient mess
+```
+
+**速報系（ダーク + ネオン）:**
+```
+[テーマ: {新機能名 or サービス名}]
+Style: futuristic UI screenshot, dark mode, neon glow cyan and orange
+Content: bold headline "{機能名}" with glowing effect, minimal background interface
+Layout: centered composition, dramatic lighting, rim light effect
+Spec: 1200x675px, no real people
+Negative: light background, cartoon, stock photo
+```
+
+**実況系（使わない）:**
+実況ツイートはテキストのみで十分。カード生成はスキップしてよい。
+
+### 生成フロー
+
+```
+1. ツイートのタイプを確認（ノウハウ/速報/実況）
+2. 実況ならスキップ
+3. 上記のプロンプト構造を使って Gemini または Canva でカードを生成
+4. カードのパスをドラフトファイルのメモ欄に記載
+5. 投稿メモに「画像: 添付済み」と記載する
+```
 
 ---
 
