@@ -28,6 +28,9 @@ moyuchi の X 投稿を生成する全自動パイプライン。
 - `context/voice-samples.md` — X 用文体サンプル・NG パターン
 - `context/x-performance.md` — 過去の成功パターン（あれば）
 - `context/x-hook-formulas.md` — フック型 10 種の定義（YOU MUST: ツイート生成前に必ず参照すること）
+- `context/writing-rules.md` — 禁止フレーズ・AI定型表現リスト（ツイート生成前に確認）
+- `context/article-frameworks.md` — AIDA・Star Story Solution（ツイート構成参照）
+- `context/content-memory.md` — 過去の成功ツイートパターン（あれば参照）
 
 ### Notion から「未投稿」記事を取得
 
@@ -127,6 +130,13 @@ Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a
 5. 必要なら 2〜3 バリエーションを生成して最良を選ぶ
 ```
 
+**声スタイルクローン（langgptai パターン）:**
+`context/voice-samples.md` と `context/x-performance.md`（エンゲージメント高ツイート）から以下を抽出してツイートに反映:
+- 語尾パターン（「〜した」「〜だった」「〜かも」等、どれが多いか）
+- 感情表現の強さ（控えめ/適度/強め）
+- 専門用語の説明レベル（どこまで省略しているか）
+- 改行の使い方（1文1行か、まとめて書くか）
+
 `context/voice-samples.md` のサンプルと照らし合わせてトーンを整え、単発 or スレッドを判断して出力する。
 
 ---
@@ -152,6 +162,10 @@ WebSearch で以下を検索（過去 24〜48 時間）:
 
 # X トレンド
 "Claude Code" OR "Anthropic" site:x.com lang:ja
+
+# YouTube動画リサーチ（YouTube Transcript MCP が利用可能な場合）
+"Claude Code" 解説 OR レビュー site:youtube.com （最新1週間）
+→ ヒットした動画があれば字幕テキストを取得してコミュニティの反応・話題を把握
 ```
 
 ### Step 2: ツイートアイデア生成

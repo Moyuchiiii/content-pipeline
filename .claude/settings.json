@@ -1,27 +1,36 @@
 {
-  "permissions": {
-    "allow": [
-      "WebSearch",
-      "WebFetch",
-      "Read",
-      "Write",
-      "Glob",
-      "Grep",
-      "Bash(git:*)"
-    ]
-  },
-  "env": {
-    "BASH_DEFAULT_TIMEOUT_MS": "300000",
-    "BASH_MAX_TIMEOUT_MS": "600000"
-  },
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": "Write",
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "python .claude/hooks/article-quality-check.py"
+            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/article-quality-check.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/session-end-learning.py"
+          },
+          {
+            "type": "command",
+            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/session-metrics.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/skill-suggester.py"
           }
         ]
       }
