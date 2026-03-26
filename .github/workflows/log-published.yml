@@ -1,0 +1,65 @@
+name: Log Published Article
+
+on:
+  workflow_dispatch:
+    inputs:
+      note_url:
+        description: '公開したnote記事のURL'
+        required: true
+        type: string
+      draft_file:
+        description: '元の草稿ファイルパス（drafts/内）'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 投稿ログを記録
+        run: |
+          TODAY=$(date +%Y-%m-%d)
+          DRAFT_FILE="${{ inputs.draft_file }}"
+          NOTE_URL="${{ inputs.note_url }}"
+
+          # 草稿からメタ情報を抽出
+          TITLE=$(grep "^title:" "$DRAFT_FILE" | sed 's/title: //')
+
+          # published/に記録
+          mkdir -p published
+          echo "## ${TODAY}: ${TITLE}" >> published/log.md
+          echo "- URL: ${NOTE_URL}" >> published/log.md
+          echo "- 草稿: ${DRAFT_FILE}" >> published/log.md
+          echo "" >> published/log.md
+
+          # 草稿のstatusをpublishedに更新
+          sed -i "s/status: edited/status: published/" "$DRAFT_FILE" || true
+          sed -i "s/status: draft/status: published/" "$DRAFT_FILE" || true
+
+          # existing-articles.mdに追記
+          echo "" >> context/existing-articles.md
+          echo "## 記事（自動追加 ${TODAY}）" >> context/existing-articles.md
+          echo "- タイトル: ${TITLE}" >> context/existing-articles.md
+          echo "- URL: ${NOTE_URL}" >> context/existing-articles.md
+          echo "- 公開日: ${TODAY}" >> context/existing-articles.md
+
+          git config user.name "note-pipeline-bot"
+          git config user.email "bot@note-pipeline.local"
+          git add .
+          git commit -m "chore: 投稿ログを記録 - ${TITLE}"
+          git push
+
+      - name: Discord通知
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"embeds\":[{\"title\":\"📢 note投稿完了\",\"color\":5763719,\"fields\":[{\"name\":\"URL\",\"value\":\"${{ inputs.note_url }}\",\"inline\":false}],\"footer\":{\"text\":\"note-pipeline\"}}]}" \
+            ${{ secrets.DISCORD_WEBHOOK }}

@@ -1,0 +1,93 @@
+<h2>結論: もう承認ボタンを連打しなくていい</h2>
+
+<p>Claude Codeに「Auto Mode」が追加された。3月24日リリース。</p>
+
+<p>これまでClaude Codeを使ってると、ファイルを書き換えるたびに「許可しますか？」って聞かれてた。1回や2回ならいいけど、大きめのタスクを投げると10回、20回と承認ボタンを押すことになる。正直、これがめちゃくちゃ面倒だった。</p>
+
+<p>Auto Modeは、そのAI自身が「この操作は安全か？」を判定して、安全なら勝手に進めてくれる機能。危険な操作だけブロックして、人間に確認を求める。</p>
+
+<p>つまり、<b>「全部手動で承認」と「全部スキップ（危険）」の間にある、ちょうどいいモード</b>。</p>
+
+<h2>仕組み: AIが操作のリスクを自動判定する</h2>
+
+<p>Auto Modeの裏側では、各操作の実行前にAI分類器が動いている。</p>
+
+<p>やってることはシンプルで、こういう判定をしている。</p>
+
+<h3>安全と判断される操作 → 自動で実行</h3>
+
+<blockquote>プロジェクト内のファイルを読む</blockquote>
+<blockquote>コードを編集する</blockquote>
+<blockquote>テストを実行する</blockquote>
+
+<h3>ブロックされる操作 → 人間に確認</h3>
+
+<blockquote>ファイルの大量削除</blockquote>
+<blockquote>機密データの外部送信</blockquote>
+<blockquote>見知らぬスクリプトの実行</blockquote>
+
+<p>従来の「--dangerously-skip-permissions」フラグとの一番の違いは、<b>プロンプトインジェクション対策が組み込まれていること</b>。悪意のあるコードがClaude Codeを騙して危険な操作をさせようとしても、分類器がブロックしてくれる。</p>
+
+<h2>使い方: 2ステップで有効化</h2>
+
+<p>有効化は簡単。</p>
+
+<p><b>ステップ1:</b> ターミナルで以下を実行</p>
+
+<pre><code>claude --enable-auto-mode</code></pre>
+
+<p><b>ステップ2:</b> セッション中に <code>Shift + Tab</code> で切り替え</p>
+
+<p>Plan Mode → Auto Mode → Accept Edits → 通常モード の順で切り替わる。</p>
+
+<p>VS Codeの拡張機能やClaude Desktopアプリからも使える。Settings → Claude Code から有効化して、セッション内のドロップダウンで選ぶだけ。</p>
+
+<h2>副業タスクで使ってみた</h2>
+
+<p>自分が一番「これはいい」と思ったのは、副業のコーディング案件で使ったとき。</p>
+
+<p>クライアントから「CSVデータを整形して、グラフ付きのレポートを生成するスクリプトを作ってほしい」という依頼があった。Claude Codeに丸投げしたんだけど、従来モードだと途中で10回以上承認を求められていた。</p>
+
+<p>Auto Modeで同じタスクを投げたら、ファイル作成・ライブラリのimport・テスト実行まで全部自動で進んでくれた。自分は途中で別の作業をしてて、戻ってきたら完成していた。</p>
+
+<p><b>Before:</b> タスク投げる → 承認 → 承認 → 承認…（15分張り付き）<br><b>After:</b> タスク投げる → 放置 → 完成確認（実作業2分）</p>
+
+<h2>Auto Modeが最強な3つの場面</h2>
+
+<h3>1. 大きめのリファクタリング</h3>
+
+<p>ファイルを10個以上編集するような作業で、いちいち承認していたら日が暮れる。Auto Modeなら投げて放置できる。</p>
+
+<h3>2. テスト→修正のループ</h3>
+
+<p>テストを走らせて、失敗したら修正して、また走らせて…というサイクルをAuto Modeなら自動で回してくれる。</p>
+
+<h3>3. /loopとの組み合わせ</h3>
+
+<p>前回紹介した/loop機能とAuto Modeを合わせると、定期的にコードチェック→自動修正まで完全放置でいける。</p>
+
+<h2>注意点</h2>
+
+<blockquote>現在はリサーチプレビュー。Team planで利用可能、Enterprise/APIは近日対応</blockquote>
+<blockquote>サンドボックス環境での使用が推奨されている</blockquote>
+<blockquote>完全に安全ではない。重要なプロジェクトでは通常モードと使い分けるのが無難</blockquote>
+<blockquote>Claude Sonnet 4.6 / Opus 4.6 で動作</blockquote>
+
+<h2>まとめ</h2>
+
+<p>Auto Modeは「AIに任せたいけど、全部スキップするのは怖い」という人にとって、待ってました的な機能。</p>
+
+<p>自分みたいに副業でClaude Codeを使ってる人にとっては、作業時間が体感で半分くらいになった。承認ボタンを押す時間って、意外とバカにならない。</p>
+
+<p>次回は、Auto Modeと/loopを組み合わせて副業タスクを完全自動化してみた体験を書く予定。</p>
+
+<hr>
+
+<p>公式ブログ: https://claude.com/blog/auto-mode</p>
+<p>公式ドキュメント: https://code.claude.com/docs/en/permission-modes</p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/n62d37bf48e7b">Claude Codeの/loopで副業タスクを放置してみたら、朝には終わってた話</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n3623109ab471">大学生がClaude Codeで作業を自動化してみたら、毎日2時間浮いた話</a></li>
+</ul>

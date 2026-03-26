@@ -1,0 +1,140 @@
+name: Generate Article
+
+on:
+  workflow_dispatch:
+    inputs:
+      article_type:
+        description: '記事タイプ'
+        required: true
+        type: choice
+        options:
+          - jituroku
+          - sokuho
+          - knowhow
+      topic:
+        description: 'トピック（何について書くか）'
+        required: true
+        type: string
+      source_memo:
+        description: 'ソース素材・メモ（URL、走り書き等。省略可）'
+        required: false
+        type: string
+      price:
+        description: '販売価格'
+        required: true
+        type: choice
+        options:
+          - '0'
+          - '500'
+          - '800'
+          - '1000'
+          - '1500'
+          - '2000'
+      deep_research:
+        description: '深掘りリサーチを使う'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: プロンプト読み込み
+        id: prompt
+        run: |
+          PROMPT_FILE=".github/prompts/${{ inputs.article_type }}.txt"
+          if [ -f "$PROMPT_FILE" ]; then
+            echo "prompt_content<<PROMPT_EOF" >> $GITHUB_OUTPUT
+            cat "$PROMPT_FILE" >> $GITHUB_OUTPUT
+            echo "PROMPT_EOF" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 記事生成
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            ${{ steps.prompt.outputs.prompt_content }}
+
+            ## 今回のタスク
+            - トピック: ${{ inputs.topic }}
+            - ソース素材: ${{ inputs.source_memo }}
+            - 販売価格: ¥${{ inputs.price }}
+            - 深掘りリサーチ: ${{ inputs.deep_research }}
+
+            ## 手順
+            1. context/ フォルダのファイルを全て読む
+            2. 上記のプロンプト指示に従って記事を生成
+            3. drafts/${{ inputs.article_type }}/ に保存（ファイル名: draft_$(date +%Y%m%d)_トピック要約.md）
+            4. git add, commit, push
+          claude_args: '--max-turns 20 --model claude-sonnet-4-6 --allowedTools "WebSearch,WebFetch,Read,Write,Glob,Grep,Bash(git:*)"'
+
+      - name: Discord通知（レビュー依頼）
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"embeds\":[{\"title\":\"📝 草稿完成 — レビュー依頼\",\"color\":16776960,\"fields\":[{\"name\":\"タイプ\",\"value\":\"${{ inputs.article_type }}\",\"inline\":true},{\"name\":\"トピック\",\"value\":\"${{ inputs.topic }}\",\"inline\":true},{\"name\":\"価格\",\"value\":\"¥${{ inputs.price }}\",\"inline\":true}],\"footer\":{\"text\":\"GitHubのdrafts/フォルダを確認してレビューしてください\"}}]}" \
+            ${{ secrets.DISCORD_WEBHOOK }}
+
+  review:
+    needs: generate
+    runs-on: ubuntu-latest
+    environment: article-review
+    steps:
+      - name: レビュー承認済み
+        run: echo "草稿が承認されました"
+
+  finalize:
+    needs: review
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+
+      - name: 最新の草稿を取得
+        run: git pull origin main
+
+      - name: 記事の最終編集
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            drafts/${{ inputs.article_type }}/ にある最新の草稿を編集して仕上げて。
+
+            やること:
+            1. 最新の草稿ファイルを読む
+            2. context/voice-samples.md を読んで文体チェック
+            3. 7スウィープ編集を実行:
+               - 明確さ: 曖昧な表現を具体的に
+               - 声: AI感のある表現を自然な言葉に
+               - So What?: 各段落の意味を確認
+               - 根拠: 数字・事例・ソースの有無
+               - 具体性: 抽象→具体
+               - 感情: 読者の感情を動かすポイント
+               - リスク: 誤情報・誇張・情報漏洩チェック
+               - deep_researchがtrueの場合、drafts/research/ の検証済み事実リストを参照して根拠を補強
+            4. note向け最終整形（表→リスト変換、コードブロック→インデント）
+            5. 上書き保存してcommit/push
+            6. メタ情報のstatusを edited に更新
+          claude_args: '--max-turns 15 --model claude-sonnet-4-6 --allowedTools "WebSearch,WebFetch,Read,Write,Glob,Grep,Bash(git:*)"'
+
+      - name: Discord通知（完成）
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST \
+            -d "{\"embeds\":[{\"title\":\"✅ 最終稿完成\",\"color\":5763719,\"fields\":[{\"name\":\"タイプ\",\"value\":\"${{ inputs.article_type }}\",\"inline\":true},{\"name\":\"トピック\",\"value\":\"${{ inputs.topic }}\",\"inline\":true}],\"footer\":{\"text\":\"drafts/フォルダの最終稿をnoteにコピペして投稿してください\"}}]}" \
+            ${{ secrets.DISCORD_WEBHOOK }}

@@ -1,0 +1,63 @@
+name: Daily AI News Check
+
+on:
+  schedule:
+    - cron: '30 22 * * *'  # UTC 22:30 = JST 7:30
+  workflow_dispatch:  # 手動実行も可能
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: AI最新ニュース収集
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            今日のAI・生成AI・Claude関連の最新ニュースを調査して。
+
+            やること:
+            1. WebSearchで以下を検索:
+               - "Claude" OR "Anthropic" 最新ニュース
+               - "生成AI" OR "LLM" 新機能 リリース
+               - "OpenAI" OR "Google AI" OR "Gemini" 最新
+            2. 速報記事にする価値があるものを判定（基準: 新機能リリース、大きなアップデート、業界に影響ある動き）
+            3. 結果を drafts/sokuho/candidates_$(date +%Y%m%d).md に保存
+            4. git add, commit, push
+
+            出力フォーマット（candidates_日付.md）:
+            ---
+            date: YYYY-MM-DD
+            status: candidates
+            ---
+            # 速報候補 YYYY-MM-DD
+
+            ## 候補1: [タイトル]
+            - ソース: [URL]
+            - 概要: [2〜3行]
+            - 速報価値: 高/中/低
+            - 理由: [なぜ速報にすべきか]
+
+            ## 候補2: ...
+          claude_args: '--max-turns 15 --model claude-sonnet-4-6 --allowedTools "WebSearch,WebFetch,Read,Write,Bash(git:*)"'
+
+      - name: Discord通知
+        if: success()
+        run: |
+          TODAY=$(date +%Y%m%d)
+          FILE="drafts/sokuho/candidates_${TODAY}.md"
+          if [ -f "$FILE" ]; then
+            CONTENT=$(head -c 1500 "$FILE" | tr '\n' '\\n' | sed 's/"/\\"/g')
+            curl -H "Content-Type: application/json" \
+              -X POST \
+              -d "{\"embeds\":[{\"title\":\"📰 本日の速報候補\",\"color\":3447003,\"description\":\"${CONTENT}\",\"footer\":{\"text\":\"記事化する場合は article-generate workflow を手動実行\"}}]}" \
+              ${{ secrets.DISCORD_WEBHOOK }}
+          fi
