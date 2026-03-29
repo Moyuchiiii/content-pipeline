@@ -1,11 +1,15 @@
 ---
 name: content
-description: collect-stats → note-run → content-engine → x-run を一気に実行する全自動パイプライン。最後にユーザー操作のTODOをまとめて出力する。
-user-invocable: true
+description: "[DEPRECATED] コンテキスト枯渇により品質低下のため非推奨。各スキルを個別に実行してください: /collect-stats → /note-run → /content-engine → /x-run"
+user-invocable: false
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__computer, mcp__claude-in-chrome__find, mcp__notion__notion-fetch, mcp__notion__notion-search, mcp__notion__notion-create-pages, mcp__notion__notion-update-page
 ---
 
-# /content
+> ⚠️ **DEPRECATED**: コンテキスト消費によって品質が低下することが確認されたため非推奨。
+> 代わりに以下の順で個別実行してください:
+> `/collect-stats` → `/note-run` → `/content-engine {ドラフトパス}` → `/x-run from-article {ツイートパス}`
+
+# /content（非推奨）
 
 全自動コンテンツパイプライン。1コマンドで今日の note 記事と X 投稿を完成させる。
 

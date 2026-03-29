@@ -741,3 +741,12 @@ Phase 0で取得したNotionの記事管理DBから、**スキ数上位3記事**
 - スコア: Phase2={点} / 品質={点}/100
 - PDCA学習: {今回の気づき1行}
 ```
+
+---
+
+## 完了後の案内
+
+```
+⏭️ 次のステップ → /content-engine {note_draft_mdのパス}
+   例: /content-engine note/drafts/knowhow/draft_2026-03-29_claude-code-tips.md
+```

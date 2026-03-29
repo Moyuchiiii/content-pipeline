@@ -7,8 +7,8 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 9
-次回 workflow-audit: 10回目（あと1回）
+note-run 実行回数: 10
+次回 workflow-audit: 15回目（あと5回）※10回到達につきworkflow-audit推奨
 ```
 
 > カウンターが 5 の倍数になったら `/workflow-audit` を実行すること。
@@ -95,3 +95,26 @@ note-run 実行回数: 9
 | 実施日 | note-run実行回数 | 主な変更内容 |
 |---|---|---|
 | （未実施） | - | - |
+
+### 2026-03-29 16:27 セッション記録
+- 生成ドラフト: draft_20260329_computer_use_fukugyou_jikuroku.md, draft_20260329_computer_use_jikuroku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-03-29 16:28 セッション記録
+- 生成ドラフト: draft_20260329_computer_use_fukugyou_jikuroku.md, draft_20260329_computer_use_jikuroku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-03-29 /content パイプライン実行
+- 生成ドラフト: draft_20260329_computer_use_cw_oubo.md（実録・無料・score24）
+- スコア: Phase2=24点 / 品質=87/100
+- PDCA学習: 記事11の続編として「CW案件探し→応募フロー」をComputer Useで自動化。2.5h→40min実録。ブルーオーシャン（note上で同テーマ0件）
+- X Analytics (7D): インプレッション353・エンゲージメント率5.3%・返信8
+- note: フォロワー8、12記事公開中（Computer Use実録が本日公開）
+- ⚠️ note-run実行回数10回到達 → /workflow-audit 推奨
+
+### 2026-03-29 17:28 セッション記録
+- 生成ドラフト: draft_20260329_computer_use_cw_oubo.md, draft_20260329_computer_use_fukugyou_jikuroku.md, draft_20260329_computer_use_cw_oubo.md, draft_20260329_computer_use_cw_oubo.md, draft_20260329_computer_use_jikuroku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->

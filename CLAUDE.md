@@ -48,7 +48,7 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 ## スキル
 
-- `/content` : **全自動パイプライン**。collect-stats → note-run → content-engine → x-run を1コマンドで実行。最後にユーザー操作TODOをまとめて出力
+- `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下するため）。個別実行を推奨: `/collect-stats` → `/note-run` → `/content-engine` → `/x-run`
 - `/note-run` : note記事のみ生成。トピック選定→競合調査→記事生成→編集→最終稿出力
 - `/x-run` : Notion の未投稿記事を拾いツイート生成。またはトレンドスキャン・単独ツイート生成
 - `/content-engine` : 1ネタ→複数フォーマット展開。note草稿からXスレッド・単発ツイート・カードテキストを一括生成

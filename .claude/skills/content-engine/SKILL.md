@@ -144,3 +144,12 @@ x/drafts/singles/draft_{日付}_{トピック}.md
 3. **1投稿 = 1つの明確なアイデア。**
 4. **スローガンより具体的な数字・体験。**
 5. **CTAは小さく明確に。**
+
+---
+
+## 完了後の案内
+
+```
+⏭️ 次のステップ → /x-run from-article {スレッドドラフトパス}
+   例: /x-run from-article x/drafts/threads/draft_2026-03-29_claude-code-tips.md
+```
