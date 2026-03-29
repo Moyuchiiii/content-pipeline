@@ -84,6 +84,8 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 ```
 content-pipeline/
+  today/                        # 最新投稿用（常にここを開く）
+                                # 次回 /note-run 実行時に自動で正規フォルダへ移動
   context/                      # 共有コンテキスト
     note-profile.md             # note プロフィール
     x-profile.md                # X アカウントプロフィール
@@ -106,6 +108,7 @@ content-pipeline/
   .claude/skills/
     note-run/SKILL.md           # /note-run スキル定義
     x-run/SKILL.md              # /x-run スキル定義
+    content-engine/SKILL.md     # /content-engine スキル定義
   .github/prompts/              # 記事タイプ別プロンプト
   .github/workflows/            # GitHub Actions
   gemini_prompt_guide.md        # サムネイル生成ガイド
