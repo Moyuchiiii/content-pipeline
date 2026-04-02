@@ -106,6 +106,54 @@
 - テーマ: Computer Useで毎週のCW案件スキャン→絞り込み→応募文生成フロー。2.5時間→40分（削減率84%）
 - キーポイント: Claude Desktopで案件スキャン7〜8分・Claudeが評価・Claude Codeで応募文2〜3分・自分は確認のみ・つまずき2パターン（UIが変わると動かない・応募文長すぎ）
 
+## 記事13
+- タイトル: 大学生がClaude Codeで初のWebアプリ案件を受注→月収10万突破した全記録
+- URL: https://note.com/moyuchi_aistu/n/n31fc9ce97b98
+- 公開日: 2026-03-29
+- 種類: 無料・実録
+- テーマ: 業務自動化からWebアプリUI開発へのステップアップ。LP改修+管理画面案件（¥65,000）、タスク管理ツールUI案件（¥45,000）をClaude Codeで実装→月収14万突破
+- キーポイント: 修正指示翻訳プロンプト、Auto Mode活用（設計書→20分で基本UI完成）、Before/After（6-8h→2.5h）、月収内訳（¥140,000）
+
+## 記事15
+- タイトル: 大学生がClaude Code Remote Controlを副業で1週間使ったら、移動時間も稼ぎになった話
+- URL: https://note.com/moyuchi_aistu/n/n7805b1f0397d
+- 公開日: 2026-03-30
+- 種類: 無料・実録
+- テーマ: Claude Code Remote Control（2026-02末リリース）をクラウドワークス副業に1週間本格運用。スマホで移動中承認、PC前待機時間を週10h→3hに削減
+- キーポイント: `claude remote-control`コマンド1行でQR接続、Before/After（週10h→3h・7時間削減）、月水金の具体的体験談、つまずき3パターン（ターミナル閉じ・通知なし・ファイル送受信）、DispatchとRemote Controlの違い
+
+## 記事16
+- タイトル: Claude Code /voiceを副業で1ヶ月使ったら、コーディング指示の時間が半分になった話
+- URL: （未投稿）
+- 公開日: 2026-03-31（予定）
+- 種類: 無料・実録
+- テーマ: Claude Code /voice（2026-03-03リリース）を副業で1ヶ月本格運用した実録。指示入力40分→15分（65%削減）
+- キーポイント: 日本語設定（/config set transcription.language japanese）、ハイブリッド入力のコツ、効果的だった3シーン（デバッグ・コードレビュー・仕様整理）、向かない3シーン、月8時間削減
+
+## 記事17
+- タイトル: 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話
+- URL: （未投稿）
+- 公開日: 2026-04-01（予定）
+- 種類: 無料・実録
+- テーマ: Claude Code副業2ヶ月の全軌跡。¥55,000（2月）→¥140,000（3月）に至る3つの転換点
+- キーポイント: Auto Mode導入（8〜10h→2〜2.5h）、WebアプリUI案件へのステップアップ（単価2〜3倍）、Remote Controlで移動中稼働（週10h→3h）、失敗談（最初2週間は手動の方が早かった）
+
+## 記事18
+- タイトル: MCP Elicitationを副業に使ったら、クライアントへの確認待ちが週2時間→15分になった話
+- URL: （未投稿）
+- 公開日: 2026-04-02（予定）
+- 種類: 有料（¥500）・実録
+- テーマ: MCP Elicitation（2026-03-14 v2.1.76リリース）をCW案件ヒアリング自動化に活用。要件確認の往復を週2時間→15分に削減
+- キーポイント: MCPサーバーTypeScriptコード全文（`@modelcontextprotocol/sdk`）、案件タイプ別フォーム3パターン、Instruction Sheet変換プロンプト、つまずき3パターン（elicitation: {}忘れ・複数案件混乱・質問多すぎ）、8ステップワークフロー全体図
+
+## 記事19
+- タイトル: Auto Modeで副業タスクが詰まる問題を、hook1つで解決した話
+- URL: （未投稿）
+- 公開日: 2026-04-03（予定）
+- 種類: 無料・ノウハウ（実録要素強め）
+- テーマ: Claude Code v2.1.89（2026-04-01）追加のPermissionDenied hook×defer hookを副業Auto Mode運用に活用。PermissionDeniedによる詰まりを自動リトライhookで解消（月10回停止→0回/月5h→0h）
+- キーポイント: settings.jsonだけでは解決しない理由（Auto Modeクラシファイアの別レイヤー）、PermissionDenied hook設定（jq使用・matcher空文字）、deferの仕組みとRemote Control組み合わせ案、jqインストール忘れ・matcher絞りすぎのつまずき2パターン
+
 ## 注意
 - 記事1で「次回はPythonでニュース収集」と予告→記事2で実現済み
 - 記事2で「次回はClaude vs ChatGPT比較」と予告→未執筆

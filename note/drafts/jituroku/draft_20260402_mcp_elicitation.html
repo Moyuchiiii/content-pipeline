@@ -1,0 +1,303 @@
+<p>副業でCW案件を受けてると、最初の詰まりポイントって「要件の確認」じゃないですか。</p>
+
+<p>自分は毎週これで止まってた。</p>
+
+<p>案件を受注してClaude Codeに作業させようとすると、必ずどこかで「あれ、この仕様どっちですか」ってなる。クライアントにメッセージして、返信が来るまで待って、また再開。1案件で3〜5往復が普通で、週に複数こなしてたら確認待ちだけで週2時間以上消えてた。</p>
+
+<p>3月にClaude Codeのアップデートで「MCP Elicitation」という機能が追加されて、試してみたら確認待ちがほぼ消えた。</p>
+
+<p>週2時間→15分。1ヶ月で約7時間が戻ってきた計算になる。</p>
+
+<h2>MCP Elicitationって何ができるのか</h2>
+
+<p>MCP（Model Context Protocol）は、Claude Codeに外部ツールを繋ぐ仕組みのこと。GitHubとかNotionとかをClaude Codeから操作させる時に使う、あれ。</p>
+
+<p>そのMCPサーバー側が「タスクの途中でユーザーに質問を出す」機能がElicitation。2026年3月14日のv2.1.76で追加された。</p>
+
+<blockquote>
+<b>できること一言で言うと</b><br>
+Claude Codeが作業を始める前（あるいは途中）に、必要な情報をフォーム形式でUIに表示してくれる。ラジオボタン・チェックボックス・数値入力が使える。
+</blockquote>
+
+<p>自分の使い方はこれ。</p>
+
+<p>案件受注直後に「ヒアリングMCPサーバー」を起動する。Claude Codeが実装に入る前に、クライアントの要件を整理するための質問フォームが画面に出てくる。答えるだけで、その内容がClaudeに自動で渡されて実装が始まる。</p>
+
+<h2>Before/Afterの数字</h2>
+
+<blockquote>
+<b>導入前</b><br>
+要件確認の往復メッセージが 1案件あたり平均3〜5往復<br>
+確認待ちで止まる時間が 週2〜2.5時間<br>
+作業再開までのラグが 平均4〜8時間（クライアントの返信次第）
+</blockquote>
+
+<p>↓ ヒアリングMCPサーバー導入後</p>
+
+<blockquote>
+<b>導入後</b><br>
+要件確認の往復が ほぼゼロ（初期ヒアリングで90%解決）<br>
+確認待ちで止まる時間が 週15〜20分（細かい追加確認のみ）<br>
+作業再開までのラグが ほぼゼロ（フォーム回答後すぐ作業再開）
+</blockquote>
+
+<p>案件の作業時間自体は変わっていないが、「止まっている時間」が消えた。これが地味に大きい。</p>
+
+<h2>実際にどう動くのか</h2>
+
+<p>Claude Codeのターミナルで `start_hearing` ツールを呼ぶと、こんなフォームが出てくる。</p>
+
+<blockquote>
+「案件タイプを選んでください」<br>
+○ Webアプリ開発  ○ 業務自動化  ○ データ処理  ○ LP・サイト制作
+</blockquote>
+
+<blockquote>
+「クライアントが用意するもの（複数選択可）」<br>
+□ デザインカンプ  □ 画像・素材  □ テキスト  □ API/認証情報
+</blockquote>
+
+<blockquote>
+「納期（日数）」<br>
+[数値入力]  「レスポンシブ対応が必要か」  [Yes / No]
+</blockquote>
+
+<p>フォームへの入力は2〜3分。答えた内容はClaude Codeに自動で渡されて「では始めます」とすぐ作業に入る。</p>
+
+<p>作業前に必要な情報を全部洗い出してあるので、途中で「あれ、どっちですか」が出ない。</p>
+
+<hr>
+
+<p style="text-align: center;">ここから先は有料エリアです</p>
+
+<p style="text-align: center;">この先で手に入るもの</p>
+
+<ol>
+<li>ヒアリングMCPサーバーの完全なコード（TypeScript）</li>
+<li>案件タイプ別フォーム設計（Web開発・業務自動化・データ処理の3パターン）</li>
+<li>回答内容をInstruction Sheetに変換するプロンプトテンプレート全文</li>
+<li>つまずきポイント3つと具体的な解決方法</li>
+<li>Elicitation以降のワークフロー全体図</li>
+</ol>
+
+<hr>
+
+<h2>MCPサーバーのコード</h2>
+
+<p>Node.js + TypeScriptで書いた。`@modelcontextprotocol/sdk` を使う。</p>
+
+<pre><code>// cw-hearing-server.ts
+import { Server } from "@modelcontextprotocol/sdk/server/index.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+} from "@modelcontextprotocol/sdk/types.js";
+
+const server = new Server(
+  { name: "cw-hearing", version: "1.0.0" },
+  { capabilities: { tools: {}, elicitation: {} } }
+);
+
+server.setRequestHandler(ListToolsRequestSchema, async () => ({
+  tools: [
+    {
+      name: "start_hearing",
+      description: "CW案件受注時のヒアリングフォームを起動する",
+      inputSchema: {
+        type: "object",
+        properties: {
+          project_name: { type: "string", description: "案件名" },
+        },
+        required: ["project_name"],
+      },
+    },
+  ],
+}));
+
+server.setRequestHandler(CallToolRequestSchema, async (request) => {
+  if (request.params.name === "start_hearing") {
+    const result = await server.elicit({
+      message: "案件の基本情報を入力してください",
+      requestedSchema: {
+        type: "object",
+        properties: {
+          project_type: {
+            type: "string",
+            title: "案件タイプ",
+            enum: ["webApp", "automation", "dataProcessing", "lp"],
+            enumNames: ["Webアプリ開発", "業務自動化", "データ処理", "LP制作"],
+          },
+          client_provides: {
+            type: "array",
+            title: "クライアントが用意するもの",
+            items: {
+              type: "string",
+              enum: ["design", "images", "text", "api"],
+              enumNames: ["デザインカンプ", "画像・素材", "テキスト", "API情報"],
+            },
+          },
+          deadline_days: {
+            type: "number",
+            title: "納期（日数）",
+          },
+          responsive: {
+            type: "boolean",
+            title: "レスポンシブ対応が必要",
+          },
+          budget: {
+            type: "string",
+            title: "予算感",
+            enum: ["under10k", "10to30k", "30to60k", "over60k"],
+            enumNames: ["1万以下", "1〜3万", "3〜6万", "6万以上"],
+          },
+        },
+        required: ["project_type", "deadline_days"],
+      },
+    });
+
+    if (result.action === "accept") {
+      const d = result.content;
+      return {
+        content: [
+          {
+            type: "text",
+            text: `ヒアリング完了\n案件タイプ: ${d.project_type}\n納期: ${d.deadline_days}日\nレスポンシブ: ${d.responsive ? "あり" : "なし"}\nクライアント提供: ${(d.client_provides || []).join(", ")}`,
+          },
+        ],
+      };
+    }
+    return { content: [{ type: "text", text: "キャンセルされました" }] };
+  }
+  throw new Error("Unknown tool");
+});
+
+const transport = new StdioServerTransport();
+await server.connect(transport);</code></pre>
+
+<h3>起動方法</h3>
+
+<pre><code># インストール
+npm install @modelcontextprotocol/sdk
+
+# ビルド（tsconfig.json で module: nodenext を設定）
+npx tsc
+
+# claude_desktop_config.json に追加
+{
+  "mcpServers": {
+    "cw-hearing": {
+      "command": "node",
+      "args": ["/path/to/cw-hearing-server.js"]
+    }
+  }
+}</code></pre>
+
+<p>claude_desktop_config.jsonに追記してClaude Desktopを再起動するとMCPサーバーが立ち上がる。あとはClaude Codeのセッションで「案件ヒアリングを始めて」と指示するとフォームが出てくる。</p>
+
+<h2>案件タイプ別フォーム設計</h2>
+
+<p>基本フォームに加えて、案件タイプごとに追加で聞く項目がある。自分が使っている3パターン。</p>
+
+<h3>Webアプリ開発の場合</h3>
+
+<blockquote>
+追加で聞く項目<br>
+・認証機能が必要か（ログイン・会員管理）<br>
+・DBは何を使うか（クライアント指定があるか）<br>
+・既存のデザインシステムはあるか
+</blockquote>
+
+<p>認証の有無で工数が2〜3倍変わるので、これが一番重要。受注前に聞けていれば見積もりミスを防げる。</p>
+
+<h3>業務自動化の場合</h3>
+
+<blockquote>
+追加で聞く項目<br>
+・対象業務の頻度（毎日 / 週次 / 月次）<br>
+・現在の手動作業の所要時間<br>
+・使っているツール名（Slack / GAS / Notion等）<br>
+・APIキーはクライアントが用意できるか
+</blockquote>
+
+<p>APIキーを自分で用意できるかどうかは初日に聞いておかないと後で詰まる。これで1日無駄にしたことがある。</p>
+
+<h3>LP・サイト制作の場合</h3>
+
+<blockquote>
+追加で聞く項目<br>
+・ターゲット層（年齢・職種）<br>
+・参考にしたいサイトのURL<br>
+・SEO対策が必要か
+</blockquote>
+
+<h2>回答内容をInstruction Sheetに変換するプロンプト</h2>
+
+<p>フォームの回答をClaude Codeに渡した後、以下のプロンプトで「Instruction Sheet」を生成させる。これをCLAUDE.mdの先頭に貼り付けてから実装に入ると、方向性のズレがほぼなくなった。</p>
+
+<pre><code>フォームの回答内容をもとに、以下の形式でInstruction Sheetを作成してください。
+
+## 案件概要
+[案件タイプ・規模感・予算感]
+
+## クライアント情報
+[用意してもらうもの / 当方で準備するもの]
+
+## 技術要件
+[必要な技術スタック・制約・前提条件]
+
+## 納期
+[XX日後の YYYY-MM-DD]
+
+## 優先度マトリクス
+高 [必須機能・絶対に外せないもの]
+中 [あれば望ましい機能]
+低 [余力があれば対応する機能]
+
+## 不明点・確認事項
+[フォームで回答されなかった項目・追加確認が必要なこと]</code></pre>
+
+<p>「不明点・確認事項」の欄がポイントで、フォームで答えきれなかった部分をClaudeが自動で洗い出してくれる。これを最初にクライアントへ一括送信することで、往復が1往復で終わるようになった。</p>
+
+<h2>つまずきポイント3つ</h2>
+
+<h3>1. フォームが表示されない</h3>
+
+<p>MCPサーバーの初期化に `elicitation: {}` を追加し忘れると、フォームが出ない。エラーも出ないのでハマりやすい。上のコードの `capabilities: { tools: {}, elicitation: {} }` の部分を確認。</p>
+
+<h3>2. 複数案件でセッションが混乱する</h3>
+
+<p>複数のClaude Codeウィンドウで同じMCPサーバーを使うと、フォームの返答がどのセッションに向かうか混乱することがある。案件ごとに別ターミナルで独立したセッションを立ち上げる運用にしたら解消した。</p>
+
+<h3>3. 質問が多すぎて自分でも面倒になる</h3>
+
+<p>最初に10問以上設定したら作業開始前に萎えた。今は「これがないと作業が止まる情報」だけに絞って5問以内。細かい仕様は作業中にその都度聞く方が自然だった。</p>
+
+<h2>Elicitation以降のワークフロー全体図</h2>
+
+<p>今の流れはこれ。</p>
+
+<blockquote>
+1. 案件受注<br>
+2. `start_hearing` でフォーム起動 → 2〜3分で回答<br>
+3. ClaudeがフォームからInstruction Sheetを生成<br>
+4. 「不明点」をクライアントに一括送信（1往復で完結）<br>
+5. CLAUDE.mdに案件情報を貼り付け<br>
+6. Auto Modeで実装開始<br>
+7. 大きな判断が必要な時だけElicitationで再確認<br>
+8. 納品
+</blockquote>
+
+<p>ステップ4が今まで3〜5往復だったところ。情報が整理された状態で聞けるから、クライアントも「この人わかってる」ってなって回答が早くなった気がする。</p>
+
+<p>正直、MCPサーバーを自分で書くのは最初は面倒だった。でも一度設定してしまえば毎週使える。設定に3〜4時間かかったが、週7時間節約できているので3週間でペイした。</p>
+
+<p>今はヒアリングにしか使っていないが、「実装中に仕様の選択肢を出す」使い方も試している。「このAPIが動かない場合、代替案AとBのどちらで実装しますか」とClaude Codeが聞いてくれて、答えるだけで作業が続く。Claude Codeに仕事させていて一番ストレスだった「詰まって止まる問題」が減った。</p>
+
+<p>次はElicitation + Auto Modeを組み合わせて「完全放置で案件完了」を目指した話を書く予定。Auto Mode x Elicitationで、どこまで無人で進められるかの実験をしている。</p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/nb99fc24e5eaa">大学生がClaude Codeでクラウドワークス案件を受注→納品してみた全記録</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n2057c13b0cfb">副業の"承認待ち"が1案件あたり30分→5分になった話｜Claude Code Auto Mode 導入記</a></li>
+</ul>

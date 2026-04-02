@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Codeで作れるもの — note記事ネタ候補レポート 2026-03-29</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a26;
+    --border: #2a2a3e;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --accent3: #7c3aed;
+    --text: #e8e8f0;
+    --text-muted: #7878a0;
+    --text-dim: #4a4a6a;
+    --tag-bg: #1e1e30;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.015) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.015) 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ambient glow */
+  .ambient {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(120px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ambient-1 {
+    top: -200px;
+    right: -100px;
+    background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%);
+  }
+  .ambient-2 {
+    bottom: 200px;
+    left: -150px;
+    background: radial-gradient(circle, rgba(232,255,71,0.06) 0%, transparent 70%);
+  }
+
+  /* Layout */
+  .container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    padding: 5rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .header-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .header-eyebrow::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .meta-item strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  /* Stats bar */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin: 3rem 0;
+    overflow: hidden;
+  }
+  .stat {
+    background: var(--surface);
+    padding: 1.5rem;
+  }
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* Section */
+  section {
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* Category tabs */
+  .cat-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+  .cat-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    background: transparent;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .cat-tab:hover, .cat-tab.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(232,255,71,0.05);
+  }
+
+  /* Item card */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .item-card {
+    background: var(--surface);
+    padding: 1.5rem;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .item-card:hover { background: var(--surface2); }
+
+  .item-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+
+  .item-badges {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 2px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .badge-level-beginner { background: rgba(52,211,153,0.15); color: #34d399; border: 1px solid rgba(52,211,153,0.3); }
+  .badge-level-mid { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+  .badge-level-advanced { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+  .badge-cat { background: rgba(124,58,237,0.15); color: #a78bfa; border: 1px solid rgba(124,58,237,0.3); }
+
+  .item-stars {
+    display: flex;
+    gap: 2px;
+  }
+  .star {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+  }
+  .star.on { color: var(--accent); }
+
+  .item-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .item-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 0.75rem;
+  }
+
+  .item-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .fact-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--border);
+    padding: 0.2rem 0.55rem;
+    border-radius: 2px;
+    color: var(--text-muted);
+  }
+
+  .item-source {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+  }
+  .item-source a {
+    color: var(--accent3);
+    text-decoration: none;
+  }
+  .item-source a:hover { color: var(--accent); }
+
+  /* TOP10 section */
+  .top10-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .top10-item {
+    background: var(--surface);
+    padding: 0;
+    overflow: hidden;
+    transition: background 0.15s;
+  }
+  .top10-item:hover { background: var(--surface2); }
+
+  .top10-header {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    gap: 0;
+    align-items: stretch;
+    cursor: pointer;
+  }
+
+  .top10-rank {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    background: var(--surface2);
+    border-right: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 1.25rem 0;
+    min-width: 3rem;
+  }
+  .top10-item:nth-child(1) .top10-rank { color: var(--accent); background: rgba(232,255,71,0.07); }
+  .top10-item:nth-child(2) .top10-rank { color: #c0c0c0; }
+  .top10-item:nth-child(3) .top10-rank { color: #cd7f32; }
+
+  .top10-main {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .top10-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .top10-subtitle {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .top10-price {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1.25rem 1.5rem;
+    gap: 0.25rem;
+  }
+  .price-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent2);
+    white-space: nowrap;
+  }
+  .price-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--text-dim);
+  }
+
+  .top10-body {
+    padding: 0 1.5rem 1.5rem 4.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .top10-section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    margin-top: 1rem;
+  }
+  .top10-section-text {
+    font-size: 0.77rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* Features table */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .feature-item {
+    background: var(--surface);
+    padding: 1.25rem 1.5rem;
+  }
+  .feature-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+  .feature-desc {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+  .feature-diff {
+    font-size: 0.7rem;
+    color: var(--accent2);
+    border-left: 2px solid var(--accent2);
+    padding-left: 0.6rem;
+    line-height: 1.5;
+  }
+
+  /* Query log */
+  .query-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+  }
+  .query-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .query-table td {
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    background: var(--surface);
+  }
+  .query-table tr:hover td { background: var(--surface2); }
+  .query-table .q-text { color: var(--text); max-width: 320px; }
+  .lang-jp { color: #f472b6; }
+  .lang-en { color: #60a5fa; }
+  .zero-hit { color: var(--text-dim); }
+
+  /* Comparison */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .compare-col {
+    background: var(--surface);
+    padding: 1.5rem;
+  }
+  .compare-col.highlight {
+    background: rgba(232,255,71,0.04);
+  }
+  .compare-tool {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .compare-loved {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+  .compare-arch {
+    font-size: 0.75rem;
+    color: var(--accent2);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+  .compare-list {
+    list-style: none;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .compare-list li::before {
+    content: '— ';
+    color: var(--text-dim);
+  }
+
+  /* Footer */
+  footer {
+    padding: 3rem 0;
+    text-align: center;
+  }
+  .footer-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .footer-text a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  /* Scroll reveal */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+  .reveal-1 { animation-delay: 0.1s; }
+  .reveal-2 { animation-delay: 0.2s; }
+  .reveal-3 { animation-delay: 0.3s; }
+  .reveal-4 { animation-delay: 0.4s; }
+
+  /* Divider line decoration */
+  .deco-line {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+  }
+  .deco-line::before, .deco-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  @media (max-width: 640px) {
+    .top10-body { grid-template-columns: 1fr; padding-left: 1.5rem; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .top10-header { grid-template-columns: 2.5rem 1fr; }
+    .top10-price { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient ambient-1"></div>
+<div class="ambient ambient-2"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="reveal reveal-1">
+    <div class="header-eyebrow">調査レポート — 2026-03-29</div>
+    <h1>Claude Codeで<br><em>作れるもの</em>・作ったもの</h1>
+    <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1.5rem; max-width:540px;">
+      note記事「○○の作り方」ネタ候補リスト。価格帯1,000〜5,000円想定。
+      公式事例・ユーザー実績・GitHub・SNSを横断調査した結果。
+    </p>
+    <div class="header-meta">
+      <div class="meta-item">調査日 <strong>2026-03-29</strong></div>
+      <div class="meta-item">検索クエリ数 <strong>24件（全件記録）</strong></div>
+      <div class="meta-item">採用ソース <strong>一次8件 / 二次16件</strong></div>
+      <div class="meta-item">情報鮮度 <strong>2025〜2026年3月</strong></div>
+    </div>
+  </header>
+
+  <!-- STATS -->
+  <div class="stats-bar reveal reveal-2">
+    <div class="stat">
+      <div class="stat-number">$2.5B</div>
+      <div class="stat-label">ARR（2026年2月）</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">46%</div>
+      <div class="stat-label">開発者「最も気に入った」率</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">115K</div>
+      <div class="stat-label">開発者数（2025年7月）</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">22+</div>
+      <div class="stat-label">発見した制作物カテゴリ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">$6</div>
+      <div class="stat-label">平均日額コスト/開発者</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: ITEM LIST -->
+  <section class="reveal reveal-2">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2>発見した制作物リスト（24件）</h2>
+    </div>
+
+    <div class="deco-line">GAME</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">ゲーム</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+        </div>
+        <div class="item-title">ローグライクRPG「DUNG: Azure Flame」</div>
+        <div class="item-desc">非エンジニアがClaude Codeで15,000行のローグライクRPGを制作し初収益達成。</div>
+        <div class="item-facts">
+          <span class="fact-chip">15,000行</span>
+          <span class="fact-chip">非エンジニア制作</span>
+          <span class="fact-chip">初収益達成</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://zenn.dev/yurukusa/articles/f62a4d0e9d9eb1" target="_blank">Zenn (yurukusa)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">ゲーム</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+        </div>
+        <div class="item-title">Unityモバイルゲーム 4日でApp Store申請</div>
+        <div class="item-desc">Unity MCP + Claude Codeを組み合わせてフルローグライクRPGモバイルゲームを4日で完成。</div>
+        <div class="item-facts">
+          <span class="fact-chip">4日間</span>
+          <span class="fact-chip">Unity MCP連携</span>
+          <span class="fact-chip">App Store申請済</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://vibecodes.substack.com/p/i-built-a-full-mobile-game-in-4-days" target="_blank">Vibecodes Substack</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-advanced">上級</span>
+            <span class="badge badge-cat">ゲーム</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Godogen — テキストからGodot 4ゲームを全自動生成</div>
+        <div class="item-desc">Claude Code + Gemini（ビジュアルQA）+ Tripo3Dでゲームを完全自動生成するパイプライン。</div>
+        <div class="item-facts">
+          <span class="fact-chip">GitHub 407 Stars</span>
+          <span class="fact-chip">2026年3月公開</span>
+          <span class="fact-chip">MIT</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://github.com/htdt/godogen" target="_blank">GitHub (htdt/godogen)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-advanced">上級</span>
+            <span class="badge badge-cat">ゲーム</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Claude Code Game Studios（48エージェント）</div>
+        <div class="item-desc">48のAIエージェントと36のワークフロースキルで構成する本格ゲーム開発スタジオテンプレート。</div>
+        <div class="item-facts">
+          <span class="fact-chip">48エージェント</span>
+          <span class="fact-chip">36スキル</span>
+          <span class="fact-chip">Xでバイラル</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://github.com/Donchitos/Claude-Code-Game-Studios" target="_blank">GitHub (Donchitos)</a></div>
+      </div>
+
+    </div>
+
+    <div class="deco-line">WEB APP / SAAS</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-beginner">初級</span>
+            <span class="badge badge-cat">Webアプリ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+        </div>
+        <div class="item-title">音楽スクール予約管理システム（非エンジニア3日）</div>
+        <div class="item-desc">非エンジニアが3日間でサロン向け予約管理システムを開発。Claude Codeの非エンジニア適性を示す代表事例。</div>
+        <div class="item-facts">
+          <span class="fact-chip">3日間</span>
+          <span class="fact-chip">非エンジニア</span>
+          <span class="fact-chip">note掲載</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://note.com/mattun3835/n/nb1435bf17706" target="_blank">note (mattun3835)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">Webアプリ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">社内匿名Q&Aアプリ（CLAUDE.md+Hooks+Skills）</div>
+        <div class="item-desc">URL共有のみで参加できる匿名Q&AアプリをClaude Code固有機能フル活用で爆速開発。</div>
+        <div class="item-facts">
+          <span class="fact-chip">CLAUDE.md</span>
+          <span class="fact-chip">Hooks</span>
+          <span class="fact-chip">Skills</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://zenn.dev/tree_and_tree/articles/b69ac807a795c2" target="_blank">Zenn (tree_and_tree)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-beginner">初級</span>
+            <span class="badge badge-cat">Webアプリ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">在庫管理システム（開発3時間・年240時間削減）</div>
+        <div class="item-desc">3時間の開発で年間240時間の業務削減を達成した在庫管理システム。ROIが明確でnote記事として訴求力が高い。</div>
+        <div class="item-facts">
+          <span class="fact-chip">開発3時間</span>
+          <span class="fact-chip">240時間/年削減</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://tech-camp.in/ai-navi/claude-case/" target="_blank">tech-camp.in</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">Webアプリ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Programmatic SEOエンジン</div>
+        <div class="item-desc">Claude Codeで10,000 SKUのスキーマを自動生成。2026年Q1でオーガニックトラフィック14%増を達成した事例。</div>
+        <div class="item-facts">
+          <span class="fact-chip">コンバージョン+23%</span>
+          <span class="fact-chip">CAC-45%</span>
+          <span class="fact-chip">10K SKU対応</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://stormy.ai/blog/programmatic-seo-claude-code-2026" target="_blank">Stormy AI Blog</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">Webアプリ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">プログラミング言語の自作</div>
+        <div class="item-desc">HackerNews掲載。Claude Codeを使って独自プログラミング言語を実装したプロジェクト。</div>
+        <div class="item-facts">
+          <span class="fact-chip">HN掲載</span>
+          <span class="fact-chip">コンパイラ/インタプリタ</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://news.ycombinator.com/item?id=47325595" target="_blank">Hacker News</a></div>
+      </div>
+
+    </div>
+
+    <div class="deco-line">DESKTOP APP</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">デスクトップ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">CodePilot — Claude CodeデスクトップGUI</div>
+        <div class="item-desc">Electron + Next.jsで作られたClaude Code用デスクトップGUI。マルチプロバイダー対応。</div>
+        <div class="item-facts">
+          <span class="fact-chip">Electron + Next.js</span>
+          <span class="fact-chip">マルチプロバイダー</span>
+          <span class="fact-chip">GitHub公開</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://github.com/op7418/CodePilot" target="_blank">GitHub (op7418/CodePilot)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">デスクトップ</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">EmberText — AI搭載ライティングアプリ</div>
+        <div class="item-desc">Electron + React + TypeScriptでAI搭載ライティングアプリをClaude Codeでゼロから構築した開発記録。</div>
+        <div class="item-facts">
+          <span class="fact-chip">Electron</span>
+          <span class="fact-chip">React + TypeScript</span>
+          <span class="fact-chip">ゼロから構築</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://www.stephanmiller.com/electron-project-from-scratch-with-claude-code/" target="_blank">Stephan Miller Blog</a></div>
+      </div>
+
+    </div>
+
+    <div class="deco-line">AUTOMATION / SCRIPT</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-advanced">上級</span>
+            <span class="badge badge-cat">自動化</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">AIトレーディングボット（14セッション・961ツール呼び出し）</div>
+        <div class="item-desc">Claude Codeで15戦略をバックテストし1戦略が生き残り。5エージェントレビューチームでバグ発見を実装。</div>
+        <div class="item-facts">
+          <span class="fact-chip">961ツール呼び出し</span>
+          <span class="fact-chip">14セッション</span>
+          <span class="fact-chip">15→1戦略</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://dev.to/ji_ai/building-an-ai-trading-bot-with-claude-code-14-sessions-961-tool-calls-4o0n" target="_blank">DEV Community</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-beginner">初級</span>
+            <span class="badge badge-cat">自動化</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+        </div>
+        <div class="item-title">note記事自動生成プラグイン</div>
+        <div class="item-desc">カスタムコマンドでTechblog記事からnote用サマリーを自動生成。KDDIでも採用事例あり。</div>
+        <div class="item-facts">
+          <span class="fact-chip">カスタムコマンド</span>
+          <span class="fact-chip">SEO対策済み</span>
+          <span class="fact-chip">KDDI事例あり</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://techblog.elspina.space/misc-techblog2note-by-ai/" target="_blank">ELSPINA Tech Blog</a> / <a href="https://tech-note.kddi.com/n/nb3cf027daae2" target="_blank">KDDI Tech note</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">自動化</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">プロジェクト管理システム（GitHub Issues活用）</div>
+        <div class="item-desc">GitHub IssuesをDBとして複数Claude Codeエージェントを管理。約50のbashスクリプトで構成。</div>
+        <div class="item-facts">
+          <span class="fact-chip">GitHub Issues DB</span>
+          <span class="fact-chip">Bashスクリプト50本</span>
+          <span class="fact-chip">HN Show掲載</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://news.ycombinator.com/item?id=44960594" target="_blank">Hacker News Show HN</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">自動化</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+        </div>
+        <div class="item-title">マーケ・SNS・note記事作成の自律エージェント</div>
+        <div class="item-desc">マーケティング・ツイート・note記事・QAリサーチ・開発管理を全部Claude Code自律エージェントに委譲した実験。</div>
+        <div class="item-facts">
+          <span class="fact-chip">5業務自動化</span>
+          <span class="fact-chip">Qiita掲載</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://qiita.com/s1019/items/5ae7f08ad291f73a9e0f" target="_blank">Qiita (s1019)</a></div>
+      </div>
+
+    </div>
+
+    <div class="deco-line">AI AGENT / MULTI-AGENT</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-advanced">上級</span>
+            <span class="badge badge-cat">エージェント</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Hooksで自律マルチエージェントシステム</div>
+        <div class="item-desc">HooksをハックしてOpusリード+Sonnetワーカー構成の自律マルチエージェントを構築。コスト50-60%削減。</div>
+        <div class="item-facts">
+          <span class="fact-chip">1,729msg/日</span>
+          <span class="fact-chip">$15,400/65日</span>
+          <span class="fact-chip">コスト-50%</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://zenn.dev/zaico/articles/d6b882c78fe4b3" target="_blank">Zenn (zaico)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">エージェント</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">59個のオープンソースサブエージェントコレクション</div>
+        <div class="item-desc">言語・フレームワーク非依存の59個のサブエージェントをMIT公開。HN掲載で大きな反響。</div>
+        <div class="item-facts">
+          <span class="fact-chip">59個のエージェント</span>
+          <span class="fact-chip">MIT</span>
+          <span class="fact-chip">HN掲載</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://news.ycombinator.com/item?id=45072795" target="_blank">Hacker News</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">エージェント</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">ドキュメント駆動開発でFlutterアプリ（コード83%生成）</div>
+        <div class="item-desc">設計ドキュメントを先に準備しClaude Codeにコードの83%を書かせる「ドキュメント駆動開発」手法。App Storeリリース。</div>
+        <div class="item-facts">
+          <span class="fact-chip">83%コード自動生成</span>
+          <span class="fact-chip">Flutter</span>
+          <span class="fact-chip">App Store公開</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://zenn.dev/furunag/articles/claude-code-document-driven-development" target="_blank">Zenn (furunag)</a></div>
+      </div>
+
+    </div>
+
+    <div class="deco-line">MCP / EXTENSION</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-advanced">上級</span>
+            <span class="badge badge-cat">MCP</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Claude Code MCP Server（agent in agent）</div>
+        <div class="item-desc">Claude Code自体をMCPサーバーとして動作させ、エージェント内からClaude Codeを呼び出す「入れ子エージェント」を実現。</div>
+        <div class="item-facts">
+          <span class="fact-chip">2025年5月公開</span>
+          <span class="fact-chip">ワンショット実行</span>
+          <span class="fact-chip">GitHub公開</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://github.com/steipete/claude-code-mcp" target="_blank">GitHub (steipete)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">MCP</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">13個のMCPサーバー統合コレクション（ソース付き）</div>
+        <div class="item-desc">GitHub/Jira/Slack/Google Drive等のMCPサーバー13本をソースコード付きで公開した実践ガイド。</div>
+        <div class="item-facts">
+          <span class="fact-chip">13本統合</span>
+          <span class="fact-chip">ソースコード公開</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://dev.to/wedgemethoddev/how-i-built-13-mcp-server-integrations-for-claude-code-with-source-code-4pk4" target="_blank">DEV Community</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">MCP</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Claude Code Skill Factory（スキル量産ツールキット）</div>
+        <div class="item-desc">本番対応のClaude Skillsを量産・デプロイするためのOSSツールキット。テンプレート自動生成・ワークフロー自動化対応。</div>
+        <div class="item-facts">
+          <span class="fact-chip">テンプレート自動生成</span>
+          <span class="fact-chip">OSS</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://github.com/alirezarezvani/claude-code-skill-factory" target="_blank">GitHub (alirezarezvani)</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">MCP</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Awesome Claude Code（コミュニティリソース集）</div>
+        <div class="item-desc">CMS/IoT/ヘルス管理/エージェントなど75+リポジトリを網羅するキュレーションリスト。個人ブックマークからコミュニティリソースへ成長。</div>
+        <div class="item-facts">
+          <span class="fact-chip">75+リポジトリ</span>
+          <span class="fact-chip">GitHub公開</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">GitHub (hesreallyhim)</a></div>
+      </div>
+
+    </div>
+
+    <div class="deco-line">OFFICIAL / INFRA</div>
+
+    <div class="item-grid">
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-mid">中級</span>
+            <span class="badge badge-cat">公式</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span>
+          </div>
+        </div>
+        <div class="item-title">Claude Code GitHub Actions統合</div>
+        <div class="item-desc">@claudeメンションでPRに自動コード修正・実装が行われるCI/CDパイプライン。Anthropic公式機能。</div>
+        <div class="item-facts">
+          <span class="fact-chip">公式機能</span>
+          <span class="fact-chip">@claude メンション</span>
+          <span class="fact-chip">CI/CD自動化</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://code.claude.com/docs/en/github-actions" target="_blank">Claude Code Docs</a></div>
+      </div>
+
+      <div class="item-card">
+        <div class="item-card-top">
+          <div class="item-badges">
+            <span class="badge badge-level-beginner">初級</span>
+            <span class="badge badge-cat">クラウド</span>
+          </div>
+          <div class="item-stars">
+            <span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star on">★</span><span class="star">★</span>
+          </div>
+        </div>
+        <div class="item-title">Claude Code on Web（スマホだけでFlutterアプリ開発）</div>
+        <div class="item-desc">ブラウザ版Claude Codeのみ使い、スマートフォンからFlutterアプリを開発・リリースした実績記事。</div>
+        <div class="item-facts">
+          <span class="fact-chip">2025年10月公開</span>
+          <span class="fact-chip">スマホのみで完結</span>
+          <span class="fact-chip">Zenn掲載</span>
+        </div>
+        <div class="item-source">ソース: <a href="https://zenn.dev/ruwatana/articles/claude-code-on-the-web-for-app-development" target="_blank">Zenn (ruwatana)</a></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: CATEGORY -->
+  <section class="reveal reveal-3">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2>カテゴリ別整理</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-name">Webアプリ・ツール系</div>
+        <div class="feature-desc">予約管理システム、匿名Q&Aアプリ、在庫管理システム、SEOエンジン、プログラミング言語</div>
+        <div class="feature-diff">非エンジニアでも3日〜1週間で本番リリースが可能な事例が多数</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">ゲーム開発系</div>
+        <div class="feature-desc">ローグライクRPG（15,000行）、Unityモバイルゲーム（4日でApp Store申請）、Godot全自動生成パイプライン、ゲームスタジオテンプレート</div>
+        <div class="feature-diff">Unity MCP・Godogen等のMCP連携でゲーム開発の敷居が劇的に下がった</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">自動化・スクリプト系</div>
+        <div class="feature-desc">トレーディングボット、note記事自動生成、プロジェクト管理、マーケ業務全自動化エージェント</div>
+        <div class="feature-diff">反復業務を自律エージェントに委譲する事例が急増（2025年後半〜）</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">AIエージェント・ワークフロー系</div>
+        <div class="feature-desc">Hooksを使った自律マルチエージェント、59個サブエージェントコレクション、ドキュメント駆動開発でFlutter</div>
+        <div class="feature-diff">Opus（リード）+ Sonnet（ワーカー）構成でコスト50-60%削減が定石化</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">MCPサーバー・拡張系</div>
+        <div class="feature-desc">Claude Code MCP Server（agent in agent）、13本のMCP統合コレクション、Skill Factory、Awesome Claude Code</div>
+        <div class="feature-diff">MCPを自作してClaude Codeの能力を拡張するエコシステムが形成中</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">デスクトップアプリ系</div>
+        <div class="feature-desc">CodePilot（Electron+Next.js GUI）、EmberText（ライティングアプリ）、スマホだけでのアプリ開発</div>
+        <div class="feature-diff">Claude Code on WebでPC不要の開発が現実に</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: TOP10 -->
+  <section class="reveal reveal-3">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2>note記事ネタ候補 TOP10</h2>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:2rem;">「○○の作り方」形式。需要・差別化・価格帯（1,000〜5,000円）を総合評価。</p>
+
+    <div class="top10-list">
+
+      <!-- 1 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">1</div>
+          <div class="top10-main">
+            <div class="top10-title">非エンジニアがClaude Codeでスマホアプリを作ってApp Storeに出す方法</div>
+            <div class="top10-subtitle">Unity MCP + Claude CodeでゼロからiOSアプリを4日でリリース</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥3,000〜5,000</div>
+            <div class="price-sub">需要★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">「アプリを作りたいが技術がない」非エンジニア向け。Unity MCP + Claude Codeのセットアップからリリースまで実証済み手順を解説。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">「4日でApp Store審査提出」という具体的な実績ベース。Unity MCPというClaude Code特有の連携がカギ。Cursorでは同等の体験は得られない。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">アプリ開発欲求は普遍的で潜在読者が多く、リリースまでの完全ガイドは5,000円でも購入される。実績写真（App Store掲載画面）があれば上限値。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">2</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude CodeのHooks・Skills・CLAUDE.mdを使って業務を爆速自動化する方法</div>
+            <div class="top10-subtitle">Claude Code固有の3大機能を実務で使い倒す実践ガイド</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥2,000〜3,000</div>
+            <div class="price-sub">差別化★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">Claude Code初〜中級ユーザー。Cursorやsingleファイル編集を超えた「Claude Codeでしか出来ないこと」を体系的に学べる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">CLAUDE.md・Hooks・SkillsはClaude Code独自機能。これを組み合わせた実務ワークフローはどの競合ツールにも存在しない。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">日本語で体系化した実践ガイドは少なく、2,000〜3,000円の情報コストを許容する読者が多い。特に「年240時間削減」の具体例が訴求力を持つ。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">3</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude Codeでマルチエージェントシステムを自作する方法（コスト設計付き）</div>
+            <div class="top10-subtitle">Opus（リード）+ Sonnet（ワーカー）構成でコスト50%削減する実践レシピ</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥3,000〜5,000</div>
+            <div class="price-sub">単価★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">中〜上級エンジニア。マルチエージェントの設計パターン・コスト管理・実運用ノウハウを数値データ付きで学べる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">「65日間・日1,729メッセージ・$15,400」という実運用データは希少。コスト設計まで踏み込んだ記事は少ない。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">マルチエージェントを導入できれば業務変革が起きると感じているエンジニアは多く、5,000円でも購入する意欲がある層が存在する。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">4</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude Code + MCPサーバーを自作してツールを自分専用に拡張する方法</div>
+            <div class="top10-subtitle">GitHub/Jira/Slack連携MCPの作り方をソースコード付きで解説</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥2,000〜4,000</div>
+            <div class="price-sub">技術深度★★★★☆</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">エンジニア・テックに強い非エンジニア。自分のツール・サービスをClaude Codeに接続する方法をゼロから習得できる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">MCPはClaude Codeの最強武器。OpenAI・Cursorとの最大差別化要因。「agent in agent」パターンはClaude Code特有の高度な使い方。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">ソースコード付き実践ガイドの需要は高く2,000〜4,000円は許容範囲。特定ツール（Notion、Slack等）に絞ることで読者が絞り込まれて購入率が上がる。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">5</div>
+          <div class="top10-main">
+            <div class="top10-title">ドキュメント駆動開発でClaude Codeにコードの80%を書かせる方法</div>
+            <div class="top10-subtitle">Flutterアプリ App Storeリリースまでの設計ドキュメント24種を全公開</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥2,000〜3,000</div>
+            <div class="price-sub">実践性★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">個人開発者・副業エンジニア。設計ドキュメントを先行整備してClaude Codeの精度を最大化する開発手法を学べる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">「コードの83%をAIに書かせた」実績と24種のドキュメントテンプレートがそのままついてくるのは差別化になる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">テンプレートが付属することで単純な記事より単価を上げられる。App Storeリリースという成果物が信頼性を担保する。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">6</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude CodeのGitHub Actions統合でPR自動レビュー・自動修正を設定する方法</div>
+            <div class="top10-subtitle">@claudeメンションで動くCI/CDパイプラインの構築ガイド</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥1,500〜2,500</div>
+            <div class="price-sub">需要★★★★☆</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">チーム開発しているエンジニア。PRレビュー工数削減・コード品質向上を自動化する具体的な設定手順を学べる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">GitHub Actions統合はClaude Code公式機能。Cursorにはない「非同期・CI/CD組み込み」のエージェント動作が可能。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">チーム向けで購入判断が個人よりも早い。設定手順が明確で読者の行動可能性が高く1,500〜2,500円なら購入障壁が低い。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">7</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude Codeだけでデスクトップアプリ（Electron）をゼロから作る方法</div>
+            <div class="top10-subtitle">Next.js + Electronの組み合わせでGUI付きAIツールを1人で開発</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥2,000〜3,000</div>
+            <div class="price-sub">独自性★★★★☆</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">Webエンジニア・Claude Code中級者。ターミナルツールではなくGUIアプリとしてClaude Codeの能力を包み込むアプローチを学べる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">「Claude Code（ターミナル）でElectronアプリを作る」という逆説的なアプローチが話題になりやすい。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">デスクトップアプリは配布・販売に直結するため実益を感じやすく2,000〜3,000円は出しやすい価格帯。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">8</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude Codeで3日間・3時間・3万円のアプリを作った全記録（非エンジニア版）</div>
+            <div class="top10-subtitle">開発期間・コスト・成果物を全公開する体験記ガイド</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥1,000〜2,000</div>
+            <div class="price-sub">読みやすさ★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">Claude Codeに興味はあるが「自分でもできるか不安」な非エンジニア。実際のコスト・時間・成果物を見てから始められる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">「3時間で年240時間削減の在庫管理システム」「3日で音楽スクール予約システム」といった実績数値が信頼性をつくる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">体験記・ノウハウの複合型は1,000〜2,000円が適切。読みやすく購入障壁が低いため単価より本数を狙う戦略向き。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">9</div>
+          <div class="top10-main">
+            <div class="top10-title">Claude Codeでnote・ブログ・SNS投稿を自動化するカスタムコマンドの作り方</div>
+            <div class="top10-subtitle">スラッシュコマンド1つで記事生成・要約・投稿まで自動化</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥1,500〜2,500</div>
+            <div class="price-sub">ニッチ度★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">コンテンツ発信をしているクリエイター・マーケター。note記事の自動生成・サマリー作成をClaude Codeで実装する具体手順。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">KDDI社内事例もある実績あるユースケース。「カスタムコマンド」という機能名を知っていれば使えるが、日本語で解説した記事がまだ少ない。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">コンテンツ制作者に直接刺さるため購入判断が早い。noteユーザーとClaude Codeユーザーの重なりが本記事の購入者層。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 -->
+      <div class="top10-item">
+        <div class="top10-header">
+          <div class="top10-rank">10</div>
+          <div class="top10-main">
+            <div class="top10-title">テキストから完全なゲームを生成するGodogenの仕組みと使い方（Claude Code活用）</div>
+            <div class="top10-subtitle">Godot + Claude Code + Gemini AIの組み合わせで自動ゲーム制作パイプラインを構築</div>
+          </div>
+          <div class="top10-price">
+            <div class="price-tag">¥2,000〜4,000</div>
+            <div class="price-sub">話題性★★★★★</div>
+          </div>
+        </div>
+        <div class="top10-body">
+          <div>
+            <div class="top10-section-label">読者と学び</div>
+            <div class="top10-section-text">ゲーム開発に憧れているがコーディングが苦手な層。Godogenを使った全自動ゲーム生成パイプラインのセットアップと活用法。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">差別化ポイント</div>
+            <div class="top10-section-text">2026年3月に公開されたばかりで情報が少ない。Gigazineにも取り上げられた話題のプロジェクトの日本語解説は先行者優位になる。</div>
+          </div>
+          <div>
+            <div class="top10-section-label">価格根拠</div>
+            <div class="top10-section-text">最新技術の早期解説は情報の希少性から2,000〜4,000円でも売れる。時間が経つと価値が下がるため早期公開が重要。</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 4: FEATURES -->
+  <section class="reveal reveal-4">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2>Claude Code固有機能と差別化ポイント</h2>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-name">CLAUDE.md</div>
+        <div class="feature-desc">プロジェクトごとの永続指示ファイル。コーディングスタイル・禁止事項・タスク管理ルールを定義。</div>
+        <div class="feature-diff">Cursor等は都度プロンプト入力が必要だが、Claude CodeはCLAUDE.mdで一度設定すれば永続的に反映される。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">Hooks</div>
+        <div class="feature-desc">特定のアクションが起きた際に自動実行されるスクリプト。コード保存時のフォーマット・テスト実行など。</div>
+        <div class="feature-diff">完全自動・決定論的に動作。AIの判断を介さない確実なトリガー処理が可能。マルチエージェント自律化の要。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">Skills（スキル）</div>
+        <div class="feature-desc">SKILL.mdファイルで定義する再利用可能なAI機能。コンテキストに応じて自動発動。</div>
+        <div class="feature-diff">2026年1月にスラッシュコマンドとSkillsが統合。プロジェクト横断で使い回せる知識ライブラリとして機能。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">Sub-agents（サブエージェント）</div>
+        <div class="feature-desc">専門特化したAIエージェントをタスク別に呼び出せる機能。レビュアー・リサーチャー・コーダーなど役割分担。</div>
+        <div class="feature-diff">公式サポートで100+のOSSサブエージェントが公開中。agency-agentsは40,889スターを獲得（2026年3月）。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">MCP Server / Client</div>
+        <div class="feature-desc">Model Context Protocolで外部ツールと双方向連携。Jira・Slack・Google Drive・Notionなどに接続。</div>
+        <div class="feature-diff">Claude CodeはMCPサーバーとしてもクライアントとしても動作できる唯一のツール。「agent in agent」パターンが可能。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">GitHub Actions統合</div>
+        <div class="feature-desc">@claudeメンションでPRへの自動コード修正・実装が動くCI/CDパイプライン。Anthropic公式機能。</div>
+        <div class="feature-diff">非同期・クラウド実行でローカル環境不要。PRレビューコストを劇的に削減できる企業向けの強力機能。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">Claude Code on Web</div>
+        <div class="feature-desc">ブラウザだけで動作するクラウド版。2025年10月公開。各セッションは独立したサンドボックスで動作。</div>
+        <div class="feature-diff">スマホだけでFlutterアプリ開発・リリースした事例あり。PCも開発環境も不要になったインパクトは大きい。</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-name">マルチエージェント（Swarms）</div>
+        <div class="feature-desc">複数のClaudeエージェントが並列動作するオーケストレーション機能。2026年1月に発見されたフラグ機能。</div>
+        <div class="feature-diff">Opus（リード・設計）+ Sonnet（ワーカー・実装）の役割分担でコスト50-60%削減が実証済み。</div>
+      </div>
+    </div>
+
+    <div style="margin-top:2rem;">
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;font-weight:500;">他ツールとの比較（2026年初頭）</p>
+      <div class="compare-grid">
+        <div class="compare-col highlight">
+          <div class="compare-tool">Claude Code</div>
+          <div class="compare-loved">開発者「最も気に入った」46%</div>
+          <div class="compare-arch">ターミナルネイティブ・エージェント型</div>
+          <ul class="compare-list">
+            <li>コードベース全体を理解して動作</li>
+            <li>CLAUDE.md・Hooks・Skills固有機能</li>
+            <li>MCP双方向連携（server/client両対応）</li>
+            <li>GitHub Actions公式統合</li>
+            <li>マルチエージェントSwarms</li>
+            <li>6ヶ月でARR $2.5B達成</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <div class="compare-tool">Cursor</div>
+          <div class="compare-loved">開発者「最も気に入った」19%</div>
+          <div class="compare-arch">IDEネイティブ型（VS Codeフォーク）</div>
+          <ul class="compare-list">
+            <li>Tab補完・Cmd+Kインライン編集</li>
+            <li>VS Code全拡張機能対応</li>
+            <li>マルチモデル切り替え柔軟</li>
+            <li>日常的なコーディングに最適</li>
+            <li>コスト予測が立てやすい定額制</li>
+          </ul>
+        </div>
+        <div class="compare-col">
+          <div class="compare-tool">GitHub Copilot</div>
+          <div class="compare-loved">開発者「最も気に入った」9%</div>
+          <div class="compare-arch">プラグイン/拡張型</div>
+          <ul class="compare-list">
+            <li>VS Code・JetBrainsで動作</li>
+            <li>Agent Modeで多段タスク対応</li>
+            <li>GitHub生態系との深い統合</li>
+            <li>エンタープライズコンプライアンス強</li>
+            <li>OpenAIモデル中心（Claude統合なし）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: QUERY LOG -->
+  <section class="reveal reveal-4">
+    <div class="section-header">
+      <span class="section-number">05</span>
+      <h2>調査ログ — 全検索クエリ一覧</h2>
+    </div>
+    <div style="overflow-x:auto;">
+    <table class="query-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>カテゴリ</th>
+          <th>検索クエリ</th>
+          <th>言語</th>
+          <th>採用数</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>全般</td><td class="q-text">"Claude Code" built created project 2025 2026</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>2</td><td>全般</td><td class="q-text">"Claude Code" showcase example use case</td><td class="lang-en">EN</td><td>8件</td></tr>
+        <tr><td>3</td><td>SNS</td><td class="q-text zero-hit">site:reddit.com "Claude Code" made built project</td><td class="lang-en">EN</td><td class="zero-hit">0件</td></tr>
+        <tr><td>4</td><td>SNS/HN</td><td class="q-text">site:news.ycombinator.com "Claude Code" project built</td><td class="lang-en">EN</td><td>8件</td></tr>
+        <tr><td>5</td><td>MCP</td><td class="q-text">"Claude Code" MCP server created built 2025</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>6</td><td>エージェント</td><td class="q-text">"Claude Code" agent built automation workflow 2025 2026</td><td class="lang-en">EN</td><td>7件</td></tr>
+        <tr><td>7</td><td>チュートリアル</td><td class="q-text">"Claude Code" tutorial how to build app 2025</td><td class="lang-en">EN</td><td>5件</td></tr>
+        <tr><td>8</td><td>GitHub</td><td class="q-text">"built with Claude Code" GitHub repository</td><td class="lang-en">EN</td><td>7件</td></tr>
+        <tr><td>9</td><td>日本語事例</td><td class="q-text">Claude Code 作ったもの 事例 アプリ ツール 2025</td><td class="lang-jp">JP</td><td>8件</td></tr>
+        <tr><td>10</td><td>Zenn</td><td class="q-text">site:zenn.dev Claude Code 作った 開発</td><td class="lang-jp">JP</td><td>8件</td></tr>
+        <tr><td>11</td><td>Qiita</td><td class="q-text">site:qiita.com Claude Code 開発 作った 2025</td><td class="lang-jp">JP</td><td>7件</td></tr>
+        <tr><td>12</td><td>マルチエージェント</td><td class="q-text">Claude Code エージェント 自作 マルチエージェント 2025 2026</td><td class="lang-jp">JP</td><td>8件</td></tr>
+        <tr><td>13</td><td>note</td><td class="q-text">Claude Code note 作り方 使い方 記事 2025 2026</td><td class="lang-jp">JP</td><td>5件</td></tr>
+        <tr><td>14</td><td>機能</td><td class="q-text">"Claude Code" Hooks skills custom slash commands examples</td><td class="lang-en">EN</td><td>7件</td></tr>
+        <tr><td>15</td><td>比較</td><td class="q-text">"Claude Code" vs Cursor GitHub Copilot difference unique features 2025 2026</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>16</td><td>ゲーム</td><td class="q-text">Claude Code game roguelike app store release non-engineer 2025</td><td class="lang-en">EN</td><td>5件</td></tr>
+        <tr><td>17</td><td>自動化</td><td class="q-text">"Claude Code" trading bot SEO tool SaaS built 2025 2026</td><td class="lang-en">EN</td><td>7件</td></tr>
+        <tr><td>18</td><td>Awesome</td><td class="q-text">awesome-claude-code GitHub hesreallyhim list projects</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>19</td><td>サブエージェント</td><td class="q-text">"Claude Code" subagents 59 open source software development HackerNews</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>20</td><td>言語開発</td><td class="q-text">Claude Code programming language built project showcase 2025 HackerNews</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>21</td><td>Godot</td><td class="q-text">Claude Code Godot game skills complete game development 2026</td><td class="lang-en">EN</td><td>6件</td></tr>
+        <tr><td>22</td><td>クラウド</td><td class="q-text">Claude Code infrastructure cloud service run remotely built 2025</td><td class="lang-en">EN</td><td>5件</td></tr>
+        <tr><td>23</td><td>Electron</td><td class="q-text">"Claude Code" electron app desktop GUI built example 2025</td><td class="lang-en">EN</td><td>7件</td></tr>
+        <tr><td>24</td><td>非エンジニア</td><td class="q-text">Claude Code 非エンジニア 個人開発 収益 アプリ リリース 2025 2026</td><td class="lang-jp">JP</td><td>7件</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="font-size:0.67rem;color:var(--text-dim);margin-top:0.75rem;font-family:'JetBrains Mono',monospace;">
+      注記: Reddit検索（#3）はインデックス制限により0件。適応拡張として直接検索クエリに変更し対応済み。
+    </p>
+  </section>
+
+  <footer>
+    <div class="footer-text">
+      調査日: 2026-03-29 &nbsp;|&nbsp; 生データ: <code>claude-code-repos/2026-03-29/調査結果_2026-03-29.md</code><br><br>
+      主要ソース:<br>
+      <a href="https://code.claude.com/docs/en/overview" target="_blank">Claude Code公式ドキュメント</a> /
+      <a href="https://github.com/hesreallyhim/awesome-claude-code" target="_blank">awesome-claude-code (GitHub)</a> /
+      <a href="https://zenn.dev/yurukusa/articles/f62a4d0e9d9eb1" target="_blank">Zenn: 非エンジニアがゲームで初収益</a> /
+      <a href="https://github.com/htdt/godogen" target="_blank">Godogen (GitHub)</a> /
+      <a href="https://zenn.dev/zaico/articles/d6b882c78fe4b3" target="_blank">Zenn: Hooksで自律マルチエージェント</a> /
+      <a href="https://news.ycombinator.com/item?id=45072795" target="_blank">HN: 59 open-source subagents</a> /
+      <a href="https://dev.to/alexcloudstar/claude-code-vs-cursor-vs-github-copilot-the-2026-ai-coding-tool-showdown-53n4" target="_blank">DEV: vs Cursor vs Copilot 2026</a>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

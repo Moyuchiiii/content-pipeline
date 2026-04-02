@@ -108,16 +108,18 @@ Solution:
 ### note記事での視覚的表現（blockquoteを使用）
 
 ```html
-<!-- Before/After を視覚的に見せるパターン -->
+<!-- Before/After を視覚的に見せるパターン（コロン禁止ルール適用済み） -->
 
 <blockquote>
-<strong>Before:</strong> 1記事の執筆に平均4時間。調査2時間 + 構成1時間 + 執筆1時間
+<b>導入前</b><br>
+1記事の執筆に平均4時間。調査2時間 + 構成1時間 + 執筆1時間
 </blockquote>
 
 ↓ Claude Code + content-pipeline 導入後
 
 <blockquote>
-<strong>After:</strong> 1記事45分。調査15分 + 構成5分 + 執筆25分（3.5倍速）
+<b>導入後</b><br>
+1記事45分。調査15分 + 構成5分 + 執筆25分（3.5倍速）
 </blockquote>
 ```
 

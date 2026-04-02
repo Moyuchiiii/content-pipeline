@@ -1,13 +1,13 @@
 ---
 name: workflow-audit
-description: note-run/x-run スキルの定期メンテナンス監査。陳腐化したルール・改善提案・パフォーマンス分析を実行する。月1回の定期実行を推奨。
+description: note-run/x-run スキルの定期メンテナンス監査。陳腐化したルール・改善提案・パフォーマンス分析を実行する。週1回の定期実行を推奨（次回: 2026-04-07）。
 user-invocable: true
 allowed-tools: Read, Write, WebSearch, mcp__notion__notion-fetch
 ---
 
 # workflow-audit スキル
 
-note-run / x-run スキルの定期監査を実行する。月1回を目安に実行し、スキルの品質を維持する。
+note-run / x-run スキルの定期監査を実行する。週1回を目安に実行し、スキルの品質を維持する。
 
 ---
 
