@@ -1,0 +1,131 @@
+<hr>
+<p style="text-align: center;"><b>副業の案件、PR待ちの間ずっと手が空いていませんか？</b></p>
+<hr>
+
+<p>CWで2〜3本の案件を並行してるとき、こういう状況よくあった。</p>
+
+<p>案件Aのコードを書き終えてPRを出す。CI待ち。この間、案件Bに集中したいのに「CIどうなったかな」が頭をちらついて集中できない。あるいは単純に、CI失敗してたのに30分後まで気づかなくて無駄に時間が経つ。</p>
+
+<p>週で合計すると、PR待ち・確認・CI再実行みたいな作業で3時間くらい飛んでた。</p>
+
+<p>Claude Code Desktopに本格的に切り替えてから1ヶ月。今は「PR待ち時間」という概念がほぼなくなった。</p>
+
+<h2>Claude Code Desktopって何が違うの</h2>
+
+<p>最初に言っておくと、Claude Code DesktopはターミナルのClaude Codeと中身は同じ。デスクトップアプリのUIから操作できることと、それに付随していくつかの追加機能がある点が違う。</p>
+
+<p>副業で使い始めて「これは使える」と感じた機能が4つある。</p>
+
+<blockquote>
+<b>Server Preview</b><br>
+devサーバーをデスクトップ内で自動起動して、ClaudeがUIを見ながらコーディングする
+</blockquote>
+
+<blockquote>
+<b>Visual Diff Review</b><br>
+プッシュ前に「Review code」ボタンを押すだけでClaudeがコードをチェック、指摘をインラインで入れてくれる
+</blockquote>
+
+<blockquote>
+<b>PR Monitoring</b><br>
+PRを出した後、ClaudeがバックグラウンドでCI結果を監視して、失敗したら自動で修正を試みる
+</blockquote>
+
+<blockquote>
+<b>Parallel Sessions</b><br>
+複数のセッションを独立して走らせられる。Gitのworktreeが自動で切られるのでコードも干渉しない
+</blockquote>
+
+<h2>副業ワークフローがどう変わったか</h2>
+
+<h3>PRを出したら別案件に全集中できるようになった</h3>
+
+<p>いちばん効いたのはPR Monitoring。PRを出した後にセッション上にCIステータスバーが出てくる仕組みで、ここで「Auto-fix」をONにしておくと、CIが失敗したときにClaudeが自動でエラーを読んで修正を試みてくれる。</p>
+
+<p>「Auto-merge」まで入れると、全チェックが通ったら自動でマージまでやってくれる。自分は今のところAuto-fixだけ使って、Auto-mergeは手動にしてる。最終確認だけは自分でやりたいので。</p>
+
+<p>CIが走ってる間に別のセッションに切り替えて案件Bを進める。案件AのCIが通ったらデスクトップ通知が来る。失敗しててもClaudeが直してるから、自分は通知を受け取るだけ。</p>
+
+<h3>デザインの実装確認でブラウザを切り替えなくなった</h3>
+
+<p>CW案件はフロントのUI実装をやることが多い。以前は「実装 → ブラウザで確認 → 問題あったら修正 → また確認」のループを全部手動でやってた。</p>
+
+<p>今はデスクトップのPreviewパネルにブラウザが埋め込まれてて、ClaudeがUIを見ながら「ここレイアウト崩れてる」を自分で気づいて直してくれる。ClaudeがスクリーンショットとってDOMをチェックして、問題があれば自分で修正する。</p>
+
+<p>「Auto-verify」という設定がデフォルトでONになってて、Claudeがファイルを編集するたびに自動でPreviewを確認してくれる。自分が「確認して」と言わなくてもいい。</p>
+
+<h3>プッシュ前のコードチェックが5分で終わる</h3>
+
+<p>Visual Diff Review。Claude Codeが変更を加えた後、diffの右上に「Review code」ボタンが出てくる。これを押すとClaudeが変更全体をレビューして、問題のある行にインラインでコメントを入れてくれる。</p>
+
+<p>指摘されるのは「コンパイルエラー、ロジックのバグ、セキュリティ問題、明らかなバグ」に絞られてる。スタイルとかフォーマットは指摘しない。クライアントに渡す前の最終チェックとして使ってる。</p>
+
+<h3>3案件を同時に進める構成</h3>
+
+<p>Parallel Sessions。「+ New session」を押すと新しいセッションが立ち上がる。Gitリポジトリの案件だと、セッションごとにworktreeが自動で切られるので、別のセッションで変更しても干渉しない。</p>
+
+<p>今の自分の使い方はこんな感じ。</p>
+
+<blockquote>
+<b>セッションA</b><br>
+メインの作業案件。コードを書いてPRを出す
+</blockquote>
+
+<blockquote>
+<b>セッションB</b><br>
+別の案件。セッションAのCI待ち中に進める
+</blockquote>
+
+<blockquote>
+<b>セッションC</b><br>
+定型化できたタスクをAuto Modeで流しっぱなし
+</blockquote>
+
+<p>3セッションが同時に動いてても、それぞれのコードが干渉しない。案件Aの変更が案件Bに混入することがない。これが地味にストレスフリー。</p>
+
+<h2>使い始めてつまずいたこと</h2>
+
+<h3>PR MonitoringはGitHub CLIが必要</h3>
+
+<p>最初、PR Monitoringを使おうとしたら動かなかった。ドキュメントを読んだら「GitHub CLI（gh）がインストール&認証済みであること」が条件だった。</p>
+
+<p>自分はghを使ってなかったので、</p>
+
+<pre><code>brew install gh
+gh auth login</code></pre>
+
+<p>してから再試行したら動いた。Windowsの場合は</p>
+
+<pre><code>winget install --id GitHub.cli</code></pre>
+
+<p>で入る。最初に「なんで動かないんだ」となったのはここだけ。</p>
+
+<h3>Parallel SessionsはGitなしプロジェクトで使えない</h3>
+
+<p>GitリポジトリじゃないフォルダでParallel Sessionsを試したら、worktreeが使えずセッション間でファイルが干渉した。セッション分離にはGitが必要という仕様。</p>
+
+<p>CW案件は最初からGit管理してれば問題ない。既存プロジェクトでGitを使ってなかったら、<code>git init</code>してから使うといい。</p>
+
+<h2>1ヶ月使ってみた結果</h2>
+
+<hr>
+<p style="text-align: center;"><b>PR待ち時間 週3時間 → 0</b></p>
+<p style="text-align: center;">同時進行案件数 1〜2本 → 3本</p>
+<hr>
+
+<p>PR待ちがゼロになったというより、「待つ」という行為がなくなった感覚に近い。CIが走ってる間に別の案件を進めて、通知が来たら確認するだけ。</p>
+
+<p>以前は「複数案件の同時進行は自分には無理」と思ってたんだけど、Parallel Sessions + PR Monitoringで3案件が同時に動くようになった。案件数が増えると単純に月収が増える構造なので、これは地味に大きい。</p>
+
+<p>セットアップは10分以内で終わる。claude.comからDesktopアプリをダウンロードして、GitHub CLIを入れて<code>gh auth login</code>するだけ。</p>
+
+<p>次はConnectors（GitHub + Notion + Slack連携）を副業ワークフローに組み込んでみてる。その話もそのうち書く。</p>
+
+<p>Auto Modeをもっと深く使いこなしたい人はこっちにまとめてある。</p>
+<p>▶ <a href="https://note.com/moyuchi_aistu/n/n630fe460066a">副業の"承認待ち"が1案件あたり30分→5分になった話｜Claude Code Auto Mode 導入記（¥500）</a></p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/n7805b1f0397d">大学生がClaude Code Remote Controlを副業で1週間使ったら、移動時間も稼ぎになった話</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/nb99fc24e5eaa">大学生がClaude Codeでクラウドワークス案件を受注→納品してみた全記録</a></li>
+</ul>

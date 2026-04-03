@@ -1,0 +1,125 @@
+<hr>
+<p style="text-align: center;"><b>Claude Code、毎回ゼロからコード書き続けてますか？</b></p>
+<hr>
+
+<p>プラグインを入れる前の自分は、TypeScript案件のたびにターミナルで <code>tsc --watch</code> を回しながら作業してた。型エラーが出るたびにコンパイル待ち。1案件あたりの作業時間のうち、たぶん1〜2割はそれだけで持っていかれてた。</p>
+
+<p>しかも正直、プラグインの存在は知ってた。「設定めんどくさそう」「あとで入れよう」と思い続けて、3ヶ月ほったらかしてた。</p>
+
+<p>先週、やっと重い腰を上げて <code>/plugin</code> を叩いた。Discoverタブを開いたら、公式プラグインが並んでいた。全部タダで使える。</p>
+
+<p><code>typescript-lsp</code>、<code>github</code>、<code>commit-commands</code>。この3本を入れただけで、週の副業作業時間が5時間から2時間になった。</p>
+
+<h2>きっかけは「なんとなく /plugin を叩いた」だけ</h2>
+
+<p>副業でCW（クラウドワークス）のTypeScript案件を週2〜3本こなしてる。コードを書く量は増えてきたのに、作業時間はあまり減っていなかった。</p>
+
+<p>Claude Codeのバージョンを確認しようと <code>claude --version</code> を叩いたとき、ふと <code>/plugin</code> コマンドを試してみた。Discoverタブに公式マーケットプレイス（<code>claude-plugins-official</code>）のプラグインが並んでいた。「あ、これが最初から使えたのか」と知った。</p>
+
+<p>インストールはコマンド1行だった。</p>
+
+<pre><code>/plugin install typescript-lsp@claude-plugins-official</code></pre>
+
+<p>これだけ。3秒で終わる。</p>
+
+<h2>入れてよかった3本</h2>
+
+<h3>① typescript-lsp — 型エラーが自動で出てくる</h3>
+
+<p>LSP（Language Server Protocol）というプロトコルを通じて、コードを編集するたびにClaude Codeが型エラー・欠落インポート・構文ミスを自動で拾ってくれるようになる。</p>
+
+<blockquote>
+<b>導入前</b><br>
+コードを書く → <code>tsc</code> を手動実行 → エラーを確認 → 修正 → また <code>tsc</code>
+</blockquote>
+
+<blockquote>
+<b>導入後</b><br>
+コードを書く → 編集した瞬間にClaude Codeがエラーを表示・自動修正
+</blockquote>
+
+<p>TypeScript案件では1サイクル（コード → テスト → PR）にかかる時間が1.5時間から50分になった。型エラーの確認だけで20〜30分消えてたと気づいた。</p>
+
+<p>インストール後に1つはまったポイントがある。<code>Executable not found in $PATH</code> というエラーが出た。プラグイン本体とは別に、Language Serverのバイナリを自分でインストールしないといけないらしい。</p>
+
+<pre><code>npm install -g typescript-language-server typescript</code></pre>
+
+<p>これを走らせたら動いた。<code>/plugin</code> のErrorsタブにも案内が出るので、エラーが出たらそこを確認すると早い。</p>
+
+<h3>② github — ブラウザを開かなくなった</h3>
+
+<p>GitHubのMCP統合プラグイン。Issue確認・PR作成・コードレビューがターミナルから完結する。</p>
+
+<pre><code>/plugin install github@claude-plugins-official</code></pre>
+
+<p>CWのWebアプリ案件では、納品時にGitHubのPRをクライアントに確認してもらうフローが多い。今まではブラウザでGitHubを開いて、UIをポチポチしながらPRを作ってた。</p>
+
+<p>今は「このコードの差分でPRを作って」とClaude Codeに頼むと、確認なしで作ってくれる。PR説明文も変更内容を見て自動生成される。毎回15分かかってたPR作業が3分になった。</p>
+
+<h3>③ commit-commands — git操作が1コマンド</h3>
+
+<p><code>git add → git commit → git push</code> の3手順を <code>/commit-commands:commit</code> の1コマンドで完結させる。</p>
+
+<pre><code>/plugin install commit-commands@claude-plugins-official</code></pre>
+
+<p>コミットメッセージも変更内容を見て自動で作ってくれる。「feat: ログイン画面のバリデーション追加」みたいなの、毎回考えるのが地味に面倒だったので助かった。</p>
+
+<p>1つはまりポイントがあった。インストール直後にコマンドが出てこない。<code>/reload-plugins</code> を叩かないとプラグインが有効にならなかった。5分ほど「なんで動かないんだ」と悩んだ。</p>
+
+<hr>
+<p style="text-align: center;"><b>週5時間 → 2時間</b></p>
+<p style="text-align: center;">プラグイン3本を入れたあとの副業作業時間の変化</p>
+<hr>
+
+<h2>正直「使えなかった」プラグインも2本ある</h2>
+
+<p>全部がうまくいったわけじゃないので書いておく。</p>
+
+<blockquote>
+<b>vercel</b><br>
+フロントエンドのデプロイを自動化するやつ。ただCW案件では「デプロイはクライアント側でやる」というケースが大半で、自分が触る場面がなかった。受注形態によっては刺さると思う
+</blockquote>
+
+<blockquote>
+<b>pr-review-toolkit</b><br>
+PRレビューを専門エージェントが担当するやつ。1人で案件をやってる自分には「誰かにレビューしてもらう」という状況がなくて使いどころがなかった。チームで動いてる人には合いそう
+</blockquote>
+
+<p>自分の副業スタイル（1人でCW案件を複数こなす）には上記2本はミスマッチだった。入れるプラグインは自分のワークフローに合わせて絞ると無駄がない。</p>
+
+<h2>最初に入れるなら typescript-lsp か commit-commands から</h2>
+
+<p>プラグインを全部試す必要はない。自分の案件で使っている言語に対応したLSPプラグインを1本入れるだけで、作業感がかなり変わる。</p>
+
+<blockquote>
+<b>TypeScript / JavaScript案件なら</b><br>
+<code>/plugin install typescript-lsp@claude-plugins-official</code><br>
+その後 <code>npm install -g typescript-language-server typescript</code> も必要
+</blockquote>
+
+<blockquote>
+<b>Python案件なら</b><br>
+<code>/plugin install pyright-lsp@claude-plugins-official</code><br>
+その後 <code>pip install pyright</code> も必要
+</blockquote>
+
+<blockquote>
+<b>どの言語でも使えるやつ</b><br>
+<code>/plugin install commit-commands@claude-plugins-official</code><br>
+インストール後に <code>/reload-plugins</code> を忘れずに
+</blockquote>
+
+<p>インストール後は <code>/plugin</code> の Installed タブで入れたプラグインを確認できる。</p>
+
+<p>自分はこれだけで週3時間の作業時間が減った。月換算で12時間。その分で別の案件を1〜2本追加で受注できるようになった。</p>
+
+<p>プラグインを入れてなかった3ヶ月が本当にもったいなかった。次はプラグインを自作して副業ワークフローに組み込む話を書く予定。</p>
+
+<hr>
+<p>有料記事の <a href="https://note.com/moyuchi_aistu/n/n2057c13b0cfb">副業の"承認待ち"が1案件あたり30分→5分になった話｜Claude Code Auto Mode 導入記（¥500）</a> では、Auto Modeとプラグインを組み合わせて案件対応をほぼ自動化したワークフローを全部書いてある。</p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/nb99fc24e5eaa">大学生がClaude Codeでクラウドワークス案件を受注→納品してみた全記録</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n62d37bf48e7b">Claude Codeの/loopで副業タスクを放置してみたら、朝には終わってた話</a></li>
+</ul>

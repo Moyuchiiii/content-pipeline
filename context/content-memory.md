@@ -7,8 +7,8 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 23
-次回 workflow-audit: 2026-04-10（週次・毎週月曜推奨）
+note-run 実行回数: 25
+次回 workflow-audit: 2026-04-07（週次・毎週月曜推奨）
 ```
 
 > workflow-audit は週1回実施。次回は 2026-04-07。
@@ -64,6 +64,16 @@ note-run 実行回数: 23
 
 ## セッション記録（直近5件）
 
+### 2026-04-04（plugins_fukugyou）
+- ドラフト: draft_20260404_plugins_fukugyou.html（ノウハウ・無料・score23）
+- スコア: Phase2=23点 / 品質=94/100
+- PDCA学習: Claude Code公式プラグインマーケットプレイス（claude-plugins-official）×CW副業実録。typescript-lsp/github/commit-commandsの3本柱。note.com競合ゼロのブルーオーシャン。「Executable not found」と「/reload-plugins忘れ」の2つまずきが差別化軸。週5h→2hのBefore/After。ニッチ実録成功パターン踏襲。バランス制御: 直近有料2本→無料確定
+
+### 2026-04-03（desktop_fukugyou）
+- ドラフト: draft_20260403_desktop_fukugyou.html（ノウハウ・無料・score21）
+- スコア: Phase2=21点 / 品質=83/100
+- PDCA学習: Claude Code Desktop×副業（PR Monitoring + Server Preview + Parallel Sessions）。note.com競合ゼロのブルーオーシャン。PR待ち週3h→0、同時進行1〜2本→3本のBefore/After。GitHub CLI（gh）インストール必須のつまずきが差別化軸。Desktop機能の副業活用ノウハウとして成功パターン（実録+ニッチ）を踏襲。バランス制御: 直近5本有料2本→無料確定
+
 ### 2026-04-03（computer_use_windows）
 - ドラフト: draft_20260403_computer_use_windows.html（速報・¥500・score21）
 - スコア: Phase2=21点 / 品質=85/100
@@ -78,16 +88,6 @@ note-run 実行回数: 23
 - ドラフト: draft_20260403_hooks_permissiondenied.md（ノウハウ・無料・score23）
 - スコア: Phase2=23点 / 品質=82/100
 - PDCA学習: v2.1.89 PermissionDenied hook×副業Auto Mode詰まり解消ノウハウ。note.com競合ゼロ（さどちゃんの記事はsettings.jsonアプローチのみ200字）。Auto Mode速報PV161の延長線上で「実践ノウハウ」として差別化。Before/After（月10回停止→0回/月5h→0h）が核。jqインストール忘れとmatcher空文字の注意点が実録差別化。バランス制御: 直近5本で有料2本→無料確定
-
-### 2026-04-02（mcp_elicitation）
-- ドラフト: draft_20260402_mcp_elicitation.md（実録・¥500・score23）
-- スコア: Phase2=23点 / 品質=90/100
-- PDCA学習: MCP Elicitation×副業ヒアリング自動化実録。note.comで副業×MCP Elicitation実録ゼロのブルーオーシャン。クライアントとの要件確認の往復（週2h→15min）が差別化軸。MCPサーバーTypeScriptコード全文＋案件タイプ別フォーム設計が有料ゾーンの核。バランス制御: 直近5本で有料1本→有料OK
-
-### 2026-04-01（2months_14man）
-- ドラフト: draft_20260401_2months_14man.md（実録・無料・score24）
-- スコア: Phase2=24点 / 品質=86/100
-- PDCA学習: Claude Code副業2ヶ月全軌跡（¥55K→¥140K）。競合は「非エンジニア180日」「月3〜15万の道のり」等があるが、大学生×Claude Code特化×実案件数字×Auto Mode/Remote Control具体活用の組み合わせは皆無。転換点3つ（Auto Mode・WebアプリUIステップアップ・Remote Control）が差別化軸。バランス制御: 直近5本で有料1本→有料OK、実録多めだが最高転換率維持で無料実録を選択
 
 ---
 
@@ -107,18 +107,13 @@ note-run 実行回数: 23
 |---|---|---|
 | 2026-03-31 | 15回 | SKILL.mdパス修正×6、content-memory重複クリーンアップ、article-frameworks.mdコロン除去、x-strategy.md投稿目標を段階設定に変更 |
 | 2026-04-03 | 20回 | workflow-audit SKILL.md月1回→週1回に統一、existing-articles.md記事18追加（MCP Elicitation）、content-memory.mdセッション記録を9件→5件に整理、価格戦略の乖離（note-strategy実録¥1,500-2,000 vs SKILL.md¥500）を確認・要判断 |
+| 2026-04-04 | 25回 | content-memory.md重複セッション記録5エントリー削除（4/3分が6件→1件に整理）、existing-articles.md記事24・25追加（context_compact・plugins_fukugyou）、次回監査日を2026-04-10→2026-04-07に修正 |
 
 ### 次回予定
-- 日付: **2026-04-10**
+- 日付: **2026-04-07**
 - 確認ポイント: MCP Elicitation記事のスキ数・PV初動、記事17（2ヶ月14万）の投稿状況確認、note-strategy.md実録価格設定の見直し判断
 
-
-### 2026-04-03 セッション記録（今回）
-- 生成ドラフト: draft_20260403_computer_use_windows.html（速報・¥500・score21）
-- 改善点: <!-- 手動で追記してください -->
-- 次回試すこと: <!-- 手動で追記してください -->
-
-### 2026-04-03 11:32 セッション記録
-- 生成ドラフト: draft_20260403_hooks_permissiondenied.md, draft_20260403_computer_use_windows.md, draft_20260403_powerup.md, draft_20260403_hooks_permissiondenied.md
+### 2026-04-04 02:34 セッション記録
+- 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md
 - 改善点: <!-- 手動で追記してください -->
 - 次回試すこと: <!-- 手動で追記してください -->

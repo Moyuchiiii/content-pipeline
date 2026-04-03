@@ -162,6 +162,30 @@
 - テーマ: Computer Use Windows版（4/3リリース）を副業で即日試した速報。Mac版から10日遅れのWindows展開。設定不要・Pro/Max必要・Research Preview。deny rules Windowsパス設定・PowerShell連携・動かない2パターンを解説
 - キーポイント: 設定30秒（APIキー・Docker不要）、CW案件チェック20分→6分、Excelレポート30分→8分、deny rulesはWindowsパス（C:/）で書く、PowerShell対応でClaude Codeと2段フロー可能、失敗2パターン（チャット入力フォーム・複数モニター）
 
+## 記事23
+- タイトル: Claude Code Desktopを副業で使い倒したら、PR待ち時間が週3時間→0になった話
+- URL: https://note.com/moyuchi_aistu/n/n0007087dbca9
+- 公開日: 2026-04-03
+- 種類: 無料・ノウハウ（実録要素強め）
+- テーマ: Claude Code Desktop（Feb 20リリース）のServer Preview・Visual Diff Review・PR Monitoring・Parallel Sessionsを副業ワークフローに組み込んだ実録。複数案件同時進行でPR待ち時間ゼロを達成。
+- キーポイント: PR Monitoring（Auto-fix + デスクトップ通知）、Server Preview（devサーバー自動起動・Auto-verify）、Visual Diff Review（Review codeボタン）、Parallel Sessions（Git worktree自動分離）、つまずき2パターン（GitHub CLI必須・Git必須）
+
+## 記事24
+- タイトル: Claude Codeのコンテキストが詰まらなくなった話｜/compact活用と記憶の設計
+- URL: （未投稿）
+- 公開日: 2026-04-04（予定）
+- 種類: 無料・ノウハウ
+- テーマ: Claude Code /compact機能とCLAUDE.md設計でコンテキスト枯渇を防ぐ実践ノウハウ。長時間セッションでもパフォーマンスを維持する方法
+- キーポイント: /compactの仕組み（要約保持・コンテキスト圧縮）、CLAUDE.md設計で記憶を永続化、セッション管理のBefore/After
+
+## 記事25
+- タイトル: Claude Code公式プラグインで副業を組み直したら、週5時間が2時間になった話
+- URL: （未投稿）
+- 公開日: 2026-04-04（予定）
+- 種類: 無料・ノウハウ（実録要素強め）
+- テーマ: claude-plugins-official（公式マーケットプレイス）のプラグイン3本（typescript-lsp・github・commit-commands）をCW副業ワークフローに導入。週5h→2h（60%削減）の実録。
+- キーポイント: typescript-lsp（LSP自動診断・Executable not found対処）、github（PR作成15分→3分）、commit-commands（/reload-plugins忘れ注意）、使えなかったプラグイン2本の正直レビュー（vercel・pr-review-toolkit）
+
 ## 注意
 - 記事1で「次回はPythonでニュース収集」と予告→記事2で実現済み
 - 記事2で「次回はClaude vs ChatGPT比較」と予告→未執筆
