@@ -227,9 +227,9 @@ moyuchi記事（https://note.com/moyuchi_aistu/n/nb5bffb185a04）から抽出し
 **記事の1行目は必ずこのパターン。`<p>` から始めることは禁止。**
 
 ```html
-<br>
+<hr>
 <p style="text-align: center;"><b>CWの案件チェック、まだ自分でやっていますか？</b></p>
-<br>
+<hr>
 ```
 
 問いかけの作り方:
