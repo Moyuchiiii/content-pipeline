@@ -1,0 +1,107 @@
+<br>
+<p style="text-align: center;"><b>PC操作の自動化、Macユーザーだけのものだと思っていませんか？</b></p>
+<br>
+
+<p>3月24日にMac版が出て、Windowsユーザーの自分は10日間ひたすら待ってた。</p>
+
+<p>今日4月3日、ついに来た。ClaudeのComputer Use、Windows版。</p>
+
+<p>「Claudeがパソコンを動かす」っていう機能。ブラウザを開いて、ファイルをクリックして、キーボードを打って—そういうPC上の操作を全部Claudeに任せられるやつ。Mac版が出たとき記事7・11で紹介しながら、内心「早くWindowsにも来てくれ」とずっと思ってた。</p>
+
+<p>今日やっとスタートラインに並べた。</p>
+
+<h2>設定がゼロだった</h2>
+
+<p>Claude CoworkのWindowsアプリを開いたら、設定画面に「コンピュータ制御を許可する」のトグルがあった。それをオンにするだけ。終わり。</p>
+
+<p>APIキーも、Dockerも、ターミナルも不要。30秒で使える状態になった。Mac版が出た時点では「Windowsはどうせ複雑な設定がいる」と覚悟してたので、拍子抜けした。</p>
+
+<blockquote>
+<b>Windows版の使用条件</b><br>
+Claude Pro または Max プラン（月20ドル〜）<br>
+Claude Coworkデスクトップアプリ（最新版）<br>
+Windows 11（Homeエディションは非対応との報告あり、要公式確認）<br>
+現在 Research Preview 扱い
+</blockquote>
+
+<h2>今日試した2つの副業タスク</h2>
+
+<h3>CW新着案件チェック</h3>
+
+<p>「クラウドワークスを開いて、今日の新着案件のなかからWebアプリUI開発の案件を探してリストにして」と頼んだ。</p>
+
+<p>Claudeがブラウザを立ち上げてCWにアクセスして、カテゴリを絞り込んで、4件をMarkdownリストで返してくれた。Mac版のときと同じ体験がWindowsでも動いた。</p>
+
+<p>自分でやると15〜20分かかる作業が6分で終わった。これだけで「10日間待った甲斐があった」と思った。</p>
+
+<h3>Excelレポートへの入力</h3>
+
+<p>先月分の納品実績をExcelのフォーマットに入力する作業をやってもらった。ここで気づいたのが、WindowsではネイティブのExcel for Windowsをそのまま操作してくれること。Macだと Numbers やブラウザ版になりがちなところを、.xlsxファイルをそのまま開いて入力してくれた。</p>
+
+<p>30分くらいかかってた入力作業が8分になった。</p>
+
+<hr>
+<p style="text-align: center;"><b>ここから先で手に入るもの</b></p>
+<ol>
+<li>Windowsで必須のdeny rules設定（Macとパス構文が違う）</li>
+<li>最近のClaude CodeアップデートでPowerShell対応になったことで使えるようになった組み合わせ技</li>
+<li>動かなかった2パターンと対処法</li>
+<li>Mac版との実測比較</li>
+</ol>
+<hr>
+
+<h2>deny rulesはWindowsパスで書く</h2>
+
+<p>Mac版の設定と1か所だけ違うのが、deny rulesのファイルパスの書き方。</p>
+
+<p>MacはUnixパス（<code>/Users/moyuchi/Documents/</code>）だが、Windowsは<code>C:/Users/moyuchi/Documents/</code>になる。settings.jsonに書くときはフォワードスラッシュで統一するのが一番簡単だった。</p>
+
+<pre><code>// settings.json（Windows版 deny rules）
+{
+  "permissions": {
+    "deny": [
+      "Bash(rm *)",
+      "Bash(del *)",
+      "Bash(rd *)",
+      "Write(C:/Users/moyuchi/Documents/clients/*)"
+    ]
+  }
+}</code></pre>
+
+<p>クライアント関連のフォルダだけは書き込み禁止にしておくのが安全。<code>del</code>と<code>rd</code>はWindowsのコマンドで、Macにはない削除系コマンド。この2行はWindows版では必ず追加した方がいい。</p>
+
+<p>Auto Modeを使っている場合はここが二重の安全網になる。deny rulesがあればAuto Mode中に意図しないファイル削除が走らない。</p>
+
+<h2>Claude CodeのPowerShell対応との組み合わせ</h2>
+
+<p>最近のClaude Codeのアップデートで、WindowsでPowerShellが正式にサポートされた。今まではWSLを別途用意しないとBashが動かなかった部分が、PowerShellで代替できるようになった。</p>
+
+<p>自分が今日試したのは、Computer UseとClaude Codeが分業する2段フロー。</p>
+
+<p style="text-align: center;"><b>Claudeがブラウザで案件データ取得 → Claude CodeがPowerShellで整形 → Excelに出力</b></p>
+
+<p>Mac版では自分のPCで試せなかったフローを、今日初めてWindowsで完結させられた。</p>
+
+<h2>動かなかった2パターン</h2>
+
+<blockquote>
+<b>失敗パターン1</b><br>
+CWのメッセージへの返信。メッセージを読むところまでは動いたが、返信の入力フォームでカーソルが正確に当たらず、1〜2回に1回は失敗した。Mac版の記事11でも書いたが「チャット系アプリの入力フォームは苦手」という傾向は変わっていない。
+</blockquote>
+
+<blockquote>
+<b>失敗パターン2</b><br>
+複数モニターをまたぐ操作。副業PCに外部ディスプレイを繋いでいるが、Claudeが認識するのはメインモニターのみ。サブモニターにあるアプリの操作は今のところ無理。
+</blockquote>
+
+<p>「1つのアプリの中で完結する作業」に向いているのはMac版から変わっていない。</p>
+
+<hr>
+<p>deny rulesの設計やAuto Modeと組み合わせた副業ワークフロー全体は別の記事にまとめた。Computer Useを使い始めた後の次の一手として読んでほしい。</p>
+<p>▶ <a href="https://note.com/moyuchi_aistu/n/n630fe460066a">副業の"承認待ち"が1案件あたり30分→5分になった話｜Claude Code Auto Mode 導入記（¥500）</a></p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/nc591556937be">ClaudeにPC操作を丸投げしたら、副業タスクが勝手に終わってた話（Mac版速報）</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n7805b1f0397d">大学生がClaude Code Remote Controlを副業で1週間使ったら、移動時間も稼ぎになった話</a></li>
+</ul>

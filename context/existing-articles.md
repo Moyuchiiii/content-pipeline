@@ -154,6 +154,14 @@
 - テーマ: Claude Code v2.1.89（2026-04-01）追加のPermissionDenied hook×defer hookを副業Auto Mode運用に活用。PermissionDeniedによる詰まりを自動リトライhookで解消（月10回停止→0回/月5h→0h）
 - キーポイント: settings.jsonだけでは解決しない理由（Auto Modeクラシファイアの別レイヤー）、PermissionDenied hook設定（jq使用・matcher空文字）、deferの仕組みとRemote Control組み合わせ案、jqインストール忘れ・matcher絞りすぎのつまずき2パターン
 
+## 記事22
+- タイトル: ClaudeにWindowsを操作させてみたら、副業の手動作業がなくなった話
+- URL: （未投稿）
+- 公開日: 2026-04-03（予定）
+- 種類: 有料（¥500）・速報
+- テーマ: Computer Use Windows版（4/3リリース）を副業で即日試した速報。Mac版から10日遅れのWindows展開。設定不要・Pro/Max必要・Research Preview。deny rules Windowsパス設定・PowerShell連携・動かない2パターンを解説
+- キーポイント: 設定30秒（APIキー・Docker不要）、CW案件チェック20分→6分、Excelレポート30分→8分、deny rulesはWindowsパス（C:/）で書く、PowerShell対応でClaude Codeと2段フロー可能、失敗2パターン（チャット入力フォーム・複数モニター）
+
 ## 注意
 - 記事1で「次回はPythonでニュース収集」と予告→記事2で実現済み
 - 記事2で「次回はClaude vs ChatGPT比較」と予告→未執筆

@@ -7,7 +7,7 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 21
+note-run 実行回数: 23
 次回 workflow-audit: 2026-04-10（週次・毎週月曜推奨）
 ```
 
@@ -64,6 +64,16 @@ note-run 実行回数: 21
 
 ## セッション記録（直近5件）
 
+### 2026-04-03（computer_use_windows）
+- ドラフト: draft_20260403_computer_use_windows.html（速報・¥500・score21）
+- スコア: Phase2=21点 / 品質=85/100
+- PDCA学習: Computer Use Windows版（4/3リリース）副業視点速報。note.com競合はMac版記事のみ、Windows×副業実録は皆無のブルーオーシャン。「10日待ってた」Windowsユーザー視点が差別化。deny rules Windowsパス差異・PowerShell組み合わせが有料ゾーンの核。Mac版記事7・11の読者への「Windows版です」連続感が自然な流れを作る。
+
+### 2026-04-03（powerup）
+- ドラフト: draft_20260403_powerup.html（速報・無料・score21）
+- スコア: Phase2=21点 / 品質=85/100
+- PDCA学習: Claude Code v2.1.90 /powerup速報。note.com競合ゼロ。「3ヶ月前の自分にこれがあったら」の感情的フックが差別化軸。副業視点2ユースケース（初心者に教えるとき・アップデート追うとき）が実践的価値。/buddyをおまけとして添えたことで記事に遊び感。バランス制御: 直近5本有料2本→無料確定・速報で記事タイプ分散
+
 ### 2026-04-03（hooks_permissiondenied）
 - ドラフト: draft_20260403_hooks_permissiondenied.md（ノウハウ・無料・score23）
 - スコア: Phase2=23点 / 品質=82/100
@@ -78,11 +88,6 @@ note-run 実行回数: 21
 - ドラフト: draft_20260401_2months_14man.md（実録・無料・score24）
 - スコア: Phase2=24点 / 品質=86/100
 - PDCA学習: Claude Code副業2ヶ月全軌跡（¥55K→¥140K）。競合は「非エンジニア180日」「月3〜15万の道のり」等があるが、大学生×Claude Code特化×実案件数字×Auto Mode/Remote Control具体活用の組み合わせは皆無。転換点3つ（Auto Mode・WebアプリUIステップアップ・Remote Control）が差別化軸。バランス制御: 直近5本で有料1本→有料OK、実録多めだが最高転換率維持で無料実録を選択
-
-### 2026-04-01（agent_teams）
-- ドラフト: draft_20260401_agent_teams.md（ノウハウ・¥500・score22）
-- スコア: Phase2=22点 / 品質=91/100
-- PDCA学習: Agent Teams×副業ノウハウ。note.comで副業×Agent Teams実践記事はほぼゼロのブルーオーシャン。設定1行のシンプルさ＋失敗3パターン＋CLAUDE.mdテンプレが差別化。バランス制御: 直近5本で有料1本→有料OK
 
 ---
 
@@ -107,12 +112,13 @@ note-run 実行回数: 21
 - 日付: **2026-04-10**
 - 確認ポイント: MCP Elicitation記事のスキ数・PV初動、記事17（2ヶ月14万）の投稿状況確認、note-strategy.md実録価格設定の見直し判断
 
-### 2026-04-03 03:46 セッション記録
-- 生成ドラフト: draft_20260403_hooks_permissiondenied.md, draft_20260403_hooks_permissiondenied.md
+
+### 2026-04-03 セッション記録（今回）
+- 生成ドラフト: draft_20260403_computer_use_windows.html（速報・¥500・score21）
 - 改善点: <!-- 手動で追記してください -->
 - 次回試すこと: <!-- 手動で追記してください -->
 
-### 2026-04-03 03:48 セッション記録
-- 生成ドラフト: draft_20260403_hooks_permissiondenied.md, draft_20260403_hooks_permissiondenied.md
+### 2026-04-03 11:32 セッション記録
+- 生成ドラフト: draft_20260403_hooks_permissiondenied.md, draft_20260403_computer_use_windows.md, draft_20260403_powerup.md, draft_20260403_hooks_permissiondenied.md
 - 改善点: <!-- 手動で追記してください -->
 - 次回試すこと: <!-- 手動で追記してください -->
