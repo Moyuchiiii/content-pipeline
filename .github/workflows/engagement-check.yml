@@ -1,0 +1,94 @@
+name: Engagement Check
+
+# 投稿後の初動エンゲージメントを xmcp API で確認する
+# 戦略: 投稿後30〜60分でいいね10件を超えたか確認 → 超えたら拡散フェーズ、未満なら追加アクション促す
+
+on:
+  workflow_dispatch:
+    inputs:
+      tweet_id:
+        description: '確認するツイートの ID（URLの末尾の数字）'
+        required: true
+        type: string
+      tweet_preview:
+        description: 'ツイートの冒頭30字（Discord通知用）'
+        required: false
+        type: string
+        default: '（省略）'
+      check_after_minutes:
+        description: '何分後に確認するか（デフォルト: 35）'
+        required: false
+        type: string
+        default: '35'
+
+permissions:
+  contents: read
+
+jobs:
+  check-engagement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 指定時間待機
+        run: |
+          WAIT_MIN="${{ inputs.check_after_minutes }}"
+          echo "⏳ ${WAIT_MIN}分待機中..."
+          sleep $((WAIT_MIN * 60))
+
+      - name: エンゲージメント確認（xmcp 経由）
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            xmcp MCP サーバーを使って、ツイート ID ${{ inputs.tweet_id }} のエンゲージメントを確認して。
+
+            やること:
+            1. mcp__xmcp__findTweetById（または mcp__xmcp__tweetsIdGet 等）を呼び出す
+               - ID: ${{ inputs.tweet_id }}
+               - パラメータ: tweet.fields=public_metrics
+            2. public_metrics から以下を取得:
+               - like_count（いいね数）
+               - retweet_count（リポスト数）
+               - reply_count（リプライ数）
+               - impression_count（インプレッション）
+               - bookmark_count（ブックマーク）
+            3. エンゲージメント合計 = like_count + retweet_count + reply_count を計算
+            4. 閾値判定:
+               - 合計 >= 10: 🚀 拡散フェーズ到達
+               - 合計 5〜9: ⚡ 伸び中（追加リプライ推奨）
+               - 合計 < 5: ⚠️ 初動不足（対策が必要）
+            5. 結果を以下の JSON 形式で標準出力に出す:
+               {"status":"拡散フェーズ到達|伸び中|初動不足","like":0,"retweet":0,"reply":0,"impression":0,"bookmark":0,"total_engagement":0,"action":"（推奨アクション）"}
+
+            xmcp ツール名が不明な場合:
+            - `mcp__xmcp__` で始まるツールを探し、`tweet` または `id` を含むものを試す
+            - ツールが存在しない場合は {"error":"xmcp未設定"} を出力して終了
+
+            推奨アクション（actionフィールドの値）:
+            - 拡散フェーズ到達: "関連アカウントへのリプライで追い打ちをかける"
+            - 伸び中: "スレッドにリプライして note URL を添付する"
+            - 初動不足: "フックを変えてリポストするか、別時間帯に再投稿を検討"
+          claude_args: '--max-turns 5 --model claude-sonnet-4-6 --allowedTools "mcp__xmcp__*"'
+
+      - name: Discord 通知
+        if: always()
+        run: |
+          TWEET_ID="${{ inputs.tweet_id }}"
+          PREVIEW="${{ inputs.tweet_preview }}"
+          CHECK_MIN="${{ inputs.check_after_minutes }}"
+          TWEET_URL="https://x.com/moyuchi_cc/status/${TWEET_ID}"
+
+          # ステータス色の決定（簡易判定: ジョブ成功なら緑、失敗なら赤）
+          if [ "${{ job.status }}" = "success" ]; then
+            COLOR=5763719
+            TITLE="📊 初動エンゲージメント確認完了"
+          else
+            COLOR=15548997
+            TITLE="❌ エンゲージメント確認失敗"
+          fi
+
+          curl -s -H "Content-Type: application/json" -X POST \
+            -d "{\"embeds\":[{\"title\":\"${TITLE}\",\"color\":${COLOR},\"fields\":[{\"name\":\"ツイート\",\"value\":\"${PREVIEW}\",\"inline\":false},{\"name\":\"確認タイミング\",\"value\":\"投稿から約${CHECK_MIN}分後\",\"inline\":true},{\"name\":\"URL\",\"value\":\"${TWEET_URL}\",\"inline\":false}],\"footer\":{\"text\":\"engagement-check workflow\"}}]}" \
+            "${{ secrets.DISCORD_WEBHOOK }}"

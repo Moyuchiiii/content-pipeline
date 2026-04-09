@@ -1,7 +1,7 @@
 ---
 name: x-run
-description: moyuchi の X（Twitter）投稿を自動生成するスキル。Notionの note記事DB を監視して「Xステータス:未投稿」の記事からツイートを生成する。note記事 → X変換（from-article）、単独ツイート生成（standalone）、トレンドスキャン（trend）の3モード。
-allowed-tools: WebSearch, WebFetch, Write, Read, Glob, Grep, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__notion__notion-create-pages
+description: moyuchi の X（Twitter）投稿を自動生成するスキル。Notionの note記事DB を監視して「Xステータス:未投稿」の記事からツイートを生成する。note記事 → X変換（from-article）、単独ツイート生成（standalone）、トレンドスキャン（trend）の3モード。trend モードでは xmcp を優先使用。
+allowed-tools: WebSearch, WebFetch, Write, Read, Glob, Grep, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__notion__notion-create-pages, mcp__xmcp__searchRecentTweets, mcp__xmcp__tweetsSearchRecent
 ---
 
 # /x-run
@@ -157,6 +157,27 @@ Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a
 
 ### Step 1: トレンドスキャン
 
+**Step 1-a: xmcp で X 上のリアルタイムトレンドを取得（優先）**
+
+xmcp が設定されている場合、まず X API から直接検索する（site:x.com のWebSearchより精度が高い）:
+
+```
+mcp__xmcp__searchRecentTweets または mcp__xmcp__tweetsSearchRecent で以下を検索:
+  クエリ1: "(Claude Code OR Anthropic OR Claude) lang:ja -is:retweet"
+    → パラメータ: max_results=20, tweet.fields=public_metrics,created_at
+    → エンゲージメント（いいね+リポスト数）が高い投稿を優先
+  クエリ2: "(Claude Code OR claude_code) lang:ja -is:retweet"
+    → 日本語コミュニティの反応を把握
+
+取得した結果から:
+  - いいね10件以上 or リポスト5件以上のツイートを「バズコンテンツ」として記録
+  - 繰り返し言及されているトピックを「トレンドキーワード」として抽出
+```
+
+xmcp が使えない場合は Step 1-b に進む。
+
+**Step 1-b: WebSearch でリリース情報・コミュニティ動向を取得**
+
 WebSearch で以下を検索（過去 24〜48 時間）:
 
 ```
@@ -171,9 +192,6 @@ WebSearch で以下を検索（過去 24〜48 時間）:
 # GitHub リポジトリ動向（注目度急上昇を検知）
 "obra/superpowers" OR "claude-code-hooks" trending
 "claude-code" site:github.com new release OR update
-
-# X トレンド
-"Claude Code" OR "Anthropic" site:x.com lang:ja
 
 # YouTube動画リサーチ（YouTube Transcript MCP が利用可能な場合）
 "Claude Code" 解説 OR レビュー site:youtube.com （最新1週間）
