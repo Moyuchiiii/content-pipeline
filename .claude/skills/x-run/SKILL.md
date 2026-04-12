@@ -84,13 +84,29 @@ Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a
 
 ### Step 3: ツイート生成
 
-**単発ツイート（速報・note誘導）:**
+**単発ツイート（速報）:**
 
 ```
 [フック1行 — 事実ファースト or 一番驚いた点]
 [自分の視点・感想（1〜2行）]
-[詳しくは note に書いた → {URL}]
+[詳しくは note に書いた]
+
+※ URL はリプライに置く
 ```
+
+**note誘導ツイート（固定フォーマット）:**
+
+```
+[数字 or 状況変化（例: 「0→14万」「2週間で0件→翌月5.5万」）]
+[失敗談 or 体験（1〜2行。「〜だった」「〜してみたら〜だった」）]
+[何が分かるか or 読むべき人（1行）]
+[セール中の場合のみ: 今だけ○円（通常○円）]
+
+※ URL はリプライに置く
+※ noteサムネを画像として添付する（後述）
+```
+
+このフォーマットは記事タイプ（速報/実録/ノウハウ）によらず統一する。
 
 **ノウハウスレッド（5〜8 ツイート）:**
 
@@ -224,50 +240,33 @@ Notionのネタ帳に追加しますか？
 
 ---
 
-## ビジュアルカード生成（任意・推奨）
+## 画像添付ルール
 
-X はテキストのみより画像付きの方がリーチが高い。ノウハウ系スレッドと速報ツイートでは積極的に使う。
+X はテキストのみより画像付きの方がリーチが高い。
 
-### カード仕様
+### note記事告知ポスト（`from-article` モード）
 
-- サイズ: **1200×675px（16:9・X 最適）**
-- テキスト: **入れる**（note サムネとは逆。X カードは文字で情報を先出し）
-- ツールオプション: Gemini ImageFX、Canva MCP（`mcp__claude_ai_Canva__generate-design`）
-
-### タイプ別プロンプト構造
-
-**ノウハウ系（疑似 UI / 図解カード）:**
-```
-[テーマ: {ツイートのキーワード}]
-Style: clean flat illustration, dark navy background, electric cyan accent
-Content: minimal text overlay showing "{フックの核心 15文字以内}", subtitle "{サブテキスト}"
-Layout: centered, large text dominant, small icon or diagram, no photography
-Spec: 1200x675px, no real people, no complex illustrations
-Negative: busy, cluttered, stock-photo-look, gradient mess
-```
-
-**速報系（ダーク + ネオン）:**
-```
-[テーマ: {新機能名 or サービス名}]
-Style: futuristic UI screenshot, dark mode, neon glow cyan and orange
-Content: bold headline "{機能名}" with glowing effect, minimal background interface
-Layout: centered composition, dramatic lighting, rim light effect
-Spec: 1200x675px, no real people
-Negative: light background, cartoon, stock photo
-```
-
-**実況系（使わない）:**
-実況ツイートはテキストのみで十分。カード生成はスキップしてよい。
-
-### 生成フロー
+**必ず note のサムネイル画像を使う。** Canva/Gemini 生成カードは使わない。
 
 ```
-1. ツイートのタイプを確認（ノウハウ/速報/実況）
-2. 実況ならスキップ
-3. 上記のプロンプト構造を使って Gemini または Canva でカードを生成
-4. カードのパスをドラフトファイルのメモ欄に記載
-5. 投稿メモに「画像: 添付済み」と記載する
+サムネのダウンロード手順（ユーザーが行う）:
+1. note.com の記事ページを開く
+2. 記事上部のサムネイル画像を右クリック → 「名前をつけて保存」
+3. X の投稿フォームで画像として添付する
 ```
+
+ドラフトファイルの「投稿メモ」に以下を記載する:
+```
+画像: noteサムネを添付（記事ページからダウンロードして添付してください）
+```
+
+### スレッド・単独ノウハウポスト（`standalone` モード）
+
+テキストのみで十分。画像が欲しい場合のみ Canva/Gemini で生成する（任意）。
+
+### 速報ポスト（`trend` モード）
+
+画像は任意。速報性が優先なので、画像生成に時間をかけない。
 
 ---
 
@@ -430,6 +429,8 @@ x-run 完了時は以下のフォーマットで必ず表示する:
 
 【2】X 予約投稿の確定
   投稿予定 : {x_scheduled_time}
+  画像     : noteサムネをダウンロードして添付してください（記事ページの上部画像を右クリック保存）
+  URL      : リプライに note URL を貼ってください（本文には入れない）
   開いているタブで「スケジュール」ボタンを押して確定してください。
   ※スレッドの場合は全ツイートが繋がっていることを確認してから押す
 
