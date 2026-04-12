@@ -1,25 +1,18 @@
 ---
 name: x-run
-description: moyuchi の X（Twitter）投稿を自動生成するスキル。Notionの note記事DB を監視して「Xステータス:未投稿」の記事からツイートを生成する。note記事 → X変換（from-article）、単独ツイート生成（standalone）、トレンドスキャン（trend）の3モード。trend モードでは xmcp を優先使用。
-allowed-tools: WebSearch, WebFetch, Write, Read, Glob, Grep, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__notion__notion-create-pages, mcp__xmcp__searchRecentTweets, mcp__xmcp__tweetsSearchRecent
+description: moyuchi の X（Twitter）投稿を自動生成するスキル。引数なしで起動するとメニューを表示する。/note-run 直後は自動で告知ツイート生成に進む。
+allowed-tools: WebSearch, WebFetch, Write, Read, Glob, Grep, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__notion__notion-create-pages, mcp__xmcp__searchRecentTweets, mcp__xmcp__tweetsSearchRecent, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__computer
 ---
 
 # /x-run
 
 moyuchi の X 投稿を生成する全自動パイプライン。
 
-## 使い方
-
-```
-/x-run                              # Notionの未投稿記事一覧を表示して選択
-/x-run from-article {ドラフトパス}   # note記事ドラフトを直接指定して変換
-/x-run standalone                   # 単独ツイート / スレッド生成
-/x-run trend                        # トレンドスキャン → ツイートアイデア + note記事依頼
-```
-
 ---
 
-## Phase 0: コンテキスト読み込み
+## Phase 0: 起動判定
+
+### ① コンテキスト読み込み
 
 必ず最初に以下を読み込む:
 
@@ -32,20 +25,91 @@ moyuchi の X 投稿を生成する全自動パイプライン。
 - `context/article-frameworks.md` — AIDA・Star Story Solution（ツイート構成参照）
 - `context/content-memory.md` — 過去の成功ツイートパターン（あれば参照）
 
-### Notion から「未投稿」記事を取得
+### ② 起動ルート判定
 
-Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2`）を参照し、`Xステータス: 未投稿` のレコードを取得する。
+以下の順で判定し、最初に一致したルートへ進む。
 
-引数なしで `/x-run` を実行した場合は、未投稿記事の一覧を提示してユーザーに選ばせる:
+**ルート A（自動）: /note-run 直後の場合**
+
+Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2`）を確認し、`Xステータス: 未投稿` かつ **今日の日付に更新されたレコード** が存在する場合は、メニューをスキップしてそのまま「モード A: note記事告知」へ直行する。
 
 ```
-📋 X未投稿の note 記事:
-1. [記事タイトル] - 公開日: YYYY-MM-DD（速報/実録/ノウハウ）
-2. [記事タイトル] - 公開日: YYYY-MM-DD
-...
-
-どの記事のツイートを生成しますか？（番号 or "all" で全件）
+🔍 直近の未投稿記事を検出しました
+  → 「{記事タイトル}」の告知ツイートを生成します
 ```
+
+**ルート B（手動）: 引数ありの場合**
+
+| 引数 | 進むモード |
+|---|---|
+| `from-article {パス}` | モード A（記事パスを直接指定） |
+| `daily` または `daily {1行メモ}` | モード D（今日の自動投稿） |
+| `trend` | モード C（トレンドスキャン） |
+| `done {notion_id} {x_url}` | 投稿完了処理のみ実行 |
+
+**ルート C（メニュー）: 引数なし・直近未投稿なし**
+
+メニューを表示してユーザーに選ばせる:
+
+```
+📋 X、何する？
+
+1. 今日のツイートを自動生成（完全自動）
+2. note記事の告知ツイートを作る
+3. ネタを1行渡してツイートにする
+4. Notionの未投稿記事を確認する
+
+番号で答えてね
+```
+
+| 選択 | 進むモード |
+|---|---|
+| 1 | モード D（daily・完全自動） |
+| 2 | Notion未投稿一覧を表示 → ユーザーが選択 → モード A |
+| 3 | 「ネタを1行教えてください」と聞く → モード B（standalone） |
+| 4 | Notion未投稿一覧を表示して終了 |
+
+---
+
+## モード D: `daily` — 今日のツイートを自動生成
+
+### Step 1: 今日のツイートタイプを決定
+
+曜日と引数の有無で分岐する。
+
+| 曜日 | デフォルトタイプ |
+|---|---|
+| 月 | 実況（今週やること宣言） |
+| 火 | ノウハウ1行 |
+| 水 | 問いかけ型 |
+| 木 | ノウハウ1行 or 失敗報告 |
+| 金 | Before/After or 実績報告 |
+| 土・日 | 実況 or 問いかけ型 |
+
+引数に1行メモがある場合（例: `/x-run daily 今日Claude Codeでエラー踏みまくった`）は、メモの内容に合ったタイプ（実況・失敗報告・Before/After）に自動切り替えする。
+
+### Step 2: タイプ別コンテンツ収集
+
+**ノウハウ1行・速報コメント系（完全自動）:**
+WebSearch で以下を検索してネタを拾う:
+```
+"Claude Code" OR "Anthropic" 新機能 OR 使い方 site:x.com OR site:note.com
+"Claude" announcement site:anthropic.com
+```
+拾った情報から「1行で伝えられる発見・Tips」を抽出してツイートに変換する。
+
+**問いかけ型（完全自動）:**
+Claude / Claude Code / 副業 に関する「答えやすいYes/No or どっち派質問」を生成する。WebSearch不要。
+
+**実況・Before/After・失敗報告（メモあり）:**
+渡された1行メモを元に肉付けして280字以内に展開する。
+
+**実況（メモなし・月曜）:**
+「今週も〇〇やっていきます」系の宣言ツイートをテンプレベースで生成する。具体的な数字・案件名は入れない。
+
+### Step 3: ツイート生成 → X入力まで自動実行
+
+ツイートを生成したら、そのままブラウザで X に入力する（「投稿完了後の処理」セクションの Phase B-1〜B-3 に従う）。
 
 ---
 
