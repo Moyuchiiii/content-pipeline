@@ -7,23 +7,25 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 25
-次回 workflow-audit: 2026-04-07（週次・毎週月曜推奨）
+note-run 実行回数: 33
+次回 workflow-audit: 2026-04-20（週次・毎週月曜推奨）
 ```
 
-> workflow-audit は週1回実施。次回は 2026-04-07。
+> workflow-audit は週1回実施。次回は 2026-04-13。
 
 ---
 
 ## note記事 成功パターン
 
-### スキ数TOP（2026-04-03 更新）
+### スキ数TOP（2026-04-09 更新）
 
 | 順位 | タイトル | タイプ | スキ | PV | 価格 | 転換率 |
 |---|---|---|---|---|---|---|
-| 1 | CW案件を受注→納品してみた全記録 | 実録 | 19 | 116 | 無料 | 16.4% |
-| 2 | 予約管理システム3日で完成 | ノウハウ | 14 | 98 | ¥500 | 14.3% |
-| 3 | Remote Control副業1週間実録 | 実録 | 6 | 12 | 無料 | **50%** |
+| 1 | CW案件を受注→納品してみた全記録 | 実録 | 17 | 116 | 無料 | 14.7% |
+| 1 | 予約管理システム3日で完成 | ノウハウ | 17 | 98 | ¥500 | 17.3% |
+| 3 | Desktop副業実録（PR待ち週3h→0） | 実録 | 8 | 不明 | 無料 | — |
+| 4 | Remote Control副業1週間実録 | 実録 | 6 | 12 | 無料 | **50%** |
+| 4 | npm漏洩速報（副業視点） | 速報 | 6 | 29 | 無料 | 20.7% |
 
 ### 確立した成功パターン
 
@@ -64,30 +66,35 @@ note-run 実行回数: 25
 
 ## セッション記録（直近5件）
 
+### 2026-04-12（fukugyou_route v2 メイン商品）
+- ドラフト: draft_20260412_fukugyou_route.html（ノウハウ・¥2,000・score24）
+- スコア: Phase2=24点 / 品質=94/100
+- PDCA学習: メイン商品フラッグシップ記事。D:\Claude\bussinesの実案件データ（Chrome拡張機能・コーチング月額・複合ツール判断）を活用。応募文テンプレ×3タイプ+CLAUDE.md×2タイプ全文公開。ococナラブルーオーシャン（Claude119件 vs ChatGPT1423件）数字公開。コーチング型月額継続モデル（固定¥11,000+月¥10,000）が有料ゾーンの核。deny rules絞り・WebアプリUIステップアップ・Remote Controlが2ヶ月目140万への3転換点。以降の記事でこの記事へのCTAを貼る想定。
+
+### 2026-04-12（monitor_tool）
+- ドラフト: draft_20260412_monitor_tool.html（ノウハウ・¥500・score21）
+- スコア: Phase2=21点 / 品質=82/100
+- PDCA学習: Claude Code v2.1.98 Monitorツール×副業CI待ちゼロ。イベント駆動（非ポーリング）でトークン効率良。副業で3パターン（CI監視・devサーバー・PRレビュー）。条件指定曖昧→全通知の失敗・v2.1.98未満→動かないつまずきが差別化。/loopとの2段構成が最強設定。note競合ゼロのブルーオーシャン。バランス制御: 直近5本（無料4本・有料1本）→有料OK。
+
+### 2026-04-06（note_pipeline）
+- ドラフト: draft_20260406_note_pipeline.html（ノウハウ・無料・score22）
+- スコア: Phase2=22点 / 品質=81/100
+- PDCA学習: ネタ帳「採用済み」未記事化ネタを正式化。content-pipeline全公開（SKILL.md設計思想・Notion2DB学習ループ・9フェーズ処理順序）。記事18スキ転換率40%の成功パターン踏襲。「Claude Codeが書いた」メタ性フック。競合ゼロのブルーオーシャン。コンテキスト枯渇と事実確認甘さの2失敗談が差別化軸。バランス制御: 直近有料2本→無料確定。
+
+### 2026-04-04（plugin_jisaku）
+- ドラフト: draft_20260404_plugin_jisaku.html（ノウハウ・¥500・score22）
+- スコア: Phase2=22点 / 品質=92/100
+- PDCA学習: 公式プラグイン記事（25番）の自然な続編として「消費者→制作者」転換。bin/ディレクトリ（v2.1.91）×副業ワークフロー自作プラグイン。note.com競合ゼロ。PC買い替え設定30分→10秒のBefore/After。chmod +x忘れ・nameは英数字・/reload-plugins必須の3つまずきが差別化。GitHubでチーム配布という拡張性が有料ゾーンの核。
+
+### 2026-04-13（claude_mania）
+- ドラフト: draft_20260413_claude_mania.html（速報・無料・score23）
+- スコア: Phase2=23点 / 品質=87/100
+- PDCA学習: HumanX Conference(4/12)でClaude Codeが業界話題独占+"Claude Mania"+"宗教"発言。Anthropic $30B ARRでOpenAI超え。Claude Code単体$2.5B。note.com競合ゼロ。速報×副業視点パターン（npm漏洩スキ6実績）踏襲。バランス制御: 直近有料3本→無料確定、ノウハウ偏り→速報タイプで是正。メイン商品(fukugyou_route ¥2,000)へのCTA設置。
+
 ### 2026-04-04（plugins_fukugyou）
 - ドラフト: draft_20260404_plugins_fukugyou.html（ノウハウ・無料・score23）
 - スコア: Phase2=23点 / 品質=94/100
-- PDCA学習: Claude Code公式プラグインマーケットプレイス（claude-plugins-official）×CW副業実録。typescript-lsp/github/commit-commandsの3本柱。note.com競合ゼロのブルーオーシャン。「Executable not found」と「/reload-plugins忘れ」の2つまずきが差別化軸。週5h→2hのBefore/After。ニッチ実録成功パターン踏襲。バランス制御: 直近有料2本→無料確定
-
-### 2026-04-03（desktop_fukugyou）
-- ドラフト: draft_20260403_desktop_fukugyou.html（ノウハウ・無料・score21）
-- スコア: Phase2=21点 / 品質=83/100
-- PDCA学習: Claude Code Desktop×副業（PR Monitoring + Server Preview + Parallel Sessions）。note.com競合ゼロのブルーオーシャン。PR待ち週3h→0、同時進行1〜2本→3本のBefore/After。GitHub CLI（gh）インストール必須のつまずきが差別化軸。Desktop機能の副業活用ノウハウとして成功パターン（実録+ニッチ）を踏襲。バランス制御: 直近5本有料2本→無料確定
-
-### 2026-04-03（computer_use_windows）
-- ドラフト: draft_20260403_computer_use_windows.html（速報・¥500・score21）
-- スコア: Phase2=21点 / 品質=85/100
-- PDCA学習: Computer Use Windows版（4/3リリース）副業視点速報。note.com競合はMac版記事のみ、Windows×副業実録は皆無のブルーオーシャン。「10日待ってた」Windowsユーザー視点が差別化。deny rules Windowsパス差異・PowerShell組み合わせが有料ゾーンの核。Mac版記事7・11の読者への「Windows版です」連続感が自然な流れを作る。
-
-### 2026-04-03（powerup）
-- ドラフト: draft_20260403_powerup.html（速報・無料・score21）
-- スコア: Phase2=21点 / 品質=85/100
-- PDCA学習: Claude Code v2.1.90 /powerup速報。note.com競合ゼロ。「3ヶ月前の自分にこれがあったら」の感情的フックが差別化軸。副業視点2ユースケース（初心者に教えるとき・アップデート追うとき）が実践的価値。/buddyをおまけとして添えたことで記事に遊び感。バランス制御: 直近5本有料2本→無料確定・速報で記事タイプ分散
-
-### 2026-04-03（hooks_permissiondenied）
-- ドラフト: draft_20260403_hooks_permissiondenied.md（ノウハウ・無料・score23）
-- スコア: Phase2=23点 / 品質=82/100
-- PDCA学習: v2.1.89 PermissionDenied hook×副業Auto Mode詰まり解消ノウハウ。note.com競合ゼロ（さどちゃんの記事はsettings.jsonアプローチのみ200字）。Auto Mode速報PV161の延長線上で「実践ノウハウ」として差別化。Before/After（月10回停止→0回/月5h→0h）が核。jqインストール忘れとmatcher空文字の注意点が実録差別化。バランス制御: 直近5本で有料2本→無料確定
+- PDCA学習: Claude Code公式プラグインマーケットプレイス（claude-plugins-official）×CW副業実録。note.com競合ゼロ。週5h→2hのBefore/After。ニッチ実録成功パターン踏襲。
 
 ---
 
@@ -115,5 +122,170 @@ note-run 実行回数: 25
 
 ### 2026-04-04 02:34 セッション記録
 - 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-04 02:42 セッション記録
+- 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-04 03:17 セッション記録
+- 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md, draft_20260404_plugin_jisaku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-04 03:27 セッション記録
+- 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md, draft_20260404_plugin_jisaku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-04 03:29 セッション記録
+- 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md, draft_20260404_plugin_jisaku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-04 03:30 セッション記録
+- 生成ドラフト: draft_20260404_context_compact.md, draft_20260404_plugins_fukugyou.md, draft_20260404_plugin_jisaku.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-06 02:41 セッション記録
+- 生成ドラフト: draft_20260406_note_pipeline.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-09 02:40 セッション記録
+- 生成ドラフト: draft_20260409_visualizations.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-09 02:55 セッション記録
+- 生成ドラフト: draft_20260409_visualizations.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-10
+- ドラフト: draft_20260410_managed_agents.html（速報・無料・score21）
+- スコア: Phase2=21点 / 品質=76/100
+- PDCA学習: Claude Managed Agents（4/8発表）副業視点速報。エージェントインフラ自作不要。note.com競合はガイド型4本のみ、副業実録角度はゼロのブルーオーシャン。4コア概念（Agent/Environment/Session/Events）×副業ユースケース2本（定期レポート・ヒアリング前処理）。バランス制御: 直近有料2本→無料確定。
+
+### 2026-04-10 01:58 セッション記録
+- 生成ドラフト: draft_20260410_managed_agents.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-10 12:41 セッション記録
+- 生成ドラフト: draft_20260410_managed_agents.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 18:43 セッション記録
+- 生成ドラフト: draft_20260412_monitor_tool.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12
+- ドラフト: draft_20260412_fukugyou_route.html（ノウハウ・¥500・score25）
+- スコア: Phase2=25点 / 品質=84/100
+- PDCA学習: 副業初心者向けメイン商品。ゼロから初月10万円への「全体ロードマップ」型。応募文プロンプトテンプレ・案件タイプ別フロー・deny rules絞り・Webアプリ単価UP・Remote Control週10h→3hの3転換点が有料ゾーン核。バランス制御「直近有料2本→無料」を、ユーザーのメイン商品指定で上書き有料500円。競合との差別化は「実際に達成した当事者の一次情報」。
+
+### 2026-04-12 19:03 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 19:23 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 19:43 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 19:49 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 20:02 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 20:23 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 20:28 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 20:35 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-12 20:43 セッション記録
+- 生成ドラフト: draft_20260412_fukugyou_route.md, draft_20260412_monitor_tool.md, draft_20260412_fukugyou_route.md, draft_20260412_fukugyou_route.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-13 22:38 セッション記録
+- 生成ドラフト: draft_20260413_claude_mania.md, draft_20260413_claude_mania.md, draft_20260413_claude_mania.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14（team_onboarding）
+- ドラフト: draft_20260414_team_onboarding.html（ノウハウ・無料・score20）
+- スコア: Phase2=20点 / 品質=84/100
+- PDCA学習: Claude Code v2.1.101 /team-onboarding（4/10リリース）を「1人副業ワークフローの棚卸しツール」に転用する角度。note.com競合ゼロ。CLAUDE.mdに書き忘れてた3つの抜け（deny rules理由・skill組み合わせパターン・案件タイプ別分岐）が可視化された実体験。Before/After: セットアップ30分→30秒、CLAUDE.md 900字→2,100字。バランス制御: 直近5本有料2本以上→無料確定（スコア20でも無料化）。メイン商品(fukugyou_route ¥2,000)へのCTA設置。
+
+### 2026-04-14 15:23 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:32 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:34 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:37 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:38 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:40 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:47 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 15:56 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
+- 改善点: <!-- 手動で追記してください -->
+- 次回試すこと: <!-- 手動で追記してください -->
+
+### 2026-04-14 16:00 セッション記録
+- 生成ドラフト: draft_20260414_team_onboarding.md
 - 改善点: <!-- 手動で追記してください -->
 - 次回試すこと: <!-- 手動で追記してください -->

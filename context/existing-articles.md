@@ -186,6 +186,46 @@
 - テーマ: claude-plugins-official（公式マーケットプレイス）のプラグイン3本（typescript-lsp・github・commit-commands）をCW副業ワークフローに導入。週5h→2h（60%削減）の実録。
 - キーポイント: typescript-lsp（LSP自動診断・Executable not found対処）、github（PR作成15分→3分）、commit-commands（/reload-plugins忘れ注意）、使えなかったプラグイン2本の正直レビュー（vercel・pr-review-toolkit）
 
+## 記事26
+- タイトル: 副業ワークフローをClaude Codeプラグインに詰め込んだら、端末が変わっても5秒で再開できた話
+- URL: https://note.com/moyuchi_aistu/n/nfdc5f1dac0ce
+- 公開日: 2026-04-04
+- 種類: 有料（¥500）・ノウハウ（実録要素強め）
+- テーマ: Claude Code v2.1.91 bin/ディレクトリ新機能を活用し、副業ワークフロー（skills・hooks・bin/・settings）を自作プラグインに全パッケージ化。git clone + /plugin install で新PCへ10秒で移植する方法
+- キーポイント: bin/cw-validateスクリプト（納品前バリデーション自動化）、hooks.json（PostToolUse Prettierフォーマット）、GitHubpush→別PCへのインストール手順、Before/After（新PC設定30分→10秒）、つまずき3パターン（chmod +x忘れ・name英数字のみ・/reload-plugins必須）
+
+## 記事29
+- タイトル: 大学生がClaude CodeのMonitorツールを副業で使ったら、CI待ち週5時間が消えた話
+- URL: （未投稿）
+- 公開日: 2026-04-12（予定）
+- 種類: 有料（¥500）・ノウハウ（実録要素強め）
+- テーマ: Claude Code v2.1.98（2026-04-09リリース）Monitorツールで副業CI待ちをゼロ化。バックグラウンドスクリプトのstdoutをイベント駆動でClaudeに流す機能を活用。GitHub Actions CI監視・devサーバーエラー監視・PRレビュー到着監視の3パターン実践。
+- キーポイント: 条件指定曖昧→全通知の失敗・v2.1.98未満→動かないつまずき2パターン、/loopとの2段構成（CI完了→マージコメント下書き自動生成）、コピペ可プロンプト3本、週5h→0.5hのBefore/After、Slack監視・ファイル変更監視は不向きの正直レビュー
+
+## 記事30
+- タイトル: 副業ゼロの大学生が2ヶ月で月14万になった全手順と、使ったテンプレートを全部公開する
+- URL: https://note.com/moyuchi_aistu/n/nf6c12c14859e
+- 公開日: 2026-04-12
+- 種類: 有料（¥2,000）・ノウハウ（メイン商品）
+- テーマ: 副業初心者向けフラッグシップ記事。CW+ococナラのデュアル戦略・応募文テンプレ×3タイプ・CLAUDE.md設計×2タイプ・実案件3ケーススタディ（Chrome拡張機能・コーチング月額継続・複合ツール判断）・2ヶ月目¥140,000の全内訳
+- キーポイント: 副業ゼロ→2週間0件→発想転換（応募文をClaudeで作る）→初受注、CLAUDE.md/Auto Mode//loop の3核心、deny rules2つに絞り月10h削減、ococナラClaude119件ブルーオーシャン、コーチング型月額継続（¥11,000+月¥10,000）、55,000→140,000円の3転換点
+
+## 記事32
+- タイトル: Claude Codeの/team-onboardingを1人副業で使ったら、自分のCLAUDE.mdに抜けてた3つが見えた話
+- URL: （未投稿）
+- 公開日: 2026-04-14（予定）
+- 種類: 無料・ノウハウ（実録要素強め）
+- テーマ: Claude Code v2.1.101（2026-04-10リリース）の /team-onboarding コマンドを1人副業の「ワークフロー棚卸しツール」として転用。チーム向け機能を個人利用に読み替える視点。
+- キーポイント: CLAUDE.mdの3つの抜け（deny rules理由・skill組み合わせパターン・案件タイプ別分岐）、Before/After（セットアップ30分→30秒・CLAUDE.md 900字→2,100字・教える時1時間半→5分）、つまずき3パターン（履歴30未満で薄い・固有名詞混入・チームプラン限定の勘違い）、1人プレイでも使う3理由、月1再生成フロー提案
+
+## 記事31
+- タイトル: 自分が毎日使ってるClaude Codeが、業界カンファレンスで"宗教"と呼ばれていた話
+- URL: （未投稿）
+- 公開日: 2026-04-13（予定）
+- 種類: 無料・速報
+- テーマ: HumanX Conference（4/11-12）でClaude Codeが業界の話題を独占。Anthropic ARR $30BでOpenAI超え。Claude Code単体$2.5B。Glean CEOが「Claude Mania」「宗教」と表現。副業で使ってる自分の視点。
+- キーポイント: HumanX 6,500人参加・去年のOpenAI主役から逆転、$1B→$9B→$30Bの15ヶ月30倍成長、$1M+企業500→1,000社倍増、売上80%が企業利用、「選んで正解だった」の副業視点
+
 ## 注意
 - 記事1で「次回はPythonでニュース収集」と予告→記事2で実現済み
 - 記事2で「次回はClaude vs ChatGPT比較」と予告→未執筆

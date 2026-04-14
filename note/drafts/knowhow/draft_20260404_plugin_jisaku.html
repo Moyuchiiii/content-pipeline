@@ -1,0 +1,224 @@
+<hr>
+<p style="text-align: center;"><b>PC買い替えのたびに、Claude Codeの設定を最初からやり直してませんか？</b></p>
+<hr>
+
+<p>昨日、公式プラグインを3本入れたら週の副業作業時間が5時間から2時間になった（別記事に書いた）。でも正直、まだ問題が残ってた。</p>
+
+<p>CW案件専用のスキル、納品前に走らせるシェルスクリプト、PR作成前の確認フック。これらは自分のPCの <code>.claude/</code> フォルダに散らばっていて、新しいPCを使うときに毎回コピーしてた。どこに何があったか探す時間も含めると、1台あたり30分ぐらいかかってた。</p>
+
+<p>そこで「プラグインって、自分でも作れないのか」と思って調べてみた。作れた。しかも <code>/plugin install</code> 1コマンドでどのPCにも入る。</p>
+
+<h2>プラグインに詰め込めるもの</h2>
+
+<p>Claude Codeのプラグインは、ディレクトリ1つで完結する。以下のフォルダを置くと、インストール時に自動で展開される。</p>
+
+<blockquote>
+<b>skills/</b><br>
+カスタムスキル。<code>/plugin-name:skill-name</code> の形で呼び出せる
+</blockquote>
+
+<blockquote>
+<b>hooks/</b><br>
+フック設定（hooks.json）。ファイル保存後のlint実行、ツール使用前の確認など
+</blockquote>
+
+<blockquote>
+<b>bin/</b><br>
+実行ファイル。プラグイン有効中はBash toolのPATHに追加される（v2.1.91から）
+</blockquote>
+
+<blockquote>
+<b>settings.json</b><br>
+プラグイン有効時に適用されるデフォルト設定
+</blockquote>
+
+<p>これをgitリポジトリに入れておけば、どのPCでも <code>/plugin install ./cw-plugin</code> で全部入る。</p>
+
+<h2>最低限の構造から作る</h2>
+
+<p>まずディレクトリを作る。</p>
+
+<pre><code>mkdir cw-plugin
+mkdir cw-plugin/.claude-plugin</code></pre>
+
+<p>次にマニフェストファイルを作る。</p>
+
+<pre><code>{
+  "name": "cw-plugin",
+  "description": "CW案件用ワークフロープラグイン",
+  "version": "1.0.0",
+  "author": {
+    "name": "moyuchi"
+  }
+}</code></pre>
+
+<p>保存先は <code>cw-plugin/.claude-plugin/plugin.json</code>。<code>name</code> フィールドがスキルのプレフィックスになる。 <code>cw-plugin:check</code> のような形で呼び出せるようになる。</p>
+
+<h3>スキルを追加する</h3>
+
+<p>案件受け取り時に毎回確認する項目をスキルにする。</p>
+
+<pre><code>mkdir -p cw-plugin/skills/check</code></pre>
+
+<p><code>cw-plugin/skills/check/SKILL.md</code> を作る。</p>
+
+<pre><code>---
+description: CW案件受け取り時の確認チェックリスト
+---
+
+受け取った案件を確認してください。
+
+- 納期と作業時間のバランス
+- 使用技術スタックの実現可能性
+- 曖昧な要件が残っていないか
+- テスト環境の有無
+
+問題がある項目はリストアップし、クライアントへの確認文も一緒に生成してください。</code></pre>
+
+<h3>ローカルでテストする</h3>
+
+<p><code>--plugin-dir</code> フラグで、インストールせずにそのまま読み込める。</p>
+
+<pre><code>claude --plugin-dir ./cw-plugin</code></pre>
+
+<p>起動したら <code>/cw-plugin:check</code> を叩いてみる。スキルが動いたらOK。変更後は <code>/reload-plugins</code> を叩くと再読み込みできる。Claude Codeを再起動しなくていい。</p>
+
+<p>ここまでで、スキルだけのプラグインが動く。これだけでも毎回 <code>.claude/commands/</code> にファイルを作る手間がなくなる。</p>
+
+<hr>
+<p style="text-align: center;"><b>ここから有料エリア</b></p>
+<p style="text-align: center;">CW案件専用プラグインの全コードを公開します</p>
+
+<ol>
+<li>bin/ スクリプト（v2.1.91新機能）で納品前バリデーションを自動化</li>
+<li>hooks.json でファイル保存のたびに自動フォーマット</li>
+<li>GitHubにpushして別PCに10秒でインストールする方法</li>
+<li>つまずきポイント3つ（権限エラー、name制限、hooks書き方）</li>
+</ol>
+
+<hr>
+
+<h2>bin/ スクリプトを追加する（v2.1.91の新機能）</h2>
+
+<p>v2.1.91から、プラグインに <code>bin/</code> ディレクトリを作ると、その中の実行ファイルがBash toolのPATHに追加される。つまりClaudeが「コマンドとして」呼び出せるようになる。</p>
+
+<p>CW案件の納品前バリデーション用スクリプトを作る。</p>
+
+<pre><code>mkdir cw-plugin/bin</code></pre>
+
+<p><code>cw-plugin/bin/cw-validate</code> を作る。</p>
+
+<pre><code>#!/bin/bash
+# CW案件 納品前バリデーション
+echo "=== テスト実行 ==="
+npm test --silent 2>&1 | tail -5
+
+echo ""
+echo "=== lint チェック ==="
+npm run lint --silent 2>&1 | grep -E "error" | head -10
+
+echo ""
+echo "検証完了: $(date '+%Y-%m-%d %H:%M')"</code></pre>
+
+<p>実行権限を付ける。ここを忘れると <code>command not found</code> になる。</p>
+
+<pre><code>chmod +x cw-plugin/bin/cw-validate</code></pre>
+
+<p>これで Claude が <code>cw-validate</code> を Bash tool から直接呼べるようになる。SKILL.md に「納品前は cw-validate を実行してください」と書いておけば、Claudeが自動で走らせてくれる。</p>
+
+<h2>hooks.json を追加する</h2>
+
+<p>hooks.json を追加すると、特定のイベントに反応して処理を走らせられる。TypeScript・JavaScriptファイルを保存するたびに自動フォーマットするhookを作る。</p>
+
+<pre><code>mkdir cw-plugin/hooks</code></pre>
+
+<p><code>cw-plugin/hooks/hooks.json</code> を作る。</p>
+
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [{
+          "type": "command",
+          "command": "jq -r '.tool_input.file_path // empty' | grep -E '\\.(ts|tsx|js|jsx)$' | xargs -I{} npx prettier --write {} 2>/dev/null || true"
+        }]
+      }
+    ]
+  }
+}</code></pre>
+
+<p>Write または Edit ツールが使われるたびに発火する。TypeScript/JSファイルだった場合だけPrettierを走らせる。CW案件でコードを書いている最中、Claudeが何かファイルを編集するたびにフォーマットが整う。</p>
+
+<h2>最終的なプラグイン構造</h2>
+
+<pre><code>cw-plugin/
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── check/
+│       └── SKILL.md
+├── hooks/
+│   └── hooks.json
+└── bin/
+    └── cw-validate</code></pre>
+
+<h2>GitHubにpushして別PCにインストールする</h2>
+
+<p>GitHubにリポジトリを作ってpushする。</p>
+
+<pre><code>cd cw-plugin
+git init
+git add .
+git commit -m "init cw-plugin"
+git remote add origin https://github.com/yourname/cw-plugin.git
+git push -u origin main</code></pre>
+
+<p>別PCやサブPCで使うときは、クローンしてからローカルインストールするだけ。</p>
+
+<pre><code>git clone https://github.com/yourname/cw-plugin.git</code></pre>
+
+<p>Claude Codeを起動してインストールする。</p>
+
+<pre><code>/plugin install ./cw-plugin</code></pre>
+
+<p>これだけ。skills・hooks・bin/ が全部入る。</p>
+
+<blockquote>
+<b>Before</b><br>
+新しいPCで副業を再開するとき。CLAUDE.mdを書き直す（10分）→プラグインをインストールし直す（5分）→hooksを settings.json に書く（10分）→スクリプトをDropboxからコピー（5分）＝30分
+</blockquote>
+
+<blockquote>
+<b>After</b><br>
+git clone → /plugin install → 完了。操作時間10秒
+</blockquote>
+
+<h2>つまずきポイント3つ</h2>
+
+<h3>bin/ のファイルに chmod +x が必要</h3>
+
+<p>これを忘れると Claude が <code>cw-validate</code> を呼んだときに <code>Permission denied</code> か <code>command not found</code> が出る。gitにpushする前に実行権限をつけておく。</p>
+
+<pre><code>chmod +x bin/cw-validate</code></pre>
+
+<h3>plugin.json の name は英数字とハイフンのみ</h3>
+
+<p>日本語を入れるとスキルが呼び出せなくなる。<code>"name": "cw-plugin"</code> のように英数字だけにする。</p>
+
+<h3>/reload-plugins を忘れると変更が反映されない</h3>
+
+<p>公式プラグインでも同じだけど、ローカル開発中は特によく引っかかる。SKILL.mdを編集した後や hooks.json を変えた後は必ず <code>/reload-plugins</code> を叩く。</p>
+
+<hr>
+
+<p>昨日の公式プラグインで作業時間を削って、今日の自作プラグインで設定管理の手間をゼロにした。次は自作プラグインを公式マーケットプレイスに submit して、チームやフォロワーに配布する方法を書く予定。</p>
+
+<hr>
+<p>プラグインを入れるだけで週2時間削減になった話は <a href="https://note.com/moyuchi_aistu/n/n2057c13b0cfb">副業の"承認待ち"が1案件あたり30分→5分になった話（¥500）</a> にも書いてある。Auto Modeとの組み合わせで案件対応をほぼ自動化したフローを全部書いた。</p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/nb99fc24e5eaa">大学生がClaude Codeでクラウドワークス案件を受注→納品してみた全記録</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n62d37bf48e7b">Claude Codeの/loopで副業タスクを放置してみたら、朝には終わってた話</a></li>
+</ul>
