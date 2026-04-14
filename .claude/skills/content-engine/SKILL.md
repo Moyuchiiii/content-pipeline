@@ -22,7 +22,7 @@ allowed-tools: Read, Write, Glob, Grep, mcp__notion__notion-fetch, mcp__notion__
 ## Phase 0: コンテキスト読み込み
 
 ```
-context/voice-samples.md     — moyuchi の声・トーン
+context/voice-samples.md     — Hyui の声・トーン
 context/writing-rules.md     — 禁止フレーズ・AI感排除ルール
 context/x-hook-formulas.md   — Xフック型10種
 ```

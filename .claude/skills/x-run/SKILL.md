@@ -1,12 +1,12 @@
 ---
 name: x-run
-description: moyuchi の X（Twitter）投稿を自動生成するスキル。引数なしで起動するとメニューを表示する。/note-run 直後は自動で告知ツイート生成に進む。
+description: Hyui の X（Twitter）投稿を自動生成するスキル。引数なしで起動するとメニューを表示する。/note-run 直後は自動で告知ツイート生成に進む。
 allowed-tools: WebSearch, WebFetch, Write, Read, Glob, Grep, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__notion__notion-create-pages, mcp__xmcp__searchRecentTweets, mcp__xmcp__tweetsSearchRecent, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__computer
 ---
 
 # /x-run
 
-moyuchi の X 投稿を生成する全自動パイプライン。
+Hyui の X 投稿を生成する全自動パイプライン。
 
 ---
 
@@ -91,12 +91,18 @@ Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a
 ### Step 2: タイプ別コンテンツ収集
 
 **ノウハウ1行・速報コメント系（完全自動）:**
-WebSearch で以下を検索してネタを拾う:
+WebSearch で以下を検索してネタを拾う（2方向で検索する）:
 ```
+# Claude/AI新機能系
 "Claude Code" OR "Anthropic" 新機能 OR 使い方 site:x.com OR site:note.com
 "Claude" announcement site:anthropic.com
+
+# 副業・AI副業トレンド系（ターゲット層が気にしてる話題）
+AI 副業 OR フリーランス 稼ぎ方 site:x.com
+クラウドワークス OR ココナラ AI OR Claude 活用
 ```
 拾った情報から「1行で伝えられる発見・Tips」を抽出してツイートに変換する。
+副業系のネタの場合は「自分の体験」として語る形に変換する（「こういう話題が出てるけど、自分はこうだった」）。
 
 **問いかけ型（完全自動）:**
 Claude / Claude Code / 副業 に関する「答えやすいYes/No or どっち派質問」を生成する。WebSearch不要。
@@ -282,16 +288,20 @@ xmcp が使えない場合は Step 1-b に進む。
 WebSearch で以下を検索（過去 24〜48 時間）:
 
 ```
-# 公式・リリース情報
+# 公式・リリース情報（Claude/Anthropic）
 "Claude Code" OR "Anthropic" OR "Claude" new release announcement
 "Claude" site:anthropic.com announcement OR update
 
-# コミュニティ動向（日本語）
+# 副業・AI副業コミュニティの動向（ターゲット層が気にしてる話題）
+AI 副業 稼ぎ方 OR 始め方 site:note.com OR site:x.com
+クラウドワークス AI 受注 OR 案件
+副業 初心者 AI OR Claude 活用
+
+# Claude活用コミュニティ（日本語）
 "Claude Code" 使い方 OR 活用 site:note.com OR site:zenn.dev
 "Claude Code" tips OR ノウハウ lang:ja
 
 # GitHub リポジトリ動向（注目度急上昇を検知）
-"obra/superpowers" OR "claude-code-hooks" trending
 "claude-code" site:github.com new release OR update
 
 # YouTube動画リサーチ（YouTube Transcript MCP が利用可能な場合）
