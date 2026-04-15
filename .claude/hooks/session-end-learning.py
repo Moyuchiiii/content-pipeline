@@ -50,16 +50,27 @@ def main():
     if not new_drafts:
         sys.exit(0)
 
-    # 改善メモの追記
+    draft_names = sorted({os.path.basename(d) for d in new_drafts})
+    today_day = datetime.now().strftime("%Y-%m-%d")
+
+    try:
+        with open(memory_path, "r", encoding="utf-8") as f:
+            existing = f.read()
+    except Exception:
+        existing = ""
+
+    if all((today_day in existing and name in existing) for name in draft_names):
+        sys.exit(0)
+
     log_entry = f"\n### {today} セッション記録\n"
-    log_entry += f"- 生成ドラフト: {', '.join([os.path.basename(d) for d in new_drafts])}\n"
+    log_entry += f"- 生成ドラフト: {', '.join(draft_names)}\n"
     log_entry += "- 改善点: <!-- 手動で追記してください -->\n"
     log_entry += "- 次回試すこと: <!-- 手動で追記してください -->\n"
 
     with open(memory_path, "a", encoding="utf-8") as f:
         f.write(log_entry)
 
-    print(f"[learning] {len(new_drafts)}件のドラフトを記録しました → context/content-memory.md")
+    print(f"[learning] {len(draft_names)}件のドラフトを記録しました → context/content-memory.md")
     sys.exit(0)
 
 if __name__ == "__main__":
