@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/article-quality-check.py"
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/article-quality-check.py\""
           }
         ]
       }
@@ -16,11 +16,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/session-end-learning.py"
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-end-learning.py\""
           },
           {
             "type": "command",
-            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/session-metrics.py"
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-metrics.py\""
           }
         ]
       }
@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python D:/Claude/bussines/content-pipeline/.claude/hooks/skill-suggester.py"
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/skill-suggester.py\""
           }
         ]
       }
