@@ -111,8 +111,10 @@ content-pipeline/
   context/                      # 共有コンテキスト
     note-profile.md             # note プロフィール
     x-profile.md                # X アカウントプロフィール
+    brain-profile.md            # Brain プロフィール（3パターン・ガイド）
     note-strategy.md            # note 収益化戦略
     x-strategy.md               # X 運用戦略
+    brain-strategy.md           # Brain 運用戦略・商品ラインナップ計画
     voice-samples.md            # 文体サンプル
     note-performance.md         # note パフォーマンスデータ
     x-performance.md            # X パフォーマンスデータ

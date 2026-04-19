@@ -17,6 +17,11 @@ note は「実体験の記録・入門・ダイジェスト（無料 or ¥500）
 
 ### ① コンテキスト読み込み
 
+**Brain 特化コンテキスト（最優先）:**
+- `context/brain-profile.md` — Brain プロフィール（3パターン・文体ガイド・カテゴリ・タグ戦略）
+- `context/brain-strategy.md` — Brain 運用戦略・商品ラインナップ計画・価格戦略・審査対策
+
+**共通コンテキスト:**
 - `context/note-profile.md` — プロフィール・ポジショニング
 - `context/note-strategy.md` — 収益化戦略
 - `context/voice-samples.md` — 文体サンプル
@@ -24,6 +29,9 @@ note は「実体験の記録・入門・ダイジェスト（無料 or ¥500）
 - `context/article-frameworks.md` — AIDA・Star Story Solution
 - `context/existing-articles.md` — 過去記事一覧
 - `context/content-memory.md` — 成功パターン（あれば）
+
+**参照レポート（相場・競合分析の裏取り用）:**
+- `D:/Claude/bussines/search/brain-competitors-2026-04-20.md` — 競合 10 人プロフィール・商品ラインナップ・サムネテンプレ
 
 ### ② 対象 note 記事の特定
 
