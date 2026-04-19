@@ -539,22 +539,273 @@ status: final
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-### サムネイル生成プロンプト（Brain 用）
+### サムネイル生成プロンプト（Brain 特化版・2026-04-20 実地競合分析ベース）
 
-note よりも「実績感・稼ぐ系」を強調する。ただし情報商材っぽい成金趣味は避ける。
+**参照元**: `D:/Claude/bussines/search/brain-thumbnail-analysis-2026-04-20.md`（Brain 売れ筋 20 件視覚要素分析）
+
+#### Brain サムネの 3 大パターン（把握必須）
+
+- **パターン A 情報商材ゴールド型（40%）**: 漆黒 + 金ピカグラデ + 「完全攻略」「教科書」+ 特典バッジ（リツト・ベク等）
+- **パターン B ゲーム/アニメ ド派手ネオン型（30%）**: 黒 + 虹色ネオン光線 + アニメキャラ + 月○万円激デカ（メラメラくん・トシノ等）
+- **パターン C テキスト密度型（25%）**: 濃紺/黒 + 白テキスト多段 + ツール名大 + チェックマーク（n8n 攻略バイブル等）
+- **パターン D（例外）ライト系クリーン型（5%）**: オフホワイト + ツールロゴ + 顔写真丸型（しゅうへいの Claude 教科書のみ）
+
+#### 優太が狙うポジション
+
+**「パターン C テキスト密度型ベース + 情報商材ギラギラを抑えたクリーンダーク路線」**
+
+- ダーク背景は採用（Brain 相場の 90% がダーク。白系にするとカテゴリ内で浮く）
+- 数字訴求は採用（90% が何らかの数字を配置。「月 14 万」は優太の核心差別化）
+- 金ピカグラデ・月桂樹バッジ・宇宙星雲・虹色ネオン・アニメキャラは**全て避ける**（コモディティ化 or 優太ブランドと矛盾）
+- 代わりに「クリーンなダーク + オレンジ/ゴールド最小限アクセント + 実直なレイアウト」で「文系大学生・実直・若さ」を表現
+
+#### note との違い（展開時の混同防止）
+
+| 比較軸 | note サムネ | Brain サムネ（優太版） |
+|---|---|---|
+| 背景色 | オフホワイト/ライトグレー | 漆黒/濃紺 |
+| テキスト色 | ダークグレー | 白 + オレンジ/ゴールド最小限 |
+| フォントウェイト | Regular〜Medium | Bold〜Ultra Bold |
+| 文字密度 | タイトル 1〜2 行のみ | 3〜5 行 + サブコピー |
+| 数字の扱い | なし or 小さく | 「月 14 万」等を大きく配置 |
+| 装飾要素 | 幾何学シェイプ | 薄い回路/グリッド・オレンジライン |
+| 雰囲気 | 知的・クリーン・記事メディア | 実績訴求・ダーク・信頼感 |
+
+---
+
+#### 記事タイプ別プロンプト 4 種
+
+以下の 4 タイプから記事タイプに応じて選択してユーザーに出力する。Gemini / Nano Banana（gemini.google.com）に貼り付けて画像生成する想定。
+
+---
+
+##### プロンプト 1: 実録記事型（`jituroku` + 受注・納品・副業ワークフロー系）
 
 ```
-16:9 横長の Brain 商品サムネイル画像。モダンで清潔感のあるビジネス編集デザイン。
-ディープネイビーの背景にサブトルなライトグレーの幾何学シェイプ、
-ゴールドとホワイトのアクセントカラー。画像の左 60% に太めのモダン
-ゴシック体で「{記事タイトル}」を大きく配置、ホワイトの文字、視認性優先。
-右 40% にはフラットイラスト調で成果・実績を想起させる小道具
-（ラップトップ画面・金額グラフ・コード・チェックマーク・時計等）を
-ゴールドとホワイトのアクセントで配置。左上に小さく「¥{価格}」の値札、
-右下に小さく「個人の体験談」の免責タグ。
-雰囲気はプロフェッショナル・実績ベース・信頼感。情報商材の金ピカ趣味は禁止。
-日本語テキストを正確に描画してください。
+Create a 16:9 thumbnail image (1280x670px) for a Japanese digital content product on Brain marketplace.
+
+=== DESIGN SPECIFICATION ===
+
+BACKGROUND:
+- Deep navy to charcoal gradient (#1A1A2E → #0D0D0D), left to right
+- Subtle circuit board pattern overlay at 10% opacity in dark teal (#003333)
+- NO bright neon beams, NO rainbow light rays
+
+MAIN TEXT (Japanese, positioned left-center area, 55% width):
+- Top label: 「実録」in a clean white rectangle badge, 18px equivalent
+- Main headline: 「{短縮タイトル（例: CW案件 受注→納品）}」in ultra-bold gothic, 72px equivalent, pure white
+- Sub headline: 「全記録公開」in semi-bold, 48px, warm orange (#FF6B35)
+- Body line 1: 「{実績フレーズ（例: 文系大学生が2ヶ月でやったこと）}」in regular, 22px, light gray (#CCCCCC)
+- Body line 2: 「{補足訴求（例: プログラミングゼロ・Claude Codeだけ）}」in regular, 20px, light gray
+
+NUMBER BADGE (right-center, 35% width area):
+- Large number: 「月14万」in extra-bold, gradient fill (warm orange #FF6B35 to gold #FFD700), 96px
+- Below number: 「達成した記録」in white, 20px
+- Circle badge style with dark border
+
+ICONS & ELEMENTS:
+- CrowdWorks logo icon (simple flat, white) - left side of badge area
+- Claude asterisk logo icon (simplified, orange) - paired with CrowdWorks
+- Arrow icon between them (→ style, white)
+- NO anime characters, NO realistic AI face photos, NO gold laurel wreaths
+
+ACCENT COLOR: Warm orange (#FF6B35), Gold (#FFD700)
+FONT STYLE: Clean ultra-bold sans-serif (not decorative/gimmicky)
+ATMOSPHERE: Serious college student vibe, trustworthy, not gaudy information-product look
+
+=== AVOID ===
+- Rainbow neon beams
+- Excessive sparkle/glitter effects
+- Gold embossed text with heavy shadows
+- Anime characters
+- "豪華○大特典" badge style
+- Anything that looks like a gambling/lottery advertisement
 ```
+
+---
+
+##### プロンプト 2: ノウハウ / 教科書型（`knowhow` + 「教科書」「完全ガイド」系）
+
+```
+Create a 16:9 thumbnail image (1280x670px) for a Japanese educational content on Brain marketplace.
+
+=== DESIGN SPECIFICATION ===
+
+BACKGROUND:
+- Very dark charcoal (#111111) base
+- Horizontal thin lines (like notebook/grid) in dark gray (#1E1E1E) at 5% opacity
+- Left side: subtle blue-teal glow gradient from edge (#002244 at 30% opacity)
+- Clean, professional dark theme
+
+LAYOUT: Two-zone layout
+LEFT ZONE (60% width):
+  - Tool name badge: 「{ツール名（例: Claude Code）}」in white pill badge, rounded corners, dark border
+  - Main title: 「{×対象（例: ×クラウドワークス 受注教科書）}」ultra-bold white gothic, 2 lines, 68px
+  - Tag line: 「{ターゲット層（例: 非エンジニア・文系大学生向け）}」in small white text, 18px
+  - Bullet points (3 lines, 20px, light gray):
+    「{訴求点1（例: 案件選定→応募→納品まで完全解説）}」
+    「{訴求点2（例: プログラミング経験ゼロからスタート）}」
+    「{訴求点3（例: 実際の受注記録をそのまま公開）}」
+
+RIGHT ZONE (40% width):
+  - Book/textbook illustration (simple flat design) in teal/navy
+  - Tool logo icons floating beside book (e.g., Claude logo, CrowdWorks icon)
+  - Small "教科書" or "完全ガイド" label on book cover in gold (#FFD700)
+
+ACCENT ELEMENTS:
+- Thin horizontal orange line (#FF6B35) separating title area from bullets
+- Page/chapter badge: 「{付加情報（例: 2ヶ月の記録 / 全○章）}」in small badge
+
+COLORS: #111111 base, #FFFFFF text, #FF6B35 accent, #FFD700 small accent, #4EC9B0 teal elements
+ATMOSPHERE: Structured textbook feel, trustworthy, young but serious, NOT flashy
+
+=== AVOID ===
+- Cosmic/space background imagery
+- Gold gradient text
+- 3D emboss effects
+- Rotating sparkles
+- Anything that resembles pachinko/gambling visual style
+```
+
+---
+
+##### プロンプト 3: ツールキット型（テンプレ集・プロンプト集・GPTs 付き商品）
+
+```
+Create a 16:9 thumbnail image (1280x670px) for a Japanese tool/template product on Brain marketplace.
+
+=== DESIGN SPECIFICATION ===
+
+BACKGROUND:
+- Dark navy (#0A0E27) base
+- Subtle grid lines in slightly lighter navy (#0F1535) at 15% opacity
+- Right side: soft dark purple glow (#1A0033 at 40% opacity blend)
+
+TOP BANNER (full width, dark teal #006666):
+- Text: 「すぐに使える テンプレート集」in white medium gothic, 20px
+
+MAIN CONTENT AREA:
+Left side (50%):
+  - Big number: 「{同梱数（例: 30）}」in extra-bold, very large (120px), white with orange underline
+  - Text below number: 「{何本か（例: 本の応募文テンプレ）}」in bold white, 32px
+  - Separator line (orange #FF6B35, 2px)
+  - Second row: 「+ {追加要素（例: GPTs付き）}」in bold, 28px, gold (#FFD700)
+
+Right side (50%):
+  - Stack of "card" visuals (3-4 overlapping cards showing template preview)
+  - Cards should be dark (#1E1E2E) with white text lines simulating document content
+  - Small tool logo icon on top card (e.g., Claude)
+
+BOTTOM BAR (full width, slightly lighter dark):
+- Three mini badges in white rectangles:
+  「{対応範囲1（例: クラウドワークス対応）}」「{特徴2（例: コピペで即使える）}」「{ターゲット3（例: AI副業に最適）}」
+
+COLORS: #0A0E27 base, white text, #FF6B35 accent orange, #FFD700 gold
+ATMOSPHERE: Tool/utility feel, organized, practical - like a developer's toolkit not a lottery ad
+
+=== AVOID ===
+- Light or colorful backgrounds
+- Realistic face photos
+- Anime character illustrations
+- Excessive decorative effects (flames, sparkles, explosions)
+- Yellow/gold gradient text on black (too information-product classic)
+```
+
+---
+
+##### プロンプト 4: フラッグシップ型（完全ロードマップ・完全公開・高価格帯 ¥7,980〜）
+
+```
+Create a 16:9 thumbnail image (1280x670px) for a Japanese flagship digital product on Brain marketplace.
+
+=== DESIGN SPECIFICATION ===
+
+BACKGROUND:
+- Deep black (#000000) base
+- Center-radiating very subtle blue-gray light (#111827) — NOT bright, just slight depth
+- Left edge: dark teal vertical gradient strip (5% width, #004444)
+- NO space nebula, NO planet imagery, NO matrix rain
+
+LARGE NUMBER FOCAL POINT (center-right, 40% area):
+- Giant number: 「{最大実績数字（例: 14万）}」in the largest possible size (140px), positioned center-right
+- Color: warm orange (#FF7A35) to gold (#FFD700) horizontal gradient
+- Below it: 「{単位（例: 円 / 月）}」in white medium weight, 28px
+- Even smaller: 「{補足（例: 2ヶ月目に達成）}」in light gray, 18px
+
+LEFT TEXT BLOCK (left 55%):
+- Tag: 「{属性タグ（例: 文系大学生の実録）}」white rectangle badge with orange border, 16px text
+- Main headline line 1: 「{主軸ツール名}×」ultra-bold white, 52px
+- Main headline line 2: 「{対象プラットフォーム（例: クラウドワークス）}」ultra-bold white, 52px
+- Subtitle: 「{商品タイプ（例: 完全ロードマップ）}」bold orange (#FF6B35), 38px
+- Small print: 「{訴求文（例: プログラミング不要・非エンジニアが実際にやった全手順）}」light gray, 16px
+
+MILESTONE PATH (bottom strip, full width):
+- Horizontal road/timeline with 4 steps:
+  STEP1「{ステップ1（例: 案件選定）}」→ STEP2「{ステップ2（例: 応募文）}」→ STEP3「{ステップ3（例: 受注）}」→ STEP4「{ステップ4（例: 納品）}」
+  Each step in small white rectangle on dark gray strip
+  Connecting arrows in orange
+
+ACCENT: Thin orange horizontal rule below main headline
+COLORS: #000000 base, #FF7A35 orange, #FFD700 gold, #FFFFFF text, #CCCCCC secondary text
+ATMOSPHERE: Achievement-oriented, milestone roadmap feel, professional but accessible — a student who actually did this
+
+=== AVOID ===
+- Anime/game characters
+- Realistic AI-generated face photos
+- Gold embossed/beveled text effects
+- Sparkle/firework effects
+- Checkerboard/pattern gimmicks
+- Laurel wreath badges
+- Purple/cosmic themes (already used by competitors)
+```
+
+---
+
+#### プロンプト選択ロジック（スキル内部で自動判定）
+
+記事タイプと商品特性から以下のルールで選択:
+
+1. 記事タイプが `jituroku` → **プロンプト 1（実録記事型）**
+2. 記事タイプが `knowhow` かつタイトルに「教科書」「完全ガイド」「バイブル」を含む → **プロンプト 2（教科書型）**
+3. 商品にテンプレ・GPTs・プロンプト集・設定ファイル等が同梱 → **プロンプト 3（ツールキット型）**
+4. 価格 ¥7,980 以上 または タイトルに「完全ロードマップ」「完全公開」「全手順」を含む → **プロンプト 4（フラッグシップ型）**
+
+複数条件に該当する場合は優先度 4 > 2 > 3 > 1 の順に選ぶ。
+
+#### プレースホルダ置換ルール
+
+上記プロンプト内の `{...}` は以下で置換:
+
+- `{短縮タイトル}`: 記事タイトルから 15〜20 字以内に短縮
+- `{実績フレーズ}`: 「文系大学生が 2 ヶ月でやったこと」「非エンジニアが Claude Code だけで」等
+- `{ツール名}` `{×対象}`: 「Claude Code」「×クラウドワークス」等
+- `{最大実績数字}`: 優太の場合は「14万」固定（または記事固有の数字）
+- `{訴求点 1〜3}`: 商品の核心メリット 3 点を選定
+- `{ステップ 1〜4}`: フラッグシップ商品の主要ステップ
+
+#### NG リスト（全プロンプト共通の禁止要素）
+
+生成前に以下を確認し、該当する指示が含まれていたら除去する:
+
+**Brain 相場に溶け込みすぎる NG（差別化のため回避）:**
+1. 金ピカグラデーションテキスト（リツト・ベクが使用済み）
+2. AI 生成の宇宙 / 星雲背景（Antigravity 教科書で飽和）
+3. 「豪華○大特典付き」バッジ（ほぼ全商品が使用）
+4. 月桂樹バッジ（リツトの代名詞）
+5. ネオン放射光線背景（メラメラくんの独占）
+
+**優太ブランドを損なう NG（ターゲット感のため回避）:**
+6. 過度な成人向け・同人誌感
+7. アニメ美少女 / 美少年の AI 生成顔
+8. 虹色絵本調
+9. 本人の顔写真のみ（実績未確立段階では逆効果）
+10. パチンコ・スロット的な点滅・爆発エフェクト
+
+**技術的 NG（視認性・品質のため回避）:**
+11. テキスト 8 行以上の詰め込み（一覧表示時に判読不能）
+12. 5 色以上の文字色混在
+13. 白背景に白縁テキスト（コントラスト不足）
+14. 横長の英語テキストのみ
 
 ---
 
