@@ -49,9 +49,10 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 ## スキル
 
-- `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下するため）。個別実行を推奨: `/collect-stats` → `/note-run` → `/content-engine` → `/x-run`
+- `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下するため）。個別実行を推奨: `/collect-stats` → `/note-run` → `/content-engine` → `/x-run` → `/brain-run`
 - `/note-run` : note記事のみ生成。トピック選定→競合調査→記事生成→編集→最終稿出力
 - `/x-run` : Notion の未投稿記事を拾いツイート生成。またはトレンドスキャン・単独ツイート生成
+- `/brain-run` : noteで作った記事を Brain 向けに拡張リライトして販売ドラフト生成。コード全文・プロンプト全文・テンプレ付きの ¥1,980〜版を brain/today/ に出力。投稿は手動
 - `/content-engine` : 1ネタ→複数フォーマット展開。note草稿からXスレッド・単発ツイート・カードテキストを一括生成
 - `/collect-stats` : X Analytics・noteダッシュボードをブラウザ操作でデータ収集。x-performance.md / note-performance.md / Notion を自動更新
 
@@ -70,6 +71,17 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 | `X草稿パス` | text | ドラフトファイルの絶対パス |
 | `XURL` | url | 投稿後の X ポスト URL |
 
+### note記事DBの追加フィールド（brain-pipeline用）
+| フィールド名 | タイプ | 値の選択肢 |
+|---|---|---|
+| `Brainステータス` | select | 未作成 / 草稿完成 / 投稿済み |
+| `Brain 草稿パス` | text | ドラフトファイルの絶対パス |
+| `Brain URL` | url | 投稿後の Brain 商品ページ URL |
+| `Brain 価格` | number | ¥ |
+| `Brain 還元率` | number | % |
+| `Brain 公開日` | date | 投稿日 |
+| `Brain 売上` | number | 月次更新 |
+
 ### 連携フロー
 
 **note → X:**
@@ -77,6 +89,13 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 2. Notion の `Xステータス` を **未投稿** にセット（自動）
 3. `/x-run` 起動時に未投稿記事を自動検知 → ツイート生成
 4. 投稿後に `Xステータス` を **投稿済み** に更新
+
+**note → Brain:**
+1. `/note-run` が記事を完成させる（実録・ノウハウタイプのみ Brain 化推奨）
+2. note 投稿後、`/brain-run` でドラフト生成
+3. `brain/today/` に本文・メタ情報を出力
+4. ユーザーが手動で Brain に投稿（自動投稿は reCAPTCHA のためリスク高）
+5. 投稿後に Notion の `Brainステータス` を **投稿済み** に更新
 
 **X → note:**
 1. `/x-run trend` でトレンドをスキャン
@@ -108,9 +127,15 @@ content-pipeline/
     drafts/singles/             # 単発ツイート草稿
     drafts/threads/             # スレッドツイート草稿
     published/                  # 投稿済みログ
+  brain/
+    today/                      # 最新 Brain 用ドラフト（すぐ開ける場所）
+    drafts/jituroku/            # 実録記事の Brain 草稿バックアップ
+    drafts/knowhow/             # ノウハウ記事の Brain 草稿バックアップ
+    published/                  # 投稿済みログ
   .claude/skills/
     note-run/SKILL.md           # /note-run スキル定義
     x-run/SKILL.md              # /x-run スキル定義
+    brain-run/SKILL.md          # /brain-run スキル定義
     content-engine/SKILL.md     # /content-engine スキル定義
   .github/prompts/              # 記事タイプ別プロンプト
   .github/workflows/            # GitHub Actions
