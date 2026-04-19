@@ -1,0 +1,227 @@
+# Brain 投稿メタ情報
+
+## Phase 3: タイトル A/B テスト
+
+### 候補5本 + スコアリング
+
+| # | タイトル | 具体性 | 結果明示 | 誇大表現 | 検索KW | 合計 |
+|---|---|---|---|---|---|---|
+| 1 | 文系大学生がClaude Codeでクラウドワークス案件を受注→納品した全記録 | 5 | 4 | 5 | 5 | **19/20 ✅ 採用** |
+| 2 | プログラミングゼロの文系大学生がClaude Code×CWで月14万を達成するまでの全手順 | 5 | 5 | 3 | 4 | 17/20 |
+| 3 | Claude Code×クラウドワークス 受注から納品まで全プロンプト・コード完全公開 | 4 | 5 | 4 | 5 | 18/20 |
+| 4 | 文系大学生がClaude Codeで自動化案件を受注できるようになった2ヶ月の記録 | 5 | 3 | 5 | 4 | 17/20 |
+| 5 | 非エンジニアがClaudeだけでCW案件を受注→納品するまでに使ったプロンプト全部公開 | 4 | 5 | 4 | 4 | 17/20 |
+
+**採用タイトル:** 文系大学生がClaude Codeでクラウドワークス案件を受注→納品した全記録
+
+採用理由:
+- note版と連続性があり、SNS読者が「あの記事の完全版」と認識しやすい
+- 「全記録」という語が「コード・プロンプト全部入り」の期待値を作る
+- 「文系大学生」「Claude Code」「クラウドワークス」「受注→納品」がすべてキーワードになっている
+- 誇大表現（「誰でも」「絶対」「必ず」「100%」）を含まない
+
+---
+
+## タイトル（確定）
+
+文系大学生がClaude Codeでクラウドワークス案件を受注→納品した全記録
+
+## サブタイトル
+
+プログラミングゼロからスタート。実際に使った応募文テンプレ・プロンプト全文・動作確認済みコード一式を全部公開
+
+---
+
+## 商品説明文（購入前表示・400字以内）
+
+クラウドワークスで案件を取りたいけど、何から手をつければいいかわからない状態だった。
+
+自分（文系大学生、プログラミング経験ほぼゼロ）がClaude Codeを使ってクラウドワークスで案件を受注→納品するまでの全工程を、使ったもの全部込みで公開する。
+
+この記事を買うと手に入るもの：
+- 実際に送った応募文テンプレ（5パターン）
+- Claude Codeへの実プロンプト全文（7個）
+- 動作確認済みコード3種（スクレイピング・CSV処理・Slack連携）
+- 単価交渉スクリプト
+- 納品チェックリスト（毎回使ってる版）
+- 自分が踏んだエラーの解決手順集
+
+note版（無料公開中）の30%以上の追加情報があります。
+
+本記事は個人の体験談であり、同様の成果を保証するものではありません。
+
+---
+
+## カテゴリ
+
+AI
+
+## タグ
+
+AI副業, Claude, 大学生副業, 非エンジニア, クラウドワークス, 案件受注
+
+---
+
+## Phase 4: 価格・還元率
+
+## 価格
+
+¥1,980
+
+理由:
+- Brain 販売実績ゼロの初投稿。低価格スタートでレビュー5件の取得を最優先
+- AI副業系の中間価格帯（¥1,280〜¥2,980が最多）の下限
+- コード全文・プロンプト全文・テンプレ付きという内容は¥2,980超でも妥当だが、実績ゼロ段階では¥1,980が信頼構築の上限
+
+## 紹介還元率
+
+50%（全員）
+
+理由: 販売実績ゼロの初動期。拡散重視で全員に紹介URLを発行できる設定。レビュー5件超えたら購入者限定50%へ移行予定。
+
+## 取り分シミュレーション（月5部販売の場合）
+
+- 自己経由: ¥1,980 × 5 × 88% = ¥8,712
+- 紹介経由: ¥1,980 × 5 × (100% - 50% - 12%) = ¥1,980 × 5 × 38% = ¥3,762
+- 平均想定: 自己2件+紹介3件なら約¥6,000/月〜
+
+---
+
+## Phase 5: 品質ゲート
+
+### 誇大表現スウィープ結果
+
+チェック済みワード一覧:
+- 「誰でも」→ 本文に含まれていない ✅
+- 「必ず」→ 本文に含まれていない ✅
+- 「絶対」→ 本文に含まれていない ✅
+- 「確実に」→ 本文に含まれていない ✅
+- 「再現性100%」→ 本文に含まれていない ✅
+- 「世界初」「最強」「最速」→ 含まれていない ✅
+- 「保証」→ 免責文に「保証するものではありません」として正しく使用 ✅
+- 「知らないと損」→ 含まれていない ✅
+- 「簡単に」「すぐに」→ 含まれていない ✅
+- 「稼げる」→ 含まれていない（「稼いだ」（過去形・自分主語）のみ） ✅
+
+「要注意ワード」確認:
+- 「大幅に」→ 1回使用（「実装の工数を大幅に減らしてくれる」）文脈上、比較根拠あり（2時間半→実装が速くなる旨の数字あり）。許容
+- 個人体験タグ: 冒頭と末尾の両方に「本記事は個人の体験談であり、同様の成果を保証するものではありません」を挿入済み ✅
+
+### 規約チェックリスト
+
+- [x] 誇大表現がない
+- [x] 個人体験である旨が冒頭・末尾に明記されている
+- [x] 他サービスへの誘導は著者プロフィール欄のSNSリンクのみ
+- [x] 根拠のない統計・データがない（実数値のみ。自分の実績として記載）
+- [x] 医療・投資助言系の記述がない
+- [x] 「効果には個人差があります」の免責文あり
+
+### 100点ルーブリック採点
+
+**コンテンツ価値（40点満点）:**
+- 「この記事を買う理由」が明確か: 9/10（応募文・プロンプト・コード全文の3本柱が明確）
+- コード・プロンプト・テンプレの実用性: 9/10（動作確認済み3種のコード、7つのプロンプト、5つの応募文テンプレ）
+- 非エンジニアでも実行可能か: 8/10（専門用語に説明あり。一部セットアップ手順がやや技術的だが許容範囲）
+- note版との差分が30%以上: 10/10（note版約3,000字 → Brain版約12,000字以上。コード全文・プロンプト全文・テンプレ・チェックリスト・トラブルシュートを全追加）
+- 小計: **36/40**
+
+**Brain最適化（30点満点）:**
+- タイトルの相場適合性: 9/10（具体性・検索キーワード・誇大表現なしの三拍子）
+- 商品説明文のフック力: 8/10（課題→実績→同梱物の流れは明確。もう少しフック感が欲しいかも）
+- 価格の妥当性: 10/10（¥1,980は初投稿として適切。コード・テンプレ付きで妥当以上）
+- 小計: **27/30**
+
+**リスク（20点満点）:**
+- 誇大表現スウィープ実施済み: 10/10
+- 匿名化・免責文: 10/10（クライアント情報完全匿名化・冒頭末尾に免責文）
+- 小計: **20/20**
+
+**voice一貫性（10点満点）:**
+- 「文系大学生の自分」の一人称保持: 5/5（「自分」で統一。「僕」「私」なし）
+- AI定型フレーズがない: 4/5（「〜と言えるでしょう」「ではないでしょうか」等はなし。わずかに「〜できます」「〜しています」の丁寧体が混在するが許容範囲）
+- 小計: **9/10**
+
+### 総合スコア: 92/100 ✅ 公開可
+
+---
+
+## サムネイル生成プロンプト（Gemini/Nano Banana用）
+
+記事タイプ: jituroku → プロンプト1（実録記事型）を使用。以下はプレースホルダ置換済み版。
+
+```
+Create a 16:9 thumbnail image (1280x670px) for a Japanese digital content product on Brain marketplace.
+
+=== DESIGN SPECIFICATION ===
+
+BACKGROUND:
+- Deep navy to charcoal gradient (#1A1A2E → #0D0D0D), left to right
+- Subtle circuit board pattern overlay at 10% opacity in dark teal (#003333)
+- NO bright neon beams, NO rainbow light rays
+
+MAIN TEXT (Japanese, positioned left-center area, 55% width):
+- Top label: 「実録」in a clean white rectangle badge, 18px equivalent
+- Main headline: 「CW案件 受注→納品」in ultra-bold gothic, 72px equivalent, pure white
+- Sub headline: 「全記録公開」in semi-bold, 48px, warm orange (#FF6B35)
+- Body line 1: 「文系大学生がClaude Codeだけでやったこと」in regular, 22px, light gray (#CCCCCC)
+- Body line 2: 「プログラミングゼロ・応募文・コード全部入り」in regular, 20px, light gray
+
+NUMBER BADGE (right-center, 35% width area):
+- Large number: 「月14万」in extra-bold, gradient fill (warm orange #FF6B35 to gold #FFD700), 96px
+- Below number: 「達成した記録」in white, 20px
+- Circle badge style with dark border
+
+ICONS & ELEMENTS:
+- CrowdWorks logo icon (simple flat, white) - left side of badge area
+- Claude asterisk logo icon (simplified, orange) - paired with CrowdWorks
+- Arrow icon between them (→ style, white)
+- NO anime characters, NO realistic AI face photos, NO gold laurel wreaths
+
+ACCENT COLOR: Warm orange (#FF6B35), Gold (#FFD700)
+FONT STYLE: Clean ultra-bold sans-serif (not decorative/gimmicky)
+ATMOSPHERE: Serious college student vibe, trustworthy, not gaudy information-product look
+
+=== AVOID ===
+- Rainbow neon beams
+- Excessive sparkle/glitter effects
+- Gold embossed text with heavy shadows
+- Anime characters
+- "豪華○大特典" badge style
+- Anything that looks like a gambling/lottery advertisement
+```
+
+---
+
+## 投稿チェックリスト（Brain 投稿時に使う）
+
+- [ ] タイトル入力: 文系大学生がClaude Codeでクラウドワークス案件を受注→納品した全記録
+- [ ] サブタイトル入力: プログラミングゼロからスタート。実際に使った応募文テンプレ・プロンプト全文・動作確認済みコード一式を全部公開
+- [ ] 本文ペースト（`brain_20260420_cw_claude_code_jituroku.md` の本文）
+- [ ] サムネ画像アップロード（上記プロンプトで生成）
+- [ ] カテゴリ選択: AI
+- [ ] タグ設定: AI副業, Claude, 大学生副業, 非エンジニア, クラウドワークス, 案件受注
+- [ ] 価格設定: ¥1,980
+- [ ] 紹介還元率設定: 50%（全員）
+- [ ] プレビュー確認
+- [ ] 公開
+
+---
+
+## Notion 更新内容（投稿後に手動で更新）
+
+対象レコード URL: https://www.notion.so/32c8795a75fd81beafc4f967a5e50c60
+
+更新するフィールド（Brain系フィールドが未追加の場合は先にフィールドを作成してから更新）:
+- Brainステータス → 草稿完成
+- Brain 草稿パス → D:/Claude/bussines/projects/content-pipeline/brain/today/brain_20260420_cw_claude_code_jituroku.md
+- Brain 価格 → 1980
+- Brain 還元率 → 50
+
+※ Brain系フィールドが未作成の場合は以下を先に追加:
+1. Brainステータス (select) — 未作成 / 草稿完成 / 投稿済み
+2. Brain 草稿パス (text)
+3. Brain URL (url)
+4. Brain 価格 (number)
+5. Brain 還元率 (number)
+6. Brain 公開日 (date)
+7. Brain 売上 (number)
