@@ -1,0 +1,1147 @@
+<hr>
+<p style="text-align: center;"><b>プレゼン資料、まだPowerPointのテンプレ沼で2日かけていませんか？</b></p>
+<hr>
+
+<p>「Claude Codeでスライド生成器を作った話」を前に書いたら、一番多かった反応がこれだった。</p>
+
+<blockquote>面白いのはわかった。でも、同じものをうちでも作りたい。ファイル構成とプロンプト、全部見せてほしい</blockquote>
+
+<p>わかる。自分も「すごい事例記事」を読むたびに、<b>再現できる手順が書いてないことに困ってた側</b>だから。</p>
+
+<p>なので今回、前回の記事を「読んで満足して終わる記事」ではなく、<b>そのままコピペすれば同じものが自分の手元で動く再現キット</b>に作り直した。</p>
+
+<p>有料エリアには以下を丸ごと入れている。</p>
+
+<blockquote><b>この先で手に入るもの</b><br>プロジェクトのファイル構成（tree）／CLAUDE.md 全文／create-slide スキル定義全文／LESSONS.md テンプレ／base.html＋design-tokens.css＋5レイアウトのHTML/CSS全文／Playwrightエクスポートスクリプト全文／package.json／Claude Codeに投げる初回セットアップコマンド／スライド生成時に投げるStep 1〜8のプロンプト集／よくあるつまずきと回避策</blockquote>
+
+<p>まず無料エリアで「なぜこの構成になったか」「何がうまくいって、何で詰まったか」を共有する。コードが欲しいだけなら目次の有料エリアまで飛んでOK。</p>
+
+<hr>
+
+<h2>まず結果から。2日かかってたデッキが3時間になった</h2>
+
+<p>自分がこのプロジェクトを作る前、1本の社内プレゼン資料に2日かけていた。</p>
+
+<blockquote><b>Before</b><br>PowerPointのテンプレ探し30分／レイアウト微調整で半日／文字サイズが揃わず沼／差し替えのたびに崩壊<br><br><b>After</b><br>Claude Codeに話しかけて3時間。構成案の承認→HTML生成→PDF書き出しまで自動</blockquote>
+
+<p>40枚デッキの実案件で、2日 → 3時間。これが再現できるようになる。</p>
+
+<h2>なぜPowerPointを捨ててHTMLで作ることにしたか</h2>
+
+<p>最初にMarp・python-pptx・Gamma・Beautiful.aiを全部検討した。全部却下した理由がある。</p>
+
+<h3>Marp</h3>
+<p>Markdownでスライドが書けるやつ。<b>pptx出力すると画像埋め込みが崩れる既知問題</b>があって、社内配布用には使えなかった。レイアウトの自由度も低い。</p>
+
+<h3>python-pptx / PPTAgent</h3>
+<p>pptxを直接生成する系。Windows環境でのセットアップが地雷、pptxの仕様が複雑でレイアウト崩壊しやすい。そもそも<b>編集するならpptxにする意味がない</b>。</p>
+
+<h3>Gamma / Beautiful.ai</h3>
+<p>情報が外に出る（社内機密NG）、ブランドカラー再現が弱い、月額課金でロックイン。却下。</p>
+
+<h3>採用した構成（梶谷式HTMLスライド）</h3>
+
+<blockquote>1枚の長いHTMLページに、16:9のセクションを縦積みにする方式</blockquote>
+
+<p>出力はHTML（発表時）+ PDF（配布時）+ PNG（サムネ用）の3つ。スクロールスナップ＋キーボードナビ（矢印／Space／F でフルスクリーン）。Playwrightで1920×1080のPDF/PNGを書き出し。CSS変数でブランドカラーを差し替えるだけで案件ごとに使い回せる。</p>
+
+<p><b>pptxを捨てる = レイアウト崩壊ゼロ。</b>HTMLならCSSで完全にコントロールできる。これが核心。</p>
+
+<h2>プロジェクトの骨格（ここは無料で全部見せる）</h2>
+
+<pre><code>slide-generator/
+├── CLAUDE.md                   # プロジェクト指示書
+├── LESSONS.md                  # 指摘の蓄積ログ
+├── package.json
+├── .claude/skills/create-slide/
+│   └── SKILL.md                # ヒアリング→生成フロー
+├── templates/
+│   ├── base.html
+│   ├── design-tokens.css
+│   └── layouts/README.md       # 5レイアウト仕様
+├── scripts/
+│   └── export-pdf.js           # Playwrightエクスポート
+└── output/                     # 生成物（案件ごとにサブフォルダ）
+</code></pre>
+
+<p>ポイントは<b>5つの定型レイアウトで固定している</b>こと。自由にレイアウトを作らせると必ず崩壊する。</p>
+
+<blockquote><b>slide-hero</b><br>タイトル・セクション区切り・結論</blockquote>
+<blockquote><b>slide-contrast</b><br>Before/After、課題/解決の2分割</blockquote>
+<blockquote><b>slide-icon-grid</b><br>アジェンダ、3〜5点の列挙</blockquote>
+<blockquote><b>slide-data-callout</b><br>大きな数字ひとつ</blockquote>
+<blockquote><b>slide-process</b><br>ステップ図（3〜5段階）</blockquote>
+
+<p>社内プレゼンで必要なパターンはこの5種でほぼ全部カバーできる。</p>
+
+<h2>自分がハマった6つの修正ループ（ここで学んだことが全部プロジェクトに入ってる）</h2>
+
+<p>初回の叩き台を出させたとき、全然使えなかった。そこから6回の修正ループが始まる。</p>
+
+<h3>つまずき1 情報量が少なすぎる</h3>
+<p>抽象的なスライドしか出てこない。「3.4時間 → 5分」みたいな数字が別々のスライドに散らばっていた。Claude Codeに<b>「必要な情報は実際に別プロジェクトを見に行って埋めて」</b>と指示したら、サブエージェントが実データを抽出してきて一気に説得力が出た。</p>
+
+<h3>つまずき2 Before/Afterが1枚にまとまらない</h3>
+<p>対比数字は1枚に並べないと刺さらない。DualCalloutという派生レイアウトを追加した。</p>
+
+<h3>つまずき3 文字が潰れて読めない</h3>
+<p>詳細テキストを18pxで書いたら1920×1080では読めなかった。<b>最小20pxに統一</b>。タグピルも13px → 18pxに修正。</p>
+
+<h3>つまずき4 Processレイアウトの下半分がスカスカ</h3>
+<p>番号＋タイトル＋説明だけだと情報密度が足りない。各stepに「タグピル」＋「<code>ul li</code>3点」を必ず追加するルールに変更。<code>margin-top: auto</code>で下部に押し込むCSSも入れた。</p>
+
+<h3>つまずき5 平坦な白背景はダサい</h3>
+<p>コーナーに<code>radial-gradient</code>のblob（opacity 0.08〜0.1）、カード天面に4pxのグラデーションバー、大数字は<code>background-clip: text</code>でグラデ文字。これで一気に「社内配布して恥ずかしくない」見た目になった。</p>
+
+<h3>つまずき6 差別化ポイントがfooterに埋もれる</h3>
+<p>一番見せたい差別化要素は専用スライド1枚にする。バッジ＋大見出し＋4カードグリッド＋ルールピルの構成で大きく見せる。</p>
+
+<h2>一番効いた発明 LESSONS.md で「同じミスを二度しない」仕組みを作る</h2>
+
+<p>6回目の修正を受けた後、気づいた。</p>
+
+<blockquote>このClaude Code、次回セッションでは同じミスを繰り返すやつだ</blockquote>
+
+<p>Claude Codeは毎回セッションがリセットされる。今日学んだ「文字は20px以上」「Processは下半分埋める」を明日には忘れている。</p>
+
+<p>そこで <code>LESSONS.md</code> を追加した。<b>修正指摘を受けた瞬間に、その場で1行追記するログファイル</b>。そしてCLAUDE.mdとSKILL.mdに「セッション開始時に必ずLESSONS.mdを読む」「指摘を受けたらその場で追記する」を強制ルールとして入れた。</p>
+
+<p>これで<b>指摘が資産化される</b>。次回の作業開始時、Claude Codeは過去の教訓を読み込んでから叩き台を作る。同じ指摘を2回受けなくて済む。</p>
+
+<p>これは他のプロジェクトにも転用できる発想で、個人的に今回の一番の収穫だった。</p>
+
+<hr>
+
+<p style="text-align: center;"><b>ここから先は、このプロジェクトをあなたの手元で0から立ち上げるための完全再現パッケージです。</b></p>
+
+<blockquote><b>この先で手に入るもの</b><br>1 初回セットアップコマンド（npm init → Playwrightインストールまで）／2 CLAUDE.md 全文（コピペで動く）／3 create-slide/SKILL.md 全文／4 LESSONS.md の初期テンプレ／5 templates/base.html 全文／6 templates/design-tokens.css 全文（5レイアウトのCSS込み）／7 templates/layouts/README.md 全文（5レイアウトのHTML例）／8 scripts/export-pdf.js 全文／9 package.json／10 Claude Codeに投げる起動プロンプト（Step 1〜8）／11 PDF書き出しコマンド／12 よくあるつまずきと回避策</blockquote>
+
+<p style="text-align: center;"><b>読みながら順番にコピペすれば、自分専用のスライド生成プロジェクトが立ち上がります。</b></p>
+
+<hr>
+
+<h2>Step 0 フォルダを作って初期化する（所要時間 5分）</h2>
+
+<p>作業場所はどこでもいい。自分は<code>D:/bussines/slide-generator/</code>に置いた。以下をそのままターミナルにコピペすればOK（ターミナルはWindowsならPowerShell、MacならTerminalを開くだけ）。</p>
+
+<pre><code>mkdir slide-generator
+cd slide-generator
+mkdir -p .claude/skills/create-slide
+mkdir -p templates/layouts
+mkdir -p scripts
+mkdir -p output
+mkdir -p examples
+
+npm init -y
+npm install playwright@^1.48.0
+npx playwright install chromium
+</code></pre>
+
+<p>これで空のプロジェクトと、PDF書き出しに使うPlaywrightのセットアップが終わる。1回やれば次回以降は不要。</p>
+
+<h2>Step 1 package.json を置き換える</h2>
+
+<p>自動生成されたpackage.jsonを、以下の内容に書き換える。</p>
+
+<pre><code>{
+  "name": "slide-generator",
+  "version": "0.1.0",
+  "description": "社内プレゼン品質のHTMLスライドをClaude Codeで自動生成",
+  "private": true,
+  "scripts": {
+    "export": "node scripts/export-pdf.js",
+    "export:png": "node scripts/export-pdf.js --png"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}
+</code></pre>
+
+<h2>Step 2 CLAUDE.md をプロジェクト直下に置く</h2>
+
+<p>プロジェクトの絶対ルールを書くファイル。Claude Codeがセッション開始時に必ず読む。このファイルに「やってはいけないこと」を書いておくと、それだけで品質が安定する。</p>
+
+<pre><code># slide-generator
+
+社内プレゼン品質のスライドをClaude Codeで自動生成するプロジェクト。
+
+## 方針
+
+- 梶谷式準拠: PowerPoint/Keynoteではなく、**1枚のHTMLページに16:9セクションを縦積み**する方式
+- 出力は HTML（発表時）+ PDF（配布時）+ PNG（サムネ用）
+- pptx編集は**サポートしない**（Marpの画像埋め込み問題・レイアウト崩壊を回避するため）
+
+## 絶対ルール
+
+- IMPORTANT: セッション開始時に必ず `LESSONS.md` を読み、過去の教訓を確認する
+- IMPORTANT: ユーザーから修正指摘を受けたら、その場で `LESSONS.md` に1行追記する
+- IMPORTANT: スライド生成は `.claude/skills/create-slide/SKILL.md` のフローに従う
+- IMPORTANT: 生成前に必ず `templates/design-tokens.css` のCSS変数でデザイン統一する
+- IMPORTANT: レイアウトは `templates/layouts/` の5種から選ぶ。自由記述レイアウトは禁止（ダサくなる原因）
+- IMPORTANT: ヒアリングで構成案を作ったら、**必ずユーザー確認を取ってから**HTML生成に進む
+- IMPORTANT: 日本語タイトルは15文字以内、本文箇条書きは1行25文字以内
+- IMPORTANT: 配色は3色＋グレースケールのみ。CSS変数を上書きして使う
+
+## 出力
+
+- `output/&lt;案件名&gt;/index.html` — 本体
+- `output/&lt;案件名&gt;/slides.pdf` — 配布用（`scripts/export-pdf.js` で生成）
+
+## エクスポート
+
+```bash
+node scripts/export-pdf.js output/&lt;案件名&gt;/index.html
+```
+
+## デザイン原則（強制）
+
+- 1スライド = 1メッセージ
+- タイトル + 本文3〜5点 + ビジュアル1点
+- アイコンは Lucide (https://lucide.dev) のSVGを inline で埋め込む。他のアイコンセットとの混在禁止
+- フォント: 見出し Inter、日本語 Noto Sans JP、コード JetBrains Mono
+- font-weight: 見出し 700、本文 400。中間値禁止
+- 背景グラデーションはコーナーのみ。テキスト背後に敷くの禁止
+</code></pre>
+
+<p>このファイルは一度書いたら基本いじらない。運用しながら「これは毎回やってほしい」と思ったルールだけ追加する。</p>
+
+<h2>Step 3 LESSONS.md をプロジェクト直下に置く（最初は空テンプレでOK）</h2>
+
+<p>これが<b>一番のキモ</b>。最初は空でいい。運用しながら自動で溜まっていく。</p>
+
+<pre><code># スライド生成の教訓ログ
+
+ユーザーから修正指摘を受けたら、このファイルに1行で追記する。
+セッション開始時、`.claude/skills/create-slide/SKILL.md` の指示に従い必ず読み込むこと。
+
+## 記録ルール
+
+- 形式: `- [YYYY-MM-DD] &lt;カテゴリ&gt;: &lt;ルール&gt;。&lt;理由・適用条件&gt;`
+- 同じ指摘が2回以上来たら先頭に ★ を付ける（優先度高）
+- 既存教訓と重複しそうなら新規追加せず既存行を更新する
+- 1行完結。長文の解説は禁止
+
+## 追記トリガー
+
+- 「〜が小さい」「〜スカスカ」「〜追加して」「〜少なすぎる」等の修正指摘
+- デザイン・情報量・レイアウト選択に関する否定的フィードバック
+- 逆に「これでOK」と明示的に承認された非自明な判断（例: 2スライドを1枚にマージ）
+
+## 教訓一覧
+
+（ここに運用しながら追記されていく。初期はサンプルを1〜2行入れておくと、Claude Codeが追記フォーマットを真似しやすい）
+
+- [YYYY-MM-DD] 情報密度: 初回叩き台は必ず「情報量が少なすぎる」と指摘される。プロジェクト本体から実データ（数字・固有名詞・手順）を引っ張って埋める前提で作る
+- [YYYY-MM-DD] 文字サイズ: 1920x1080基準で最小20px。`--fs-small` (18px) をサブ情報に流用すると潰れる
+</code></pre>
+
+<p>最初からサンプル2行入れておくと、Claude Codeが「ああ、こういうフォーマットで追記すればいいんだな」と理解して、以降の追記が揃う。</p>
+
+<h2>Step 4 create-slide スキル定義を置く</h2>
+
+<p><code>.claude/skills/create-slide/SKILL.md</code> を作る。これがスライド生成の手順書。</p>
+
+<pre><code>---
+name: create-slide
+description: 社内プレゼン品質のスライドをHTML形式で生成する。ヒアリング→構成案確認→HTML生成→PDF出力の4ステップフロー。
+---
+
+# create-slide スキル
+
+Claude Codeで社内プレゼンスライドを作るための手順書。
+
+## 起動トリガー
+
+- 「スライド作って」「プレゼン資料作って」「slide-generatorでXXの資料を」等の依頼
+
+## セッション開始時（必須）
+
+- IMPORTANT: 作業を開始する前に必ず `LESSONS.md` を読み込み、過去の教訓を確認すること
+- 教訓は「情報密度」「文字サイズ」「レイアウト選択」等の判断に影響する。無視して同じ指摘を受けるのはNG
+
+## 教訓の追記ルール（必須）
+
+ユーザーから修正指摘を受けたら、**その場で** `LESSONS.md` に1行追記する。
+
+**追記トリガー:**
+- 「〜が小さい」「〜スカスカ」「〜追加して」「〜少なすぎる」「もっと〜」等の修正指摘
+- デザイン・情報量・レイアウト選択への否定的フィードバック
+- 非自明な判断が明示承認されたケース（例: 2スライドのマージ承認）
+
+**追記フォーマット:**
+```
+- [YYYY-MM-DD] &lt;カテゴリ&gt;: &lt;ルール&gt;。&lt;理由・適用条件&gt;
+```
+
+- 同じ指摘が2回以上来たら先頭に ★ を付ける（優先度高）
+- 既存教訓と重複しそうなら新規追加せず既存行を更新する
+- memoryやCLAUDE.mdではなく **必ずこの `LESSONS.md` に書く**
+
+## フロー（必ず順守）
+
+### ステップ1: ヒアリング
+
+ユーザーに以下を対話で聞く。すべて固定質問ではなく、案件に応じて省略・追加する。
+
+**最低限確認すること:**
+1. **目的** — 聴衆に何を決めて / 理解して / 行動してほしいか
+2. **オーディエンス** — 誰向け（経営層 / エンジニア / 社外顧客 / 新入社員 等）
+3. **枚数・時間** — 何分の発表か、枚数の目安（目安: 5分=5枚、15分=10-15枚、30分=20-25枚）
+4. **キーメッセージ** — 聴衆に1つだけ覚えてほしいこと（1文）
+5. **素材** — 使いたいデータ・エピソード・引用（あればテキストで貰う。なければ後で聞く）
+
+**可能なら確認すること:**
+6. トーン（フォーマル / カジュアル）
+7. ブランドカラー（あれば HEX で。なければデフォルト: インディゴ #4f46e5 + ミント #10b981）
+8. 締切
+
+不明点があれば **勝手に解釈せず質問する**。
+
+### ステップ2: 構成案の提示と確認
+
+ヒアリング結果を踏まえ、以下フォーマットで**Markdownの構成案を提示**する。
+
+```
+## 構成案: &lt;プレゼンタイトル&gt;
+
+想定時間: X分 / 全Y枚 / ブランドカラー: #xxxxxx
+
+1. [Hero] タイトル・サブタイトル・発表者
+2. [IconGrid] アジェンダ（3-5点）
+3. [Hero] セクション区切り: 課題
+4. [DataCallout] 現状の数字（◯◯%が△△）
+5. [Contrast] Before vs After
+6. [Process] 解決ステップ（3-5段階）
+7. [IconGrid] 期待効果
+8. [Hero] まとめ・Call to Action
+```
+
+各スライドに **[レイアウト名] キーメッセージ** を1行で書く。
+
+**IMPORTANT: ここでユーザー確認を必ず取る**。「この構成で進めていい？」と聞いてOK貰うまでHTML生成に進まない。
+
+### ステップ3: HTML生成
+
+承認後、以下の規則で `output/&lt;案件名&gt;/index.html` を生成する。
+
+**ファイル構成:**
+- `output/&lt;案件名&gt;/index.html` — 全スライドを1ファイルに集約
+- `output/&lt;案件名&gt;/style.css` — design-tokens.cssをコピー＋案件ごとのブランドカラー上書き
+
+**HTML雛形:**
+`templates/base.html` をコピーして使う。各 `&lt;section class="slide"&gt;` は以下のクラスから選ぶ:
+- `slide-hero` — タイトル・セクション区切り・結論
+- `slide-contrast` — 2分割比較（Before/After、課題/解決）
+- `slide-icon-grid` — アイコン+短文 3-5点（アジェンダ、メリット、ステップ概要）
+- `slide-data-callout` — 大きな数字 + 補足（KPI、統計）
+- `slide-process` — 矢印つきステップ図（3-5段階）
+
+**デザイン制約（厳守）:**
+- タイトル（h1/h2）: 日本語15文字以内
+- 箇条書き: 1行25文字以内、1スライド最大5項目
+- アイコン: Lucide（https://lucide.dev/icons）のSVGをinlineで埋め込む。他混在禁止
+- 色は `style.css` のCSS変数（--color-primary / --color-accent / --color-text / --color-bg）のみ使用
+- 背景画像・グラデーションをテキスト背後に敷かない（可読性低下）
+
+### ステップ4: PDFエクスポート
+
+生成後、以下を実行して配布用PDFを作る。
+
+```bash
+node scripts/export-pdf.js output/&lt;案件名&gt;/index.html
+```
+
+`output/&lt;案件名&gt;/slides.pdf` が生成される。
+
+### ステップ5: 確認・調整
+
+- ブラウザで `output/&lt;案件名&gt;/index.html` を開いて見た目を確認するようユーザーに依頼
+- 「スライド3の本文をもっとシンプルに」等の修正指示を受けたら該当 `&lt;section&gt;` のみ編集
+- 大幅修正が出たら構成案から再確認
+
+## やってはいけないこと
+
+- 構成案の確認をスキップしてHTML生成に進む
+- 独自レイアウト（templates/layouts以外）を作る
+- ブランドカラー以外の色を勝手に追加する
+- 1枚に複数メッセージを詰め込む
+- Lucide以外のアイコンセット（Font Awesome等）を混ぜる
+- Marpやpython-pptxに切り替える（このプロジェクトはHTML専用）
+</code></pre>
+
+<p>このSKILL.mdが、スライド生成時にClaude Codeが参照する手順書になる。「ヒアリング→構成案→承認→生成」という順番を強制することで、叩き台がいきなり崩れるのを防げる。</p>
+
+<h2>Step 5 templates/base.html を置く</h2>
+
+<p>全スライドの土台になるHTML雛形。キーボードナビ（矢印／Space／F）とプログレスバーが組み込まれている。</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=1920, initial-scale=1"&gt;
+  &lt;title&gt;{{DECK_TITLE}}&lt;/title&gt;
+  &lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+  &lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+  &lt;link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"&gt;
+  &lt;link rel="stylesheet" href="style.css"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="deck-progress"&gt;&lt;div class="bar" id="progress-bar"&gt;&lt;/div&gt;&lt;/div&gt;
+
+  &lt;main class="deck" id="deck"&gt;
+
+    &lt;!-- ========== スライド1: Hero ========== --&gt;
+    &lt;section class="slide slide-hero"&gt;
+      &lt;div class="eyebrow"&gt;{{EYEBROW}}&lt;/div&gt;
+      &lt;h1&gt;{{TITLE}}&lt;/h1&gt;
+      &lt;p class="subtitle"&gt;{{SUBTITLE}}&lt;/p&gt;
+      &lt;div class="meta"&gt;{{PRESENTER}} / {{DATE}}&lt;/div&gt;
+      &lt;div class="slide-number"&gt;01&lt;/div&gt;
+    &lt;/section&gt;
+
+    &lt;!-- ========== スライド2: IconGrid ========== --&gt;
+    &lt;section class="slide slide-icon-grid"&gt;
+      &lt;h2&gt;{{SECTION_TITLE}}&lt;/h2&gt;
+      &lt;div class="grid"&gt;
+        &lt;div class="item"&gt;
+          &lt;svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;circle cx="12" cy="12" r="10"/&gt;&lt;polyline points="12 6 12 12 16 14"/&gt;&lt;/svg&gt;
+          &lt;h3&gt;{{ITEM_TITLE}}&lt;/h3&gt;
+          &lt;p&gt;{{ITEM_DESC}}&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class="slide-number"&gt;02&lt;/div&gt;
+    &lt;/section&gt;
+
+  &lt;/main&gt;
+
+  &lt;script&gt;
+    // キーボードナビゲーション
+    const deck = document.getElementById('deck');
+    const slides = document.querySelectorAll('.slide');
+    const progressBar = document.getElementById('progress-bar');
+
+    function currentIndex() {
+      const scrollTop = deck.scrollTop;
+      const h = window.innerHeight;
+      return Math.round(scrollTop / h);
+    }
+
+    function goTo(idx) {
+      const clamped = Math.max(0, Math.min(slides.length - 1, idx));
+      slides[clamped].scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    document.addEventListener('keydown', (e) =&gt; {
+      const idx = currentIndex();
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        goTo(idx + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+        e.preventDefault();
+        goTo(idx - 1);
+      } else if (e.key === 'Home') {
+        goTo(0);
+      } else if (e.key === 'End') {
+        goTo(slides.length - 1);
+      } else if (e.key === 'f' || e.key === 'F') {
+        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+        else document.exitFullscreen();
+      }
+    });
+
+    // プログレスバー更新
+    deck.addEventListener('scroll', () =&gt; {
+      const pct = ((deck.scrollTop / (deck.scrollHeight - window.innerHeight)) * 100) || 0;
+      progressBar.style.width = pct + '%';
+    });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<h2>Step 6 templates/design-tokens.css を置く（5レイアウトのCSS全部入り）</h2>
+
+<p>これが一番分量が多いが、<b>1回コピペすれば案件ごとにCSS変数の値（色）を上書きするだけで使い回せる</b>。</p>
+
+<pre><code>/* ==========================================================================
+   Design Tokens
+   このファイルをコピーして案件ごとに --color-primary / --color-accent を上書きする
+   ========================================================================== */
+
+:root {
+  /* --- カラー（案件ごとに上書き） --- */
+  --color-primary: #4f46e5;
+  --color-primary-dark: #3730a3;
+  --color-accent: #10b981;
+  --color-accent-dark: #047857;
+
+  /* --- ニュートラル（変更しない） --- */
+  --color-bg: #ffffff;
+  --color-bg-alt: #f8fafc;
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-dark: #0f172a;
+
+  /* --- タイポグラフィ --- */
+  --font-heading: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+  --font-body: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+
+  /* --- フォントサイズ（1920x1080基準） --- */
+  --fs-hero: 96px;
+  --fs-h1: 64px;
+  --fs-h2: 48px;
+  --fs-h3: 32px;
+  --fs-body: 24px;
+  --fs-small: 18px;
+  --fs-callout: 180px;
+
+  /* --- ウェイト --- */
+  --fw-heading: 700;
+  --fw-body: 400;
+  --fw-emphasis: 600;
+
+  /* --- 行間 --- */
+  --lh-tight: 1.2;
+  --lh-normal: 1.6;
+
+  /* --- スペーシング --- */
+  --sp-1: 8px;
+  --sp-2: 16px;
+  --sp-3: 24px;
+  --sp-4: 32px;
+  --sp-5: 48px;
+  --sp-6: 64px;
+  --sp-7: 96px;
+  --sp-8: 128px;
+
+  /* --- 角丸 --- */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  /* --- シャドウ --- */
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.12);
+}
+
+/* ==========================================================================
+   リセット &amp; ベース
+   ========================================================================== */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: var(--fw-body);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-heading);
+  line-height: var(--lh-tight);
+  letter-spacing: -0.02em;
+}
+
+/* ==========================================================================
+   スライドコンテナ
+   ========================================================================== */
+
+.deck {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  height: 100vh;
+}
+
+.slide {
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  padding: var(--sp-7) var(--sp-8);
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+@media (min-aspect-ratio: 16/9) {
+  .slide { font-size: calc(1vh * 100 / 1080 * 16); }
+}
+
+/* ==========================================================================
+   レイアウト1: Hero
+   ========================================================================== */
+
+.slide-hero {
+  justify-content: center;
+  align-items: flex-start;
+  background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-alt) 100%);
+}
+
+.slide-hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
+  opacity: 0.1;
+}
+
+.slide-hero .eyebrow {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-emphasis);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--sp-3);
+}
+
+.slide-hero h1 { font-size: var(--fs-hero); color: var(--color-text); margin-bottom: var(--sp-4); max-width: 80%; }
+.slide-hero .subtitle { font-size: var(--fs-h3); color: var(--color-text-muted); font-weight: var(--fw-body); max-width: 70%; }
+.slide-hero .meta { position: absolute; bottom: var(--sp-7); left: var(--sp-8); font-size: var(--fs-small); color: var(--color-text-muted); }
+
+/* ==========================================================================
+   レイアウト2: Contrast
+   ========================================================================== */
+
+.slide-contrast h2 { font-size: var(--fs-h2); margin-bottom: var(--sp-5); }
+
+.slide-contrast .columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-5);
+  flex: 1;
+}
+
+.slide-contrast .col {
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  border-top: 8px solid var(--color-border);
+}
+
+.slide-contrast .col.is-before { border-top-color: var(--color-text-muted); }
+.slide-contrast .col.is-after {
+  border-top-color: var(--color-primary);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--color-primary) 5%, var(--color-bg)) 0%, var(--color-bg-alt) 100%);
+}
+
+.slide-contrast .col-label {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-emphasis);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+}
+
+.slide-contrast .col.is-after .col-label { color: var(--color-primary); }
+.slide-contrast .col h3 { font-size: var(--fs-h3); }
+.slide-contrast .col ul { list-style: none; display: flex; flex-direction: column; gap: var(--sp-2); }
+.slide-contrast .col li { font-size: var(--fs-body); display: flex; gap: var(--sp-2); align-items: flex-start; }
+.slide-contrast .col li::before {
+  content: '';
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.4;
+  margin-top: 14px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   レイアウト3: IconGrid
+   ========================================================================== */
+
+.slide-icon-grid h2 { font-size: var(--fs-h2); margin-bottom: var(--sp-5); }
+.slide-icon-grid .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); flex: 1; align-content: center; }
+.slide-icon-grid .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.slide-icon-grid .grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+.slide-icon-grid .item {
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  padding: var(--sp-4);
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-primary);
+}
+
+.slide-icon-grid .icon { width: 56px; height: 56px; color: var(--color-primary); }
+.slide-icon-grid .item h3 { font-size: var(--fs-h3); margin-bottom: var(--sp-1); }
+.slide-icon-grid .item p { font-size: var(--fs-body); color: var(--color-text-muted); line-height: var(--lh-normal); }
+
+/* ==========================================================================
+   レイアウト4: DataCallout
+   ========================================================================== */
+
+.slide-data-callout { justify-content: center; align-items: center; text-align: center; }
+.slide-data-callout .eyebrow { font-size: var(--fs-h3); color: var(--color-text-muted); margin-bottom: var(--sp-4); }
+
+.slide-data-callout .number {
+  font-family: var(--font-heading);
+  font-size: var(--fs-callout);
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--sp-4);
+  letter-spacing: -0.04em;
+}
+
+.slide-data-callout .number .unit { font-size: 0.5em; color: var(--color-text); -webkit-text-fill-color: var(--color-text); margin-left: var(--sp-2); }
+.slide-data-callout .description { font-size: var(--fs-h2); font-weight: var(--fw-emphasis); max-width: 70%; line-height: var(--lh-tight); }
+.slide-data-callout .source { position: absolute; bottom: var(--sp-5); font-size: var(--fs-small); color: var(--color-text-muted); }
+
+/* ==========================================================================
+   レイアウト5: Process
+   ========================================================================== */
+
+.slide-process h2 { font-size: var(--fs-h2); margin-bottom: var(--sp-5); }
+.slide-process .steps { display: flex; gap: var(--sp-2); flex: 1; align-items: stretch; }
+
+.slide-process .step {
+  flex: 1;
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  padding: var(--sp-4);
+  background: var(--color-bg-alt);
+  border-radius: var(--radius-md);
+  position: relative;
+  border-top: 6px solid var(--color-primary);
+}
+
+.slide-process .step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-left: 20px solid var(--color-primary);
+  border-top: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  z-index: 1;
+}
+
+.slide-process .step-num { font-family: var(--font-heading); font-size: var(--fs-h1); font-weight: 800; color: var(--color-primary); line-height: 1; }
+.slide-process .step h3 { font-size: var(--fs-h3); }
+.slide-process .step p { font-size: var(--fs-body); color: var(--color-text-muted); }
+
+/* Processスカスカ対策（LESSONS.mdの教訓を反映） */
+.slide-process .step ul {
+  margin-top: auto;
+  padding-top: var(--sp-3);
+  border-top: 1px dashed var(--color-border);
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.slide-process .step ul li { font-size: var(--fs-small); color: var(--color-text); }
+
+.slide-process .step .tag {
+  display: inline-block;
+  background: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  color: var(--color-primary);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-emphasis);
+  width: fit-content;
+}
+
+/* ==========================================================================
+   共通UI
+   ========================================================================== */
+
+.deck-progress { position: fixed; top: 0; left: 0; height: 4px; width: 100%; background: transparent; z-index: 100; pointer-events: none; }
+.deck-progress .bar { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-accent)); transition: width 0.2s ease; }
+
+.slide-number { position: absolute; bottom: var(--sp-4); right: var(--sp-5); font-size: var(--fs-small); color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+
+/* ==========================================================================
+   印刷（PDF出力時）
+   ========================================================================== */
+
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { width: 1920px; height: auto; overflow: visible; }
+  .deck { scroll-snap-type: none; overflow: visible; height: auto; }
+  .slide { width: 1920px; height: 1080px; page-break-after: always; page-break-inside: avoid; break-after: page; }
+  .deck-progress { display: none; }
+}
+</code></pre>
+
+<p>案件ごとに色を変えたいときは、<code>output/案件名/style.css</code> に<code>design-tokens.css</code>をコピーして、冒頭の<code>--color-primary</code>と<code>--color-accent</code>だけ上書きすればOK。</p>
+
+<h2>Step 7 templates/layouts/README.md を置く（5レイアウトのHTML実例）</h2>
+
+<p>Claude CodeがHTML生成時に参照するレイアウト仕様書。これがあると「自由にレイアウトを作ってダサくなる」を防げる。</p>
+
+<pre><code># レイアウト一覧
+
+`design-tokens.css` に定義された5種のスライドレイアウト。新規レイアウト追加禁止。
+
+## 1. Hero — `slide-hero`
+
+タイトル・セクション区切り・結論スライド用。
+
+```html
+&lt;section class="slide slide-hero"&gt;
+  &lt;div class="eyebrow"&gt;CHAPTER 01&lt;/div&gt;
+  &lt;h1&gt;メインタイトル&lt;/h1&gt;
+  &lt;p class="subtitle"&gt;サブタイトル（補足）&lt;/p&gt;
+  &lt;div class="meta"&gt;発表者名 / 2026-04-14&lt;/div&gt;
+  &lt;div class="slide-number"&gt;01&lt;/div&gt;
+&lt;/section&gt;
+```
+
+## 2. Contrast — `slide-contrast`
+
+2分割比較（Before/After、課題/解決）用。
+
+```html
+&lt;section class="slide slide-contrast"&gt;
+  &lt;h2&gt;現状と理想&lt;/h2&gt;
+  &lt;div class="columns"&gt;
+    &lt;div class="col is-before"&gt;
+      &lt;span class="col-label"&gt;Before&lt;/span&gt;
+      &lt;h3&gt;現状の課題&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;手作業で2時間かかる&lt;/li&gt;
+        &lt;li&gt;ミスが月3件発生&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;div class="col is-after"&gt;
+      &lt;span class="col-label"&gt;After&lt;/span&gt;
+      &lt;h3&gt;導入後の姿&lt;/h3&gt;
+      &lt;ul&gt;
+        &lt;li&gt;自動化で10分に短縮&lt;/li&gt;
+        &lt;li&gt;ミスゼロを実現&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="slide-number"&gt;03&lt;/div&gt;
+&lt;/section&gt;
+```
+
+## 3. IconGrid — `slide-icon-grid`
+
+アイコン+短文でアジェンダ・メリット・機能紹介。
+
+```html
+&lt;section class="slide slide-icon-grid"&gt;
+  &lt;h2&gt;3つの特徴&lt;/h2&gt;
+  &lt;div class="grid"&gt;
+    &lt;div class="item"&gt;
+      &lt;svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;
+        &lt;!-- Lucide iconのSVG --&gt;
+      &lt;/svg&gt;
+      &lt;h3&gt;特徴1&lt;/h3&gt;
+      &lt;p&gt;簡潔な説明文&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="slide-number"&gt;05&lt;/div&gt;
+&lt;/section&gt;
+```
+
+アイコンは https://lucide.dev/icons から選び、SVGをコピペ。`class="icon"` を付ける。
+
+## 4. DataCallout — `slide-data-callout`
+
+KPI・統計の強調表示。1スライド1数字。
+
+```html
+&lt;section class="slide slide-data-callout"&gt;
+  &lt;p class="eyebrow"&gt;2026年の市場規模&lt;/p&gt;
+  &lt;div class="number"&gt;
+    87&lt;span class="unit"&gt;%&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p class="description"&gt;導入企業の生産性向上率&lt;/p&gt;
+  &lt;p class="source"&gt;出典: 総務省 2026年DX調査&lt;/p&gt;
+  &lt;div class="slide-number"&gt;07&lt;/div&gt;
+&lt;/section&gt;
+```
+
+## 5. Process — `slide-process`
+
+ステップ・プロセス図。3〜5段階推奨。各stepにtagとul3点を必ず入れる（LESSONSより）。
+
+```html
+&lt;section class="slide slide-process"&gt;
+  &lt;h2&gt;導入プロセス&lt;/h2&gt;
+  &lt;div class="steps"&gt;
+    &lt;div class="step"&gt;
+      &lt;div class="step-num"&gt;01&lt;/div&gt;
+      &lt;h3&gt;ヒアリング&lt;/h3&gt;
+      &lt;p&gt;要件整理と現状把握&lt;/p&gt;
+      &lt;span class="tag"&gt;所要 1週間&lt;/span&gt;
+      &lt;ul&gt;
+        &lt;li&gt;関係者インタビュー&lt;/li&gt;
+        &lt;li&gt;既存資料レビュー&lt;/li&gt;
+        &lt;li&gt;要件リスト作成&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+    &lt;!-- step2-4 も同じ構造 --&gt;
+  &lt;/div&gt;
+  &lt;div class="slide-number"&gt;09&lt;/div&gt;
+&lt;/section&gt;
+```
+
+## 選び方の指針
+
+| 用途 | レイアウト |
+|---|---|
+| 表紙・章タイトル・結論 | Hero |
+| Before/After、競合比較 | Contrast |
+| アジェンダ、機能一覧、メリット3-5点 | IconGrid |
+| KPI、統計、インパクト数字1つ | DataCallout |
+| 手順、工程、ロードマップ | Process |
+
+## 禁止事項
+
+- 上記5種以外のレイアウトを新規作成しない
+- レイアウトCSSを直接書き換えない（CSS変数のみ上書きOK）
+- 1枚に複数レイアウトを混在させない
+</code></pre>
+
+<h2>Step 8 scripts/export-pdf.js を置く</h2>
+
+<p>PlaywrightでHTMLをPDFとPNGに書き出すスクリプト。一度置けば使い回し。</p>
+
+<pre><code>#!/usr/bin/env node
+/**
+ * PlaywrightでHTMLスライドをPDF/PNG出力する
+ *
+ * 使い方:
+ *   node scripts/export-pdf.js output/案件名/index.html
+ *   node scripts/export-pdf.js output/案件名/index.html --png
+ */
+
+const { chromium } = require('playwright');
+const path = require('path');
+const fs = require('fs');
+
+async function main() {
+  const args = process.argv.slice(2);
+  const inputArg = args.find(a =&gt; !a.startsWith('--'));
+  const exportPng = args.includes('--png');
+
+  if (!inputArg) {
+    console.error('使い方: node scripts/export-pdf.js &lt;index.html のパス&gt; [--png]');
+    process.exit(1);
+  }
+
+  const inputPath = path.resolve(inputArg);
+  if (!fs.existsSync(inputPath)) {
+    console.error(`ファイルが見つからない ${inputPath}`);
+    process.exit(1);
+  }
+
+  const outDir = path.dirname(inputPath);
+  const fileUrl = 'file:///' + inputPath.replace(/\\/g, '/');
+
+  console.log(`入力 ${inputPath}`);
+  console.log(`URL ${fileUrl}`);
+
+  const browser = await chromium.launch();
+  const context = await browser.newContext({
+    viewport: { width: 1920, height: 1080 },
+    deviceScaleFactor: 2,
+  });
+  const page = await context.newPage();
+
+  await page.goto(fileUrl, { waitUntil: 'networkidle' });
+  await page.evaluate(() =&gt; document.fonts.ready);
+  await page.waitForTimeout(500);
+
+  // PDF出力
+  const pdfPath = path.join(outDir, 'slides.pdf');
+  await page.pdf({
+    path: pdfPath,
+    width: '1920px',
+    height: '1080px',
+    printBackground: true,
+    preferCSSPageSize: true,
+    margin: { top: 0, right: 0, bottom: 0, left: 0 },
+  });
+  console.log(`PDF出力完了 ${pdfPath}`);
+
+  // PNG出力（--png指定時）
+  if (exportPng) {
+    const pngDir = path.join(outDir, 'png');
+    if (!fs.existsSync(pngDir)) fs.mkdirSync(pngDir, { recursive: true });
+
+    const slideCount = await page.evaluate(() =&gt; document.querySelectorAll('.slide').length);
+    console.log(`PNG出力 ${slideCount}枚`);
+
+    for (let i = 0; i &lt; slideCount; i++) {
+      await page.evaluate((idx) =&gt; {
+        const slides = document.querySelectorAll('.slide');
+        slides[idx].scrollIntoView({ behavior: 'instant', block: 'start' });
+      }, i);
+      await page.waitForTimeout(300);
+
+      const pngPath = path.join(pngDir, `slide-${String(i + 1).padStart(2, '0')}.png`);
+      await page.screenshot({
+        path: pngPath,
+        clip: { x: 0, y: 0, width: 1920, height: 1080 },
+      });
+    }
+    console.log(`PNG出力完了 ${pngDir}`);
+  }
+
+  await browser.close();
+}
+
+main().catch((err) =&gt; {
+  console.error(err);
+  process.exit(1);
+});
+</code></pre>
+
+<p>これで<b>インフラ部分は全部揃った</b>。ここから先は、Claude Codeに話しかけるだけで回り始める。</p>
+
+<hr>
+
+<h2>Claude Codeに投げる起動プロンプト集（Step 1〜8）</h2>
+
+<p>プロジェクトが立ち上がったら、Claude Codeを起動して以下を順番に投げる。コピペでOK。</p>
+
+<h3>Step 1 プロジェクト認識</h3>
+
+<blockquote>このプロジェクト（slide-generator）をこれから使います。CLAUDE.md と .claude/skills/create-slide/SKILL.md と LESSONS.md を読み込んで、どういうプロジェクトか要約してください。</blockquote>
+
+<p>最初にプロジェクト憲法を読ませる。これをやらずに生成依頼すると、5レイアウトを無視して自由に作り始めるので必須。</p>
+
+<h3>Step 2 案件依頼（ヒアリング開始）</h3>
+
+<blockquote>&lt;案件名&gt; の社内プレゼンスライドを作ってください。SKILL.md のフローに従って、まずヒアリングから始めてください。</blockquote>
+
+<p>&lt;案件名&gt;には「2026年Q2経営会議」「新卒オンボーディング資料」のように具体名を入れる。</p>
+
+<h3>Step 3 ヒアリングに答える</h3>
+
+<p>Claude Codeが目的・オーディエンス・枚数・キーメッセージ・素材を聞いてくる。箇条書きで答える。素材（使いたいデータや数字）がある場合は、この段階で<b>テキストでまとめて渡す</b>のがコツ。画像やスクショは後で貼り替えるほうが楽。</p>
+
+<h3>Step 4 構成案の承認（最重要）</h3>
+
+<blockquote>構成案OKです。このままHTML生成に進んでください。</blockquote>
+
+<p>またはこう返す。</p>
+
+<blockquote>スライド3とスライド5は1枚にマージしてください。それ以外はOKなので、修正版の構成案を出してから進んでください。</blockquote>
+
+<p>ここで<b>構成案を承認する前にHTML生成に進ませない</b>のが鉄則。構成で気になる点があれば全部ここで潰す。生成後に構造から直すのは高コスト。</p>
+
+<h3>Step 5 HTML生成依頼</h3>
+
+<blockquote>承認した構成案でHTMLを生成してください。ブランドカラーは #xxxxxx / #xxxxxx で。既存データは &lt;参照元プロジェクトパス&gt; から引っ張ってきて埋めてください。</blockquote>
+
+<p>データ参照元があれば必ず指定する。「いい感じに埋めて」と言うと<b>抽象的なプレースホルダー</b>で埋めてくる。具体的な参照元を指示すると一次情報が入って説得力が段違いになる。</p>
+
+<h3>Step 6 PDF/PNG書き出し</h3>
+
+<blockquote>export-pdf.js を実行して、PDFとPNGを書き出してください。</blockquote>
+
+<p>または自分で実行するなら以下。</p>
+
+<pre><code>node scripts/export-pdf.js output/&lt;案件名&gt;/index.html --png
+</code></pre>
+
+<h3>Step 7 修正依頼（ここで教訓が溜まる）</h3>
+
+<p>ブラウザで<code>output/&lt;案件名&gt;/index.html</code>を開いて確認。気になる点を指摘する。</p>
+
+<blockquote>スライド3の文字が小さい。もっと大きく。あとスライド5のProcessレイアウト、下半分がスカスカなので情報量を増やしてください。</blockquote>
+
+<p>指摘を受けたClaude Codeは、SKILL.mdのルールに従って<b>LESSONS.mdに1行追記してから</b>修正に入る。次回から同じミスをしなくなる。</p>
+
+<h3>Step 8 差分修正（構成は変えない）</h3>
+
+<blockquote>スライド7のBefore/Afterの数字を「3.4時間 → 5分」に差し替えてください。他は触らないで。</blockquote>
+
+<p>数値や文言の差し替えは該当セクションだけを編集させる。全体を作り直させると別の場所で劣化が起きる。</p>
+
+<hr>
+
+<h2>つまずきポイントと回避策</h2>
+
+<h3>「Playwrightが起動しない」</h3>
+
+<p><code>npx playwright install chromium</code>を忘れている可能性が高い。Step 0のセットアップコマンドを全部再実行。</p>
+
+<h3>「PDFにするとフォントが崩れる」</h3>
+
+<p>Google Fontsの読み込みが完了する前に書き出している。<code>export-pdf.js</code>の<code>await page.waitForTimeout(500);</code>を1500に増やす。オフラインで使う場合はフォントをローカルに落として<code>@font-face</code>で指定する。</p>
+
+<h3>「Processレイアウトがスカスカに戻ってしまう」</h3>
+
+<p>LESSONS.mdに対策が書いてあっても、Claude Codeがセッション開始時にそれを読んでいない可能性。Step 1の「LESSONS.md を読み込んでください」を毎回必ず最初に投げる。CLAUDE.mdの<code>IMPORTANT: セッション開始時に必ず LESSONS.md を読む</code>を強調しておく。</p>
+
+<h3>「ブランドカラーを変えたら一部の色が残る」</h3>
+
+<p>design-tokens.cssをコピーして<code>output/案件名/style.css</code>を作るときに、<code>--color-primary</code>と<code>--color-accent</code>だけ上書きすればOK。本体を触らない。</p>
+
+<h3>「1枚に文字を詰め込みすぎて読めない」</h3>
+
+<p>CLAUDE.mdの「1行25文字以内・最大5項目」を守らせる。守ってこなかったら「CLAUDE.mdの制約を守ってください」と1行投げれば戻る。</p>
+
+<h2>運用していくと何が起きるか</h2>
+
+<p>最初の1案件で<b>LESSONS.mdに10〜20行たまる</b>。2案件目以降は「最初の叩き台」の質が上がっている。同じ指摘を2回受けない。</p>
+
+<p>自分の場合、3案件目くらいから<b>初回生成物がそのまま使えるレベル</b>になった。修正ラウンドが0〜1回で済む。</p>
+
+<p>LESSONS.mdを育てている感覚は<b>自分用のAIをチューニングしている感覚に近い</b>。話しかけるたびに賢くなっていく。</p>
+
+<h2>応用 他の定型業務にも転用できる</h2>
+
+<p>同じ構造は他の業務にも転用できる。</p>
+
+<blockquote><b>提案書生成プロジェクト</b><br>CLAUDE.md＋提案書テンプレート＋LESSONS.md</blockquote>
+<blockquote><b>議事録整形プロジェクト</b><br>CLAUDE.md＋議事録フォーマット＋LESSONS.md</blockquote>
+<blockquote><b>ブログ記事草稿プロジェクト</b><br>CLAUDE.md＋記事フレームワーク＋LESSONS.md</blockquote>
+
+<p>コアの発想は<b>「プロジェクト憲法 + スキル手順書 + 教訓ログ」の3点セット</b>。これを作っておけば、話しかけるだけで動く自分専用のAIツールが量産できる。</p>
+
+<h2>おわりに</h2>
+
+<p>Claude Codeの一番強い使い方は、<b>コードを書かせることではなく、ツールを作らせること</b>だと思っている。</p>
+
+<p>1回ちゃんとプロジェクト化しておけば、あとは話しかけるだけ。LESSONS.mdが育っていくほど賢くなる。</p>
+
+<p>これを読んでくれた人が、自分の業務にも同じ型を当てはめて、「明日から2日かかってた作業が3時間になった」になってくれたら最高。</p>
+
+<hr>
+
+<p>slide-generator単体の話はここまで。ただ、<b>このプロジェクト型の発想（CLAUDE.md＋スキル＋LESSONS.md）を軸に、文系大学生の自分がClaude Codeで副業2ヶ月で月14万まで作った全体像</b>は、別の記事にまとめてある。こちらは副業の立ち上げ・案件獲得・価格設定まで含めた全工程の記録。</p>
+<p>▶ 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話（¥2,000 ／ 初月¥1,480・〜2026-05-14）</p>
+
+<pre><code>https://note.com/moyuchi_aistu/n/na548ac967740</code></pre>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li>Claude Codeで「社内プレゼン品質」のスライド生成器を作った話（元記事／体験記パート）</li>
+</ul>

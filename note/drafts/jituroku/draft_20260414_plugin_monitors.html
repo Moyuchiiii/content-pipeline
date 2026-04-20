@@ -1,0 +1,160 @@
+<hr>
+<p style="text-align: center;"><b>CI完了の通知、毎回自分で「見に行って」いませんか？</b></p>
+<hr>
+
+<p>先週、クラウドワークスの納品が1件遅れた。CIのテストが落ちてたのに、自分が気づいてなかっただけ。Claude Codeで作業してるうちにウィンドウを閉じて、Monitorツールを起動し忘れてた。</p>
+
+<p>この「Monitorツールを毎回手動で起動する手間」が、4月13日リリースのClaude Code v2.1.105で消えた。自作プラグインに監視設定を埋め込んでおくと、Claude Code起動した瞬間に監視が走り出す。</p>
+
+<p>1週間使ってみたら、取りこぼしが週2回→0になった。その全記録。</p>
+
+<h2>何が変わったか</h2>
+
+<p>Claude CodeのMonitorツールは、バックグラウンドの変化（CIの進捗・サーバーログ・PRコメント）を監視してClaudeに通知する機能。v2.1.98でリリースされた。ただし毎回セッションごとに手動で起動しないといけなかった。</p>
+
+<p>v2.1.105で、プラグインの設定ファイル（<code>plugin.json</code>）に <code>monitors</code> という項目が追加された。ここに監視の設定を書いておくと、以下のタイミングで自動起動する。</p>
+
+<blockquote>
+<b>セッション開始時</b><br>
+Claude Codeを起動した瞬間に監視が走る。常時必要な監視（CI・PR到着など）向け
+</blockquote>
+
+<blockquote>
+<b>スキル呼び出し時</b><br>
+プラグインのスキル（例<code>/my-plugin:deploy</code>）が起動したタイミングで監視が走る。作業中だけ必要な監視（devサーバー・ビルドログなど）向け
+</blockquote>
+
+<p>この2段階の使い分けが、副業ワークフローにめちゃくちゃ合う。</p>
+
+<h2>Monitorツール手動起動で何を取りこぼしてたか</h2>
+
+<p>先月、Monitorツールの記事を書いたとき、「週5時間のCI待ちが0.5時間になった」と書いた。実際そのとおりだった。ただ、正確には「Monitorを起動してる間は」という条件付きだった。</p>
+
+<p>自分の副業の失敗談を正直に書くと、以下のパターンを週2回くらいやってた。</p>
+
+<blockquote>
+<b>パターン1</b><br>
+CW案件の納品前、CIをpushして別作業に入った。Claudeのセッションを閉じた。翌朝見たらCIが落ちてた。気づいたのは納品予定の2時間前
+</blockquote>
+
+<blockquote>
+<b>パターン2</b><br>
+Webアプリ案件でdevサーバー起動したまま作業。Claudeのターミナル経由で見えないエラーがログに出てた。バグ報告がクライアントから来て初めて気づいた
+</blockquote>
+
+<p>どっちも「Monitorを起動するのを忘れてただけ」。でも人間は忘れる。</p>
+
+<h2>自作プラグインにmonitorsを書いた</h2>
+
+<p>自分が使ってる副業プラグイン（以前の記事で自作したやつ）に、今回 <code>monitors</code> 設定を追加した。</p>
+
+<p>プラグインのルートに <code>monitors/monitors.json</code> を置いて、以下のように書く。何をしてるかというと、3種類の監視をプラグインに同梱してる。</p>
+
+<pre><code>{
+  "monitors": [
+    {
+      "id": "ci-watch",
+      "trigger": "session_start",
+      "command": "gh run list --limit 1 --json status,conclusion,url",
+      "notify_when": "conclusion changed",
+      "poll_interval": "30s"
+    },
+    {
+      "id": "dev-server",
+      "trigger": "skill_invoke",
+      "command": "tail -f ${CLAUDE_PLUGIN_DATA}/dev.log",
+      "notify_when": "contains 'ERROR'"
+    },
+    {
+      "id": "pr-review",
+      "trigger": "session_start",
+      "command": "gh pr view --json reviews --jq '.reviews[-1]'",
+      "notify_when": "new review added",
+      "poll_interval": "2m"
+    }
+  ]
+}</code></pre>
+
+<p>そして <code>plugin.json</code> に1行だけ追加する。</p>
+
+<pre><code>{
+  "name": "cw-fukugyou",
+  "version": "1.3.0",
+  "monitors": "./monitors/monitors.json"
+}</code></pre>
+
+<p>これでGitHubリポジトリにpushして、副業で使ってるPC全部に<code>/plugin update</code>かけるだけ。どの環境で起動しても、セッション開始の瞬間からCI監視とPRレビュー監視が走る。</p>
+
+<h2>3つの監視、実際にどう効いたか</h2>
+
+<h3>CI監視（セッション開始時）</h3>
+
+<p>Claude Codeを起動した瞬間に <code>gh run list</code> が走り始める。最新のGitHub Actions実行結果が変わったら即通知が来る。</p>
+
+<p>先週、朝コーヒー淹れてる間にClaude起動しといて、シャワー浴びて戻ったら「CIが失敗しました」と画面に出てた。10分前にpushしたやつ。気づく速度が変わった。</p>
+
+<h3>devサーバー監視（スキル呼び出し時）</h3>
+
+<p>WebアプリUI案件では <code>/cw-fukugyou:dev-start</code> というスキルを自作してる。これを起動するとViteのdevサーバーが立ち上がる。このスキル起動と同時に、devサーバーのログにERRORが出たらClaudeに通知する監視も走り出す。</p>
+
+<p>クライアントから「この画面でエラー出ます」と言われる前に、自分が気づいて直せるようになった。</p>
+
+<h3>PRレビュー監視（セッション開始時）</h3>
+
+<p>PR投げっぱなしで寝落ちしても、朝Claude起動した瞬間に「新しいレビューが届いてる」と教えてくれる。2分に1回ポーリングしてるけど、普段の作業中は気にならない。</p>
+
+<hr>
+<p style="text-align: center;"><b>取りこぼし 週2回 → 0回</b></p>
+<hr>
+
+<h2>つまずいた2パターン</h2>
+
+<h3>session_startで重い監視を走らせすぎて起動が遅い</h3>
+
+<p>最初、監視を6個くらい全部 <code>session_start</code> にしてた。Claude Code起動するのに毎回10秒以上かかるようになった。</p>
+
+<p>常時必要な監視（CI・PR）は<code>session_start</code>、作業中だけ必要な監視（devサーバー・ビルド・テストウォッチ）は<code>skill_invoke</code>に分けるのが正解。副業で触るリポジトリが増えても起動速度は落ちない。</p>
+
+<h3>${CLAUDE_PLUGIN_DATA}のパスがずれた</h3>
+
+<p>devサーバーのログを <code>${CLAUDE_PLUGIN_DATA}/dev.log</code> に吐かせてたけど、プラグインをアップデートしたら古いログが消える問題にハマりかけた。</p>
+
+<p>公式ドキュメントを読み返したら、<code>${CLAUDE_PLUGIN_DATA}</code>はアップデートしても残る永続ディレクトリで、<code>${CLAUDE_PLUGIN_ROOT}</code>はアップデートで消えるパスと書いてあった。ログを残したい場合は<code>DATA</code>側に書く。ここ、混同しやすい。</p>
+
+<h2>Before / After</h2>
+
+<blockquote>
+<b>導入前</b><br>
+Monitorを起動し忘れる週2回。CI失敗気づくの最短30分、最悪納品の2時間前
+</blockquote>
+
+<blockquote>
+<b>導入後</b><br>
+Monitor起動忘れ0回。CI失敗気づくの最長1分以内。プラグインを入れたPC全部で同じ挙動
+</blockquote>
+
+<p>週1回あった「あ、CIコケてた」の焦りが消えた。これだけで睡眠が良くなる。</p>
+
+<h2>誰に向いてるか</h2>
+
+<p>正直、まだプラグイン自体を自作してない人には遠い話。プラグインを作ってない状態で <code>monitors</code> だけ使う方法はない。</p>
+
+<p>ただ、副業で2〜3案件を並行でさばいてて、1つでも「CI落ちた」「エラー気づかなかった」で納期リスクを感じたことがある人には、たぶん1週間で元が取れる。</p>
+
+<p>自作プラグインの作り方はこっちに書いた。chmod忘れ・nameの付け方ミス・<code>/reload-plugins</code>忘れの3つのつまずき込みで、最初の1本が1時間以内に作れる手順になってる。</p>
+
+<hr>
+<p>プラグイン自体の作り方（bin/ディレクトリ活用・GitHub管理・別PC移植10秒）はこっちにまとめた。今回のmonitorsはその拡張編として読むとスムーズ。</p>
+<p>▶ 副業ワークフローをClaude Codeプラグインに詰め込んだら、端末が変わっても5秒で再開できた話（¥500）</p>
+<p>（↑ ここに該当記事URLを貼る）</p>
+
+<hr>
+<p>自作プラグインの前段階、「Claude Codeでどうやって副業を始めて月14万まで行ったか」の全記録はこっちに書いた。Week1から初受注までのロードマップ・応募文プロンプト・CLAUDE.md全文同梱。</p>
+<p>▶ 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話（¥2,000 ／ 初月¥1,480・〜2026-05-14）</p>
+<p>（↑ ここにメイン商品URLを貼る）</p>
+
+<h3>あわせて読みたい</h3>
+<p>Claude Code Desktopを副業で使い倒したら、PR待ち時間が週3時間→0になった話</p>
+<p>（↑ URLを貼る）</p>
+<p>大学生がClaude Code Remote Controlを副業で1週間使ったら、移動時間も稼ぎになった話</p>
+<p>（↑ URLを貼る）</p>
