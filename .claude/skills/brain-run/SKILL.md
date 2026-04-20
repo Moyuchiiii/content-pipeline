@@ -582,44 +582,19 @@ status: final
 ##### プロンプト 1: 実録記事型（`jituroku` + 受注・納品・副業ワークフロー系）
 
 ```
-Create a 16:9 thumbnail image (1280x670px) for a Japanese digital content product on Brain marketplace.
+16:9横長のBrain商品サムネイル画像。プロフェッショナルで実直な雰囲気のダーク系ビジネスデザイン。背景は漆黒から濃紺へのグラデーション（左から右）で、ダークティール系の回路基板パターンがごく薄く重なっている。明るいネオン光線や虹色のエフェクトは一切使わない。
 
-=== DESIGN SPECIFICATION ===
+画像の左側55%のエリアに、以下を日本語で配置する。上部に「実録」という小さな白い長方形バッジ。その下に主題となる「{短縮タイトル（例: CW案件 受注→納品）}」を超極太のモダンゴシック体で純白の大字で大きく配置。続いて「全記録公開」を少し小さめの半太字で温かみのあるオレンジ（#FF6B35）で表示。さらに下に「{実績フレーズ（例: 文系大学生が2ヶ月でやったこと）}」「{補足訴求（例: プログラミングゼロ・Claude Codeだけ）}」の2行を小さめのライトグレーで添える。
 
-BACKGROUND:
-- Deep navy to charcoal gradient (#1A1A2E → #0D0D0D), left to right
-- Subtle circuit board pattern overlay at 10% opacity in dark teal (#003333)
-- NO bright neon beams, NO rainbow light rays
+画像の右側35%のエリアに大きな数字バッジを配置する。「{最大実績数字（例: 月14万）}」の文字を超極太でオレンジからゴールドへのグラデーション（#FF6B35 → #FFD700）でとても大きく表示し、その下に「達成した記録」の小文字を白で添える。暗いボーダー付きの円形バッジデザイン。
 
-MAIN TEXT (Japanese, positioned left-center area, 55% width):
-- Top label: 「実録」in a clean white rectangle badge, 18px equivalent
-- Main headline: 「{短縮タイトル（例: CW案件 受注→納品）}」in ultra-bold gothic, 72px equivalent, pure white
-- Sub headline: 「全記録公開」in semi-bold, 48px, warm orange (#FF6B35)
-- Body line 1: 「{実績フレーズ（例: 文系大学生が2ヶ月でやったこと）}」in regular, 22px, light gray (#CCCCCC)
-- Body line 2: 「{補足訴求（例: プログラミングゼロ・Claude Codeだけ）}」in regular, 20px, light gray
+バッジエリアの左にはクラウドワークスのロゴアイコン（シンプルなフラット、白）とClaudeのアスタリスクロゴ（オレンジ、簡略化）を白い矢印で繋いで配置する。
 
-NUMBER BADGE (right-center, 35% width area):
-- Large number: 「月14万」in extra-bold, gradient fill (warm orange #FF6B35 to gold #FFD700), 96px
-- Below number: 「達成した記録」in white, 20px
-- Circle badge style with dark border
+アクセントカラーは温かみのあるオレンジ（#FF6B35）とゴールド（#FFD700）のみ。フォントはクリーンな超極太サンセリフで、装飾的・ギミック的な字体は避ける。全体の雰囲気は「実直な文系大学生が本気で書いた商品」という信頼感のあるトーンで、派手な情報商材風にはしないこと。
 
-ICONS & ELEMENTS:
-- CrowdWorks logo icon (simple flat, white) - left side of badge area
-- Claude asterisk logo icon (simplified, orange) - paired with CrowdWorks
-- Arrow icon between them (→ style, white)
-- NO anime characters, NO realistic AI face photos, NO gold laurel wreaths
+避けるべき要素は、虹色ネオン光線、過剰なキラキラエフェクト、金ピカ浮彫り風テキスト、アニメキャラ、「豪華○大特典付き」風バッジ、パチンコ・宝くじ広告のような派手さ。
 
-ACCENT COLOR: Warm orange (#FF6B35), Gold (#FFD700)
-FONT STYLE: Clean ultra-bold sans-serif (not decorative/gimmicky)
-ATMOSPHERE: Serious college student vibe, trustworthy, not gaudy information-product look
-
-=== AVOID ===
-- Rainbow neon beams
-- Excessive sparkle/glitter effects
-- Gold embossed text with heavy shadows
-- Anime characters
-- "豪華○大特典" badge style
-- Anything that looks like a gambling/lottery advertisement
+日本語テキストは全て正確に描画してください。
 ```
 
 ---
@@ -627,44 +602,21 @@ ATMOSPHERE: Serious college student vibe, trustworthy, not gaudy information-pro
 ##### プロンプト 2: ノウハウ / 教科書型（`knowhow` + 「教科書」「完全ガイド」系）
 
 ```
-Create a 16:9 thumbnail image (1280x670px) for a Japanese educational content on Brain marketplace.
+16:9横長のBrain商品サムネイル画像。構造的で信頼感のある教科書風のダーク系デザイン。背景はとても暗いチャコール（#111111）をベースに、ノートの罫線のような薄い水平線がダークグレー（#1E1E1E）でごく薄く入っている。左端からはブルーティール（#002244）のグロウが30%の透明度で滲んでいて、クリーンでプロフェッショナルなダークテーマを作る。
 
-=== DESIGN SPECIFICATION ===
+レイアウトは2ゾーン構成。
 
-BACKGROUND:
-- Very dark charcoal (#111111) base
-- Horizontal thin lines (like notebook/grid) in dark gray (#1E1E1E) at 5% opacity
-- Left side: subtle blue-teal glow gradient from edge (#002244 at 30% opacity)
-- Clean, professional dark theme
+左側60%のエリアには、まず「{ツール名（例: Claude Code）}」を白いピル型バッジ（角丸の長方形、暗いボーダー付き）で配置する。その下に主題の「{×対象（例: ×クラウドワークス 受注教科書）}」を超極太の白ゴシック体で2行に大きく配置。続いて「{ターゲット層（例: 非エンジニア・文系大学生向け）}」のタグラインを小さな白文字で添える。さらに3行のライトグレー箇条書きで「{訴求点1（例: 案件選定→応募→納品まで完全解説）}」「{訴求点2（例: プログラミング経験ゼロからスタート）}」「{訴求点3（例: 実際の受注記録をそのまま公開）}」を並べる。
 
-LAYOUT: Two-zone layout
-LEFT ZONE (60% width):
-  - Tool name badge: 「{ツール名（例: Claude Code）}」in white pill badge, rounded corners, dark border
-  - Main title: 「{×対象（例: ×クラウドワークス 受注教科書）}」ultra-bold white gothic, 2 lines, 68px
-  - Tag line: 「{ターゲット層（例: 非エンジニア・文系大学生向け）}」in small white text, 18px
-  - Bullet points (3 lines, 20px, light gray):
-    「{訴求点1（例: 案件選定→応募→納品まで完全解説）}」
-    「{訴求点2（例: プログラミング経験ゼロからスタート）}」
-    「{訴求点3（例: 実際の受注記録をそのまま公開）}」
+右側40%のエリアには、ティール/ネイビー系のフラットデザインの教科書のイラストを配置する。教科書の横にはClaudeロゴやクラウドワークスアイコンなどのツールロゴがふわっと浮いている。教科書の表紙には小さく「教科書」または「完全ガイド」のラベルをゴールド（#FFD700）で入れる。
 
-RIGHT ZONE (40% width):
-  - Book/textbook illustration (simple flat design) in teal/navy
-  - Tool logo icons floating beside book (e.g., Claude logo, CrowdWorks icon)
-  - Small "教科書" or "完全ガイド" label on book cover in gold (#FFD700)
+タイトルエリアと箇条書きエリアの間には、細いオレンジ（#FF6B35）の水平ラインをセパレーターとして入れる。「{付加情報（例: 2ヶ月の記録 / 全○章）}」という小さなバッジをどこかに配置。
 
-ACCENT ELEMENTS:
-- Thin horizontal orange line (#FF6B35) separating title area from bullets
-- Page/chapter badge: 「{付加情報（例: 2ヶ月の記録 / 全○章）}」in small badge
+配色はベースが#111111、テキストは#FFFFFF、アクセントがオレンジ#FF6B35、小さなアクセントにゴールド#FFD700、ティール要素に#4EC9B0。雰囲気は体系的な教科書感で、信頼できて若いけどしっかりしている。派手さは禁止。
 
-COLORS: #111111 base, #FFFFFF text, #FF6B35 accent, #FFD700 small accent, #4EC9B0 teal elements
-ATMOSPHERE: Structured textbook feel, trustworthy, young but serious, NOT flashy
+避けるべき要素は、宇宙や星雲風の背景、ゴールドグラデーションのテキスト、3D浮彫りエフェクト、回転するキラキラ、パチンコ・ギャンブル系のビジュアルスタイル。
 
-=== AVOID ===
-- Cosmic/space background imagery
-- Gold gradient text
-- 3D emboss effects
-- Rotating sparkles
-- Anything that resembles pachinko/gambling visual style
+日本語テキストは全て正確に描画してください。
 ```
 
 ---
@@ -672,43 +624,23 @@ ATMOSPHERE: Structured textbook feel, trustworthy, young but serious, NOT flashy
 ##### プロンプト 3: ツールキット型（テンプレ集・プロンプト集・GPTs 付き商品）
 
 ```
-Create a 16:9 thumbnail image (1280x670px) for a Japanese tool/template product on Brain marketplace.
+16:9横長のBrain商品サムネイル画像。開発者のツールキットのような実用的で整理された雰囲気のダーク系デザイン。背景はダークネイビー（#0A0E27）をベースに、少し明るめのネイビー（#0F1535）の細かなグリッドラインが15%の透明度で入っている。右側にはダークパープル（#1A0033）のソフトなグロウが40%でブレンドされている。
 
-=== DESIGN SPECIFICATION ===
+画面上部には幅いっぱいにダークティール（#006666）のバナーを配置し、「すぐに使える テンプレート集」を白いミディアムゴシック体で書く。
 
-BACKGROUND:
-- Dark navy (#0A0E27) base
-- Subtle grid lines in slightly lighter navy (#0F1535) at 15% opacity
-- Right side: soft dark purple glow (#1A0033 at 40% opacity blend)
+メインコンテンツは左右2分割。
 
-TOP BANNER (full width, dark teal #006666):
-- Text: 「すぐに使える テンプレート集」in white medium gothic, 20px
+左側50%のエリアには、特大の数字「{同梱数（例: 30）}」を超極太で白く表示し、下にオレンジの下線を入れる。その下に「{何本か（例: 本の応募文テンプレ）}」を太めの白文字で添える。細いオレンジ（#FF6B35）のセパレーターラインを挟んで、次の行に「+ {追加要素（例: GPTs付き）}」を太字のゴールド（#FFD700）で配置。
 
-MAIN CONTENT AREA:
-Left side (50%):
-  - Big number: 「{同梱数（例: 30）}」in extra-bold, very large (120px), white with orange underline
-  - Text below number: 「{何本か（例: 本の応募文テンプレ）}」in bold white, 32px
-  - Separator line (orange #FF6B35, 2px)
-  - Second row: 「+ {追加要素（例: GPTs付き）}」in bold, 28px, gold (#FFD700)
+右側50%のエリアには、カード型ビジュアルを3〜4枚重ねたスタックを置く。各カードは暗めの#1E1E2E背景で、白い細いラインで書類の内容を模したプレビューにする。一番上のカードには小さくClaudeなどのツールロゴを添える。
 
-Right side (50%):
-  - Stack of "card" visuals (3-4 overlapping cards showing template preview)
-  - Cards should be dark (#1E1E2E) with white text lines simulating document content
-  - Small tool logo icon on top card (e.g., Claude)
+画面下部には、少し明るめのダーク色のバーを配置し、白い長方形の中にミニバッジ3個「{対応範囲1（例: クラウドワークス対応）}」「{特徴2（例: コピペで即使える）}」「{ターゲット3（例: AI副業に最適）}」を並べる。
 
-BOTTOM BAR (full width, slightly lighter dark):
-- Three mini badges in white rectangles:
-  「{対応範囲1（例: クラウドワークス対応）}」「{特徴2（例: コピペで即使える）}」「{ターゲット3（例: AI副業に最適）}」
+配色はベースが#0A0E27、テキストは白、アクセントオレンジ#FF6B35、ゴールド#FFD700。雰囲気はツール・ユーティリティ感で、整理されていて実用的。開発者のツールキットであって宝くじ広告ではない。
 
-COLORS: #0A0E27 base, white text, #FF6B35 accent orange, #FFD700 gold
-ATMOSPHERE: Tool/utility feel, organized, practical - like a developer's toolkit not a lottery ad
+避けるべき要素は、明るい背景やカラフルな背景、リアルな顔写真、アニメキャラのイラスト、過剰な装飾エフェクト（炎・キラキラ・爆発）、黒地に黄色やゴールドのグラデーション文字（情報商材の典型で避ける）。
 
-=== AVOID ===
-- Light or colorful backgrounds
-- Realistic face photos
-- Anime character illustrations
-- Excessive decorative effects (flames, sparkles, explosions)
-- Yellow/gold gradient text on black (too information-product classic)
+日本語テキストは全て正確に描画してください。
 ```
 
 ---
@@ -716,47 +648,19 @@ ATMOSPHERE: Tool/utility feel, organized, practical - like a developer's toolkit
 ##### プロンプト 4: フラッグシップ型（完全ロードマップ・完全公開・高価格帯 ¥7,980〜）
 
 ```
-Create a 16:9 thumbnail image (1280x670px) for a Japanese flagship digital product on Brain marketplace.
+16:9横長のBrain商品サムネイル画像。達成感のあるマイルストーンロードマップ風の、プロフェッショナルだけど近づきやすいダーク系フラッグシップデザイン。背景は漆黒（#000000）で、中央からほんのりブルーグレー（#111827）の光がわずかに放射しているだけ（明るくせず、奥行きだけ出す）。左端には5%幅のダークティール（#004444）の縦グラデーションストリップ。宇宙の星雲、惑星の画像、マトリックス風の雨などは使わない。
 
-=== DESIGN SPECIFICATION ===
+画像中央右の40%エリアに、巨大な数字「{最大実績数字（例: 14万）}」を可能な限り大きく（140px相当）配置する。色は温かみのあるオレンジ（#FF7A35）からゴールド（#FFD700）への水平グラデーション。その下に「{単位（例: 円 / 月）}」を白のミディアムウェイトで、さらに小さく「{補足（例: 2ヶ月目に達成）}」をライトグレーで添える。
 
-BACKGROUND:
-- Deep black (#000000) base
-- Center-radiating very subtle blue-gray light (#111827) — NOT bright, just slight depth
-- Left edge: dark teal vertical gradient strip (5% width, #004444)
-- NO space nebula, NO planet imagery, NO matrix rain
+左側55%のテキストブロックは、まず「{属性タグ（例: 文系大学生の実録）}」を白い長方形バッジ（オレンジボーダー付き）で配置。その下に主題となる「{主軸ツール名}×」を超極太の白で1行目、「{対象プラットフォーム（例: クラウドワークス）}」を超極太の白で2行目に大きく。続いて「{商品タイプ（例: 完全ロードマップ）}」を太字のオレンジ（#FF6B35）で配置。最後に小さく「{訴求文（例: プログラミング不要・非エンジニアが実際にやった全手順）}」をライトグレーで添える。
 
-LARGE NUMBER FOCAL POINT (center-right, 40% area):
-- Giant number: 「{最大実績数字（例: 14万）}」in the largest possible size (140px), positioned center-right
-- Color: warm orange (#FF7A35) to gold (#FFD700) horizontal gradient
-- Below it: 「{単位（例: 円 / 月）}」in white medium weight, 28px
-- Even smaller: 「{補足（例: 2ヶ月目に達成）}」in light gray, 18px
+画面下部には全幅のマイルストーン帯を配置する。水平の道（タイムライン）上に4つのステップを配置: STEP1「{ステップ1（例: 案件選定）}」→ STEP2「{ステップ2（例: 応募文）}」→ STEP3「{ステップ3（例: 受注）}」→ STEP4「{ステップ4（例: 納品）}」。各ステップはダークグレーの帯の上に白い小さな長方形で、繋ぐ矢印はオレンジ。
 
-LEFT TEXT BLOCK (left 55%):
-- Tag: 「{属性タグ（例: 文系大学生の実録）}」white rectangle badge with orange border, 16px text
-- Main headline line 1: 「{主軸ツール名}×」ultra-bold white, 52px
-- Main headline line 2: 「{対象プラットフォーム（例: クラウドワークス）}」ultra-bold white, 52px
-- Subtitle: 「{商品タイプ（例: 完全ロードマップ）}」bold orange (#FF6B35), 38px
-- Small print: 「{訴求文（例: プログラミング不要・非エンジニアが実際にやった全手順）}」light gray, 16px
+メイン見出しの下には、細いオレンジの水平線を入れる。配色はベースが#000000、オレンジ#FF7A35、ゴールド#FFD700、白のテキスト、セカンダリーが#CCCCCCのライトグレー。雰囲気は達成志向のマイルストーンロードマップで、プロフェッショナルだけど近づきやすい「実際にやった学生」感。
 
-MILESTONE PATH (bottom strip, full width):
-- Horizontal road/timeline with 4 steps:
-  STEP1「{ステップ1（例: 案件選定）}」→ STEP2「{ステップ2（例: 応募文）}」→ STEP3「{ステップ3（例: 受注）}」→ STEP4「{ステップ4（例: 納品）}」
-  Each step in small white rectangle on dark gray strip
-  Connecting arrows in orange
+避けるべき要素は、アニメ・ゲームキャラ、リアル調のAI生成顔写真、ゴールド浮彫り・ベベル調のテキストエフェクト、キラキラ・花火エフェクト、チェッカーボード・模様ギミック、月桂樹バッジ、紫/宇宙テーマ（競合が既に多用）。
 
-ACCENT: Thin orange horizontal rule below main headline
-COLORS: #000000 base, #FF7A35 orange, #FFD700 gold, #FFFFFF text, #CCCCCC secondary text
-ATMOSPHERE: Achievement-oriented, milestone roadmap feel, professional but accessible — a student who actually did this
-
-=== AVOID ===
-- Anime/game characters
-- Realistic AI-generated face photos
-- Gold embossed/beveled text effects
-- Sparkle/firework effects
-- Checkerboard/pattern gimmicks
-- Laurel wreath badges
-- Purple/cosmic themes (already used by competitors)
+日本語テキストは全て正確に描画してください。
 ```
 
 ---

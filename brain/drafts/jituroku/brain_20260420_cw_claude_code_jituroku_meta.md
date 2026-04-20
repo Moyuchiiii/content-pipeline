@@ -150,44 +150,19 @@ AI副業, Claude, 大学生副業, 非エンジニア, クラウドワークス,
 記事タイプ: jituroku → プロンプト1（実録記事型）を使用。以下はプレースホルダ置換済み版。
 
 ```
-Create a 16:9 thumbnail image (1280x670px) for a Japanese digital content product on Brain marketplace.
+16:9横長のBrain商品サムネイル画像。プロフェッショナルで実直な雰囲気のダーク系ビジネスデザイン。背景は漆黒から濃紺へのグラデーション（左から右）で、ダークティール系の回路基板パターンがごく薄く重なっている。明るいネオン光線や虹色のエフェクトは一切使わない。
 
-=== DESIGN SPECIFICATION ===
+画像の左側55%のエリアに、以下を日本語で配置する。上部に「実録」という小さな白い長方形バッジ。その下に主題となる「CW案件 受注→納品」を超極太のモダンゴシック体で純白の大字で大きく配置。続いて「全記録公開」を少し小さめの半太字で温かみのあるオレンジ（#FF6B35）で表示。さらに下に「文系大学生がClaude Codeだけでやったこと」「プログラミングゼロ・応募文・コード全部入り」の2行を小さめのライトグレーで添える。
 
-BACKGROUND:
-- Deep navy to charcoal gradient (#1A1A2E → #0D0D0D), left to right
-- Subtle circuit board pattern overlay at 10% opacity in dark teal (#003333)
-- NO bright neon beams, NO rainbow light rays
+画像の右側35%のエリアに大きな数字バッジを配置する。「月14万」の文字を超極太でオレンジからゴールドへのグラデーション（#FF6B35 → #FFD700）でとても大きく表示し、その下に「達成した記録」の小文字を白で添える。暗いボーダー付きの円形バッジデザイン。
 
-MAIN TEXT (Japanese, positioned left-center area, 55% width):
-- Top label: 「実録」in a clean white rectangle badge, 18px equivalent
-- Main headline: 「CW案件 受注→納品」in ultra-bold gothic, 72px equivalent, pure white
-- Sub headline: 「全記録公開」in semi-bold, 48px, warm orange (#FF6B35)
-- Body line 1: 「文系大学生がClaude Codeだけでやったこと」in regular, 22px, light gray (#CCCCCC)
-- Body line 2: 「プログラミングゼロ・応募文・コード全部入り」in regular, 20px, light gray
+バッジエリアの左にはクラウドワークスのロゴアイコン（シンプルなフラット、白）とClaudeのアスタリスクロゴ（オレンジ、簡略化）を白い矢印で繋いで配置する。
 
-NUMBER BADGE (right-center, 35% width area):
-- Large number: 「月14万」in extra-bold, gradient fill (warm orange #FF6B35 to gold #FFD700), 96px
-- Below number: 「達成した記録」in white, 20px
-- Circle badge style with dark border
+アクセントカラーは温かみのあるオレンジ（#FF6B35）とゴールド（#FFD700）のみ。フォントはクリーンな超極太サンセリフで、装飾的・ギミック的な字体は避ける。全体の雰囲気は「実直な文系大学生が本気で書いた商品」という信頼感のあるトーンで、派手な情報商材風にはしないこと。
 
-ICONS & ELEMENTS:
-- CrowdWorks logo icon (simple flat, white) - left side of badge area
-- Claude asterisk logo icon (simplified, orange) - paired with CrowdWorks
-- Arrow icon between them (→ style, white)
-- NO anime characters, NO realistic AI face photos, NO gold laurel wreaths
+避けるべき要素は、虹色ネオン光線、過剰なキラキラエフェクト、金ピカ浮彫り風テキスト、アニメキャラ、「豪華○大特典付き」風バッジ、パチンコ・宝くじ広告のような派手さ。
 
-ACCENT COLOR: Warm orange (#FF6B35), Gold (#FFD700)
-FONT STYLE: Clean ultra-bold sans-serif (not decorative/gimmicky)
-ATMOSPHERE: Serious college student vibe, trustworthy, not gaudy information-product look
-
-=== AVOID ===
-- Rainbow neon beams
-- Excessive sparkle/glitter effects
-- Gold embossed text with heavy shadows
-- Anime characters
-- "豪華○大特典" badge style
-- Anything that looks like a gambling/lottery advertisement
+日本語テキストは全て正確に描画してください。
 ```
 
 ---
