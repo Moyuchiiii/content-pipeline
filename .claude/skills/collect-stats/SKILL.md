@@ -1,8 +1,8 @@
 ---
 name: collect-stats
-description: X Analytics と note ダッシュボードのデータを収集し、x-performance.md / note-performance.md / Notion を自動更新する。X データは xmcp API を優先し、未設定時はブラウザにフォールバック。
+description: X Analytics と note ダッシュボードのデータを収集し、x-performance.md / note-performance.md / Notion を自動更新する。X データは Typefully API を優先し、未設定時は xmcp → ブラウザにフォールバック。
 user-invocable: true
-allowed-tools: mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__computer, Read, Write, Edit, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__xmcp__getUsersIdTweets, mcp__xmcp__findTweetById, mcp__xmcp__usersIdTweets
+allowed-tools: Bash, Read, Write, Edit, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__computer, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__xmcp__getUsersIdTweets, mcp__xmcp__findTweetById, mcp__xmcp__usersIdTweets
 ---
 
 # /collect-stats
@@ -33,9 +33,43 @@ X Analytics と note ダッシュボードのデータを収集する。
 
 ## モード A: X Analytics 収集
 
-### Step 0: xmcp API で取得を試みる（優先）
+### Step 0: Typefully API で取得を試みる（最優先・2026-04-23追加）
 
-xmcp が MCP サーバーとして設定されている場合はこちらを使う。ブラウザより安定していて速い。
+Typefully API は **hyui_cc アカウントと直接連携済み**。`.env` に `TYPEFULLY_API_KEY` と `TYPEFULLY_SOCIAL_SET_ID=300622` が設定されていれば即利用可能。ブラウザ・xmcp より**精度・安定性ともに最高**。
+
+```bash
+# scripts/typefully.mjs のヘルパーを呼ぶ
+cd D:/Claude/bussines/projects/content-pipeline
+node --input-type=module -e "
+import('./scripts/typefully.mjs').then(async (m) => {
+  const endDate = new Date().toISOString().slice(0, 10);
+  const startDate = new Date(Date.now() - 28 * 86400000).toISOString().slice(0, 10);
+  const analytics = await m.getAnalytics({ startDate, endDate, limit: 100 });
+  console.log(JSON.stringify(analytics, null, 2));
+});
+"
+```
+
+取得される主要フィールド（Typefully API レスポンス構造）:
+- `impressions` / `impression_count` — インプレッション
+- `likes` / `favorite_count` — いいね
+- `retweets` / `retweet_count` — リポスト
+- `replies` / `reply_count` — リプライ
+- `bookmarks` / `bookmark_count` — ブックマーク
+- `published_at` — 投稿日時
+- `text` — 本文
+- `url` — 投稿URL
+
+取得成功したら **Step 4 へ直行**。xmcp/ブラウザは不要。
+
+**Typefully API が使えない場合（キー未設定・500エラー等）:**
+→ Step 0.5（xmcp）へフォールバック
+
+---
+
+### Step 0.5: xmcp API で取得を試みる（Typefully が使えない場合）
+
+xmcp が MCP サーバーとして設定されている場合はこちらを使う。
 
 ```
 1. mcp__xmcp__getUsersIdTweets（または mcp__xmcp__usersIdTweets）を呼び出す
@@ -59,7 +93,7 @@ xmcp セットアップ直後は利用可能なツール名が変わる場合が
 
 ---
 
-### Step 1: ブラウザフォールバック（xmcp が使えない場合のみ）
+### Step 1: ブラウザフォールバック（Typefully/xmcp が使えない場合のみ）
 
 #### アカウント確認
 

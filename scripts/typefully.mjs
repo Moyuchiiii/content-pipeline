@@ -75,6 +75,86 @@ export async function getQueue({ startDate, endDate } = {}) {
   return callApi(path);
 }
 
+/**
+ * X 投稿のアナリティクス取得（B: バズ検知 / C: collect-stats 用）
+ * @param {object} opts
+ * @param {string} [opts.startDate] ISO 8601 日付（例: "2026-04-16"）
+ * @param {string} [opts.endDate] ISO 8601 日付
+ * @param {number} [opts.limit] 取得件数上限
+ */
+export async function getAnalytics({ startDate, endDate, limit } = {}) {
+  if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
+  const params = new URLSearchParams();
+  if (startDate) params.set('start_date', startDate);
+  if (endDate) params.set('end_date', endDate);
+  if (limit) params.set('limit', String(limit));
+  const query = params.toString();
+  const path = `/social-sets/${SOCIAL_SET_ID}/analytics/x/posts${query ? `?${query}` : ''}`;
+  return callApi(path);
+}
+
+/**
+ * バズ検出: いいね/インプ閾値を超えた自分のツイートを抽出
+ *
+ * Typefully API の実レスポンス構造（2026-04-23 実測）:
+ * { post_id, url, preview_text, created_at, metrics: { impressions, engagement: { likes, shares, comments, quotes, saves } } }
+ *
+ * @param {object} opts
+ * @param {number} [opts.days=7] 過去何日分をスキャンするか
+ * @param {number} [opts.likesThreshold=100] いいね閾値
+ * @param {number} [opts.impressionsThreshold=10000] インプ閾値
+ * @param {number} [opts.retweetsThreshold=10] リポスト閾値
+ */
+export async function detectBuzz({
+  days = 7,
+  likesThreshold = 100,
+  impressionsThreshold = 10000,
+  retweetsThreshold = 10,
+} = {}) {
+  const endDate = new Date().toISOString().slice(0, 10);
+  const startDate = new Date(Date.now() - days * 86400000)
+    .toISOString()
+    .slice(0, 10);
+
+  const data = await getAnalytics({ startDate, endDate, limit: 100 });
+  const posts = data.results || data.data || data.posts || [];
+
+  const extract = (p) => ({
+    likes: p.metrics?.engagement?.likes ?? p.likes ?? 0,
+    retweets: p.metrics?.engagement?.shares ?? p.retweets ?? 0,
+    impressions: p.metrics?.impressions ?? p.impressions ?? 0,
+    replies: p.metrics?.engagement?.comments ?? p.replies ?? 0,
+    quotes: p.metrics?.engagement?.quotes ?? 0,
+    saves: p.metrics?.engagement?.saves ?? p.bookmarks ?? 0,
+  });
+
+  const buzzed = posts.filter((p) => {
+    const m = extract(p);
+    return (
+      m.likes >= likesThreshold ||
+      m.impressions >= impressionsThreshold ||
+      m.retweets >= retweetsThreshold
+    );
+  });
+
+  return buzzed.map((p) => {
+    const m = extract(p);
+    return {
+      tweet_id: p.post_id || p.id,
+      tweet_url:
+        p.url ||
+        (p.post_id ? `https://x.com/moyuchi_cc/status/${p.post_id}` : null),
+      text: p.preview_text || p.text || '',
+      likes: m.likes,
+      retweets: m.retweets,
+      impressions: m.impressions,
+      replies: m.replies,
+      saves: m.saves,
+      published_at: p.created_at || p.published_at,
+    };
+  });
+}
+
 export async function uploadMedia(filePath) {
   if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
   const fileName = filePath.split(/[\\/]/).pop();
@@ -108,21 +188,31 @@ export async function uploadMedia(filePath) {
  * @param {string} opts.publishAt ISO 8601（例: "2026-04-24T08:00:00+09:00"）/ "now" / "next-free-slot"
  * @param {string} [opts.draftTitle] 内部管理用タイトル
  * @param {string[]} [opts.tags]
+ * @param {string} [opts.replyToUrl] リプライ先のXツイートURL（バズ宣伝リプ用）
  */
-export async function createDraft({ posts, publishAt, draftTitle, tags }) {
+export async function createDraft({
+  posts,
+  publishAt,
+  draftTitle,
+  tags,
+  replyToUrl,
+}) {
   if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
   if (!Array.isArray(posts) || posts.length === 0) {
     throw new Error('posts は非空配列が必要');
   }
   if (!publishAt) throw new Error('publishAt が必要');
 
+  const xPlatform = {
+    enabled: true,
+    posts,
+  };
+  if (replyToUrl) {
+    xPlatform.settings = { reply_to_url: replyToUrl };
+  }
+
   const body = {
-    platforms: {
-      x: {
-        enabled: true,
-        posts,
-      },
-    },
+    platforms: { x: xPlatform },
     publish_at: publishAt,
     share: false,
   };
