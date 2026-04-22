@@ -15,6 +15,69 @@ import sys
 import re
 import os
 
+def check_brain_article(file_path: str, content: str) -> list[str]:
+    """Brain 記事向けの厳格チェック。問題点のリストを返す。
+
+    Brain は商品としての信頼性が命。tiptap マーク継続バグ対策 + 誇大表現禁止 +
+    章番号禁止（自動目次二重化対策）+ 禁止タグ（ul/ol/table は Brain で崩れる）を強制する。
+    """
+    issues = []
+
+    # brain/ 配下の html/md のみ対象
+    if "brain/" not in file_path.replace("\\", "/"):
+        return issues
+    if not (file_path.endswith(".html") or file_path.endswith(".md")):
+        return issues
+
+    # --- 1. 誇大表現（景表法リスク + Brain レビュー即悪化）---
+    exaggerations = [
+        "誰でも稼げ", "必ず稼げ", "絶対稼げ", "確実に稼げ",
+        "再現性100%", "再現性 100%", "世界初", "最強", "最速",
+        "収入保証", "月収保証", "知らないと損", "知らないと危険",
+        "1日5分で月", "1日10分で月", "1日30分で月",
+    ]
+    found_exagg = [w for w in exaggerations if w in content]
+    if found_exagg:
+        issues.append(f"【brain 誇大表現】禁止ワード検出: {', '.join(found_exagg)}（景表法リスク＋Brainレビュー即悪化）")
+
+    # --- 2. 章番号禁止（Brain 自動目次と二重化する）---
+    number_violations = []
+    if re.search(r'<h2[^>]*>\s*第[0-9０-９]+章', content):
+        number_violations.append('h2「第N章」')
+    if re.search(r'<h[23][^>]*>\s*[0-9]+-[0-9]+\.', content):
+        number_violations.append('「1-1.」「2-3.」階層番号')
+    if re.search(r'<h3[^>]*>\s*Q[0-9]+\.', content):
+        number_violations.append('FAQ「Q1.」番号')
+    if re.search(r'<h2[^>]*>\s*Bonus\s+[0-9]', content):
+        number_violations.append('「Bonus N」番号')
+    if re.search(r'<h3[^>]*>\s*B[0-9]+-[0-9]+\.', content):
+        number_violations.append('「B1-1.」Bonus階層番号')
+    if number_violations:
+        issues.append(f"【brain 章番号】自動目次と二重化する番号検出: {', '.join(number_violations)}")
+
+    # --- 3. 禁止タグ（Brain エディタで崩れる）---
+    forbidden_tags = []
+    for tag in ['<ul>', '<ol>', '<table>', '<li>', '<tr>', '<td>']:
+        if tag in content:
+            forbidden_tags.append(tag)
+    if forbidden_tags:
+        issues.append(f"【brain 禁止タグ】Brain で崩れるタグ検出: {', '.join(forbidden_tags)}（「・ 項目」段落 or blockquote で代替）")
+
+    # --- 4. 段落中間の <b>/<strong>（tiptap マーク継続バグで全段落太字化）---
+    # <p>テキスト5字以上<b> or <strong> のパターン検出
+    partial_bold = re.findall(r'<p>[^<]{5,}<(?:b|strong)>', content)
+    if partial_bold:
+        issues.append(f"【brain tiptap バグ】段落中間の <b>/<strong> {len(partial_bold)} 箇所検出。Ctrl+V で以降全段落太字化するバグ発動。独立段落に分離して `<p><strong>全文</strong></p>` 形式に")
+
+    # --- 5. blockquote 連続3個以上（スマホで読みにくい目次型）---
+    # </blockquote> 直後に空白+<blockquote> が 2 回以上連続 = 3 個連続以上
+    consecutive_bq_count = len(re.findall(r'</blockquote>\s*<blockquote>\s*(?:<b>)?[^<]+(?:</b>)?\s*(?:<br>)?\s*[^<]+\s*</blockquote>\s*<blockquote>', content, re.DOTALL))
+    if consecutive_bq_count >= 1:
+        issues.append(f"【brain blockquote 連続】3 個以上の連続 blockquote 検出。目次的連続はスマホで読みにくい。`<p><strong>タイトル</strong></p><p>概要</p>` 段落形式で代替")
+
+    return issues
+
+
 def check_article(file_path: str, content: str) -> list[str]:
     """記事品質チェック。問題点のリストを返す。"""
     issues = []
@@ -85,7 +148,13 @@ def main():
     if not file_path or not content:
         sys.exit(0)
 
-    issues = check_article(file_path, content)
+    issues = []
+
+    # note 系ドラフトチェック（既存）
+    issues.extend(check_article(file_path, content))
+
+    # brain 系チェック（新規・tiptap バグ対策 + Brain 特化ルール）
+    issues.extend(check_brain_article(file_path, content))
 
     if issues:
         print(json.dumps({
