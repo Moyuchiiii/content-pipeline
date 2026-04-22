@@ -7,22 +7,22 @@
 ```
 images/
 ├── {記事ID}/
-│   ├── thumb.png          ← サムネ（記事ヘッダー用・16:9）
-│   ├── img01_{label}.png  ← 本文差し込み画像 1
-│   ├── img02_{label}.png  ← 本文差し込み画像 2
+│   ├── thumb.png   ← サムネ（記事ヘッダー用・16:9）
+│   ├── 1.png       ← 本文差し込み画像 1（images.md の画像1 に対応）
+│   ├── 2.png       ← 本文差し込み画像 2
 │   └── ...
 ```
 
 ## 命名規約
 
 - サブフォルダ名 = 記事ID (例: `brain_20260422_claude_design_kyoukasho`)
-- ファイル名 = `img{NN}_{label}.png`（NN は 01〜99 のゼロ詰め・label は短縮英字）
+- ファイル名 = `{N}.png`（N は 1〜99 の通し番号・画像N プレースホルダーと対応）
 - サムネは `thumb.png` で固定
 - 拡張子は `.png` 推奨（JPEG より Brain の透明度処理が安定）
 
 ## 運用
 
 1. `{記事ID}_images.md` の画像 N のプロンプトを Gemini にコピペ → 生成
-2. 上記フォルダに `img{NN}_{label}.png` として保存
+2. 上記フォルダに `{N}.png` として保存（画像1 → 1.png / サムネ → thumb.png）
 3. Brain エディタで該当プレースホルダーに画像アップロード
 4. プレースホルダー blockquote を削除

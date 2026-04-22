@@ -1472,7 +1472,7 @@ brain/today/images/
 
 **命名規約**:
 - サブフォルダ名 = 記事ID (`brain_{YYYYMMDD}_{suffix}`)
-- ファイル名 = `img{NN}_{label}.png`（NN は 01〜99 ゼロ詰め・label は短縮英字スネークケース）
+- ファイル名 = `{N}.png`（N は 1〜99 の通し番号・画像N と対応・ゼロ詰め不要）
 - サムネは `thumb.png` 固定
 - 拡張子は `.png` 推奨（Brain の透明度処理が JPEG より安定）
 

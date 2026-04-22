@@ -2,24 +2,24 @@
 
 ## 画像リスト（配置順）
 
-| ファイル名 | ラベル | タイプ | アスペクト比 |
+| ファイル | ラベル | タイプ | アスペクト比 |
 |---|---|---|---|
 | `thumb.png` | サムネ（教科書型） | サムネ | 16:9 |
-| `img01_7yakusoku.png` | 7つの約束 | 約束カード | 3:4 |
-| `img02_14man_jisseki.png` | 月14万実績 | 実績証拠 | 16:9 |
-| `img03_7nichi_curriculum.png` | 7日間カリキュラム | ロードマップ | 16:9 |
-| `img04_day1_tobira.png` | Day1扉 | 章扉 | 16:9 |
-| `img05_day2_tobira.png` | Day2扉 | 章扉 | 16:9 |
-| `img06_day3_tobira.png` | Day3扉 | 章扉 | 16:9 |
-| `img07_day3_before_after.png` | Day3 Before/After 3h→15min | Before/After | 16:9 |
-| `img08_day4_tobira.png` | Day4扉 | 章扉 | 16:9 |
-| `img09_day4_6lines_css.png` | Day4 6行CSS | チェックリスト | 3:4 |
-| `img10_day5_tobira.png` | Day5扉 | 章扉 | 16:9 |
-| `img11_day6_tobira.png` | Day6扉 | 章扉 | 16:9 |
-| `img12_day6_5points.png` | つまずき5ポイント | チェックリスト | 3:4 |
-| `img13_day7_tobira.png` | Day7扉 | 章扉 | 16:9 |
-| `img14_bonus1_canva.png` | Bonus1 Canva連携 | 章扉 | 16:9 |
-| `img15_bonus2_cw.png` | Bonus2 CW応募差別化 | 約束カード | 3:4 |
+| `1.png` | 7つの約束 | 約束カード | 3:4 |
+| `2.png` | 月14万実績 | 実績証拠 | 16:9 |
+| `3.png` | 7日間カリキュラム | ロードマップ | 16:9 |
+| `4.png` | Day1扉 | 章扉 | 16:9 |
+| `5.png` | Day2扉 | 章扉 | 16:9 |
+| `6.png` | Day3扉 | 章扉 | 16:9 |
+| `7.png` | Day3 Before/After 3h→15min | Before/After | 16:9 |
+| `8.png` | Day4扉 | 章扉 | 16:9 |
+| `9.png` | Day4 6行CSS | チェックリスト | 3:4 |
+| `10.png` | Day5扉 | 章扉 | 16:9 |
+| `11.png` | Day6扉 | 章扉 | 16:9 |
+| `12.png` | つまずき5ポイント | チェックリスト | 3:4 |
+| `13.png` | Day7扉 | 章扉 | 16:9 |
+| `14.png` | Bonus1 Canva連携 | 章扉 | 16:9 |
+| `15.png` | Bonus2 CW応募差別化 | 約束カード | 3:4 |
 
 ## 生成元プロンプト
 
