@@ -140,14 +140,12 @@ async function main() {
 
   if (cmd === 'list-social-sets') {
     const sets = await getSocialSets();
-    console.log('Social Sets:');
-    const items = sets.data || sets.items || sets;
-    const list = Array.isArray(items) ? items : [items];
+    const list = sets.results || sets.data || sets.items || [];
+    console.log(`Social Sets (${list.length} found):`);
     list.forEach((s, i) => {
-      const platforms = s.platforms
-        ? Object.keys(s.platforms).filter((k) => s.platforms[k]?.connected).join(', ')
-        : 'unknown';
-      console.log(`${i + 1}. ID: ${s.id} | ${s.name || '(no name)'} | platforms: ${platforms}`);
+      const account = s.username ? `@${s.username}` : '(no username)';
+      const name = s.name || '(no name)';
+      console.log(`${i + 1}. ID: ${s.id} | ${account} | ${name}`);
     });
     console.log('\n→ 対応する ID を .env の TYPEFULLY_SOCIAL_SET_ID に記入してください');
     return;
@@ -186,7 +184,9 @@ async function main() {
   process.exit(1);
 }
 
-if (import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}` || process.argv[1]?.endsWith('typefully.mjs')) {
+const invokedAsScript =
+  Boolean(process.argv[1]) && process.argv[1].endsWith('typefully.mjs');
+if (invokedAsScript) {
   main().catch((err) => {
     console.error('❌ Error:', err.message);
     process.exit(1);
