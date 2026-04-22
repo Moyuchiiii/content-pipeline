@@ -1457,6 +1457,31 @@ Step 5 の完了サマリーを出力する**前**に、Brain エディタ貼り
 - ファイル名: `brain_{YYYYMMDD}_{suffix}_images.md`
 - 場所: `brain/today/`（本文と同じディレクトリ）
 
+#### 生成画像の保存先（記事ID単位のサブフォルダ・git 管理対象）
+
+Gemini / Nano Banana で生成した画像ファイルは以下に保存:
+
+```
+brain/today/images/
+└── {記事ID}/
+    ├── thumb.png              ← サムネ（記事ヘッダー用・16:9）
+    ├── img01_{label}.png      ← 本文差し込み画像 1
+    ├── img02_{label}.png
+    └── ...
+```
+
+**命名規約**:
+- サブフォルダ名 = 記事ID (`brain_{YYYYMMDD}_{suffix}`)
+- ファイル名 = `img{NN}_{label}.png`（NN は 01〜99 ゼロ詰め・label は短縮英字スネークケース）
+- サムネは `thumb.png` 固定
+- 拡張子は `.png` 推奨（Brain の透明度処理が JPEG より安定）
+
+**git 管理**:
+- 画像はリポジトリに含める（版管理・再利用・次記事テンプレ流用のため）
+- 1 枚 1〜3MB 想定・15 枚 + サムネで最大 50MB 未満なら許容
+- 肥大化が懸念される場合は `.gitignore` に `brain/today/images/` を追加してローカル管理に切り替え
+- フォルダは空でも `.gitkeep` を置いて構造を保持
+
 ファイル構造テンプレ:
 
 ```markdown
@@ -1645,8 +1670,14 @@ Phase 5 の本文構造生成時に、以下のルールで画像を配置する
 1. Phase 5 で本文 HTML を生成する際、上記ロジックで画像プレースホルダーを自動挿入
 2. Phase 6 でサムネプロンプト（既存 4 タイプ）+ 本文差し込み画像プロンプト（6 タイプから選択）を生成
 3. `_images.md` ファイルに全プロンプトを書き出す（通し番号 1 から）
-4. Phase 6.5 の Brain エディタ流し込み時、プレースホルダー入りの HTML を setContent で投入
-5. Phase 6 の完了サマリーで「画像N 枚ぶんのプロンプトを `_images.md` に記録・ユーザーが手動で Gemini 生成 → Brain エディタの該当プレースホルダー位置にアップロード」と明記
+4. 画像保存用サブフォルダ `brain/today/images/{記事ID}/` を作成（.gitkeep で構造保持）
+5. Phase 6.5 の Brain エディタ流し込み時、プレースホルダー入りの HTML を setContent で投入
+6. Phase 6 の完了サマリーで以下を明記:
+   - `_images.md` の各画像プロンプトを Gemini / Nano Banana Pro にコピペして生成
+   - 保存先: `brain/today/images/{記事ID}/img{NN}_{label}.png`（命名規約は上記）
+   - Brain エディタの 🔴🔴🔴 プレースホルダー位置に Brain 内蔵の画像アップローダーで挿入
+   - アップロード完了後、プレースホルダー blockquote を削除
+   - 全画像アップ後、プレビューで目視確認
 
 ---
 

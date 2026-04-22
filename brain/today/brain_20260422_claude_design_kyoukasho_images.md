@@ -11,7 +11,35 @@
 - ネガティブプロンプトは Imagen 3.0-generate-002 以降・Gemini 2.5 Flash Image で非対応。代わりにポジティブな表現で除外要素を表す
 - 全プロンプトの末尾に「日本語テキストは全て正確に描画してください。」を必須付与
 - 配色はサムネと統一：**黒・ゴールド・赤・黄・白**の5色
-- ファイル名規約: `brain_20260422_kyoukasho_imgN.png`（N は通し番号）
+
+## 画像ファイル保存先（重要）
+
+生成した画像は以下のフォルダに保存する:
+
+```
+D:\Claude\content-pipeline\brain\today\images\brain_20260422_claude_design_kyoukasho\
+├── thumb.png                     ← サムネ（meta.md のプロンプト2 から生成）
+├── img01_7yakusoku.png
+├── img02_14man_jisseki.png
+├── img03_7nichi_curriculum.png
+├── img04_day1_tobira.png
+├── img05_day2_tobira.png
+├── img06_day3_tobira.png
+├── img07_day3_before_after.png
+├── img08_day4_tobira.png
+├── img09_day4_6lines_css.png
+├── img10_day5_tobira.png
+├── img11_day6_tobira.png
+├── img12_day6_5points.png
+├── img13_day7_tobira.png
+├── img14_bonus1_canva.png
+└── img15_bonus2_cw.png
+```
+
+**命名規約**:
+- ファイル名: `img{NN}_{label}.png`（NN は 01〜15 のゼロ詰め・label は短縮英字スネークケース）
+- 拡張子: `.png` 推奨（Brain の透明度処理が JPEG より安定）
+- サムネは `thumb.png` で固定
 
 ## 配置一覧
 
@@ -527,10 +555,10 @@ Day7 ワークフロー統合
 ## 運用フロー
 
 1. 上記プロンプトを Gemini (gemini.google.com) または Nano Banana Pro に 1 つずつコピーして画像生成
-2. 生成された画像を `brain_20260422_kyoukasho_img{N}.png` としてローカルに保存
-3. Brain エディタの該当プレースホルダー位置（🔴🔴🔴 画像N 挿入位置 🔴🔴🔴）の上で画像アップロードボタンを押す
-4. 画像が挿入されたらプレースホルダーブロックを削除
-5. 全 15 画像アップ後、プレビュー画面で目視確認
+2. 生成された画像を `D:\Claude\content-pipeline\brain\today\images\brain_20260422_claude_design_kyoukasho\img{NN}_{label}.png` として保存（命名規約は上記「画像ファイル保存先」参照）
+3. Brain エディタの該当プレースホルダー位置（🔴🔴🔴 画像N 挿入位置 🔴🔴🔴）の上で Brain 内蔵の画像アップロードボタンを押して画像をアップロード
+4. 画像が挿入されたらプレースホルダー blockquote を削除
+5. 全 15 画像 + サムネアップ後、プレビュー画面で目視確認（スマホプレビューも必須）
 
 ## チェックリスト
 
