@@ -58,7 +58,7 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 - `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下するため）。個別実行を推奨: `/collect-stats` → `/note-run` → `/content-engine` → `/x-run` → `/brain-run`
 - `/note-run` : note記事のみ生成。トピック選定→競合調査→記事生成→編集→最終稿出力
-- `/x-run` : Notion の未投稿記事を拾いツイート生成。またはトレンドスキャン・単独ツイート生成
+- `/x-run` : 毎日実行で翌日の X 予約投稿を生成→承認→Typefully送信する自動パイプライン。日常4本（朝/昼/夜前半/夜後半）+ 引用RT 0〜3本（AI全般公式アカウント対象）
 - `/brain-run` : noteで作った記事を Brain 向けに拡張リライトして販売ドラフト生成。コード全文・プロンプト全文・テンプレ付きの ¥1,980〜版を brain/today/ に出力。投稿は手動
 - `/content-engine` : 1ネタ→複数フォーマット展開。note草稿からXスレッド・単発ツイート・カードテキストを一括生成
 - `/collect-stats` : X Analytics・noteダッシュボードをブラウザ操作でデータ収集。x-performance.md / note-performance.md / Notion を自動更新

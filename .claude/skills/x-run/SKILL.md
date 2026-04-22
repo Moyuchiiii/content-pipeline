@@ -1,545 +1,378 @@
 ---
 name: x-run
-description: Hyui の X（Twitter）投稿を自動生成するスキル。引数なしで起動するとメニューを表示する。/note-run 直後は自動で告知ツイート生成に進む。
-allowed-tools: WebSearch, WebFetch, Write, Read, Glob, Grep, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__notion__notion-create-pages, mcp__xmcp__searchRecentTweets, mcp__xmcp__tweetsSearchRecent, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__form_input, mcp__claude-in-chrome__computer
+description: hyui_cc の X（Twitter）投稿を Typefully 経由で自動予約する毎日実行スキル。引用RTと日常4本を生成→承認→スケジュール予約まで全自動。
+allowed-tools: Bash, Write, Read, Edit, Glob, Grep, WebFetch, WebSearch, mcp__notion__notion-search, mcp__notion__notion-fetch, mcp__notion__notion-update-page, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__read_page, mcp__claude-in-chrome__javascript_tool
 ---
 
 # /x-run
 
-Hyui の X 投稿を生成する全自動パイプライン。
+hyui_cc（@hyui_cc）のX投稿を Typefully 経由で毎日自動予約するパイプライン。
+
+---
+
+## コンセプト
+
+- **毎日実行**: 1日1回 `/x-run` を叩くと、翌日分の投稿（日常4本 + 引用RT 0〜3本）をTypefullyに予約
+- **Typefully経由**: X純正予約は使わない。Typefully API v2 で schedule_at 指定
+- **引用RTはAI全般公式アカウントのみ**: Claude / OpenAI / Google / Meta 等の公式（日本語インフルエンサーは対象外）
+- **画像戦略は段階運用**: Phase 1は画像なしで送信、Phase 2から自動添付（後述）
 
 ---
 
 ## Phase 0: 起動判定
 
-### ① コンテキスト読み込み
+### ① 環境変数チェック
 
-必ず最初に以下を読み込む:
+```bash
+# projects/content-pipeline/.env から読み込む
+TYPEFULLY_API_KEY  必須
+TYPEFULLY_SOCIAL_SET_ID  必須（初回は空・setup モードで取得）
+```
 
-- `context/x-profile.md` — X アカウント設計・ポジショニング
-- `context/x-strategy.md` — ツイートタイプ・運用戦略
-- `context/voice-samples.md` — X 用文体サンプル・NG パターン
-- `context/x-performance.md` — 過去の成功パターン（あれば）
-- `context/x-hook-formulas.md` — フック型 10 種の定義（YOU MUST: ツイート生成前に必ず参照すること）
-- `context/writing-rules.md` — 禁止フレーズ・AI定型表現リスト（ツイート生成前に確認）
-- `context/article-frameworks.md` — AIDA・Star Story Solution（ツイート構成参照）
-- `context/content-memory.md` — 過去の成功ツイートパターン（あれば参照）
+未設定なら:
+```
+⚠️ Typefully 環境変数が未設定です
+→ projects/content-pipeline/.env を開いて TYPEFULLY_API_KEY を記入してください
+→ 完了後 /x-run setup を実行して Social Set ID を取得します
+```
 
 ### ② 起動ルート判定
 
-以下の順で判定し、最初に一致したルートへ進む。
-
-**ルート A（自動）: /note-run 直後の場合**
-
-Notion「note記事管理」DB（data_source: `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2`）を確認し、`Xステータス: 未投稿` かつ **今日の日付に更新されたレコード** が存在する場合は、メニューをスキップしてそのまま「モード A: note記事告知」へ直行する。
-
-```
-🔍 直近の未投稿記事を検出しました
-  → 「{記事タイトル}」の告知ツイートを生成します
-```
-
-**ルート B（手動）: 引数ありの場合**
-
-| 引数 | 進むモード |
+| 引数 | 処理 |
 |---|---|
-| `from-article {パス}` | モード A（記事パスを直接指定） |
-| `daily` または `daily {1行メモ}` | モード D（今日の自動投稿） |
-| `trend` | モード C（トレンドスキャン） |
-| `done {notion_id} {x_url}` | 投稿完了処理のみ実行 |
-
-**ルート C（メニュー）: 引数なし・直近未投稿なし**
-
-メニューを表示してユーザーに選ばせる:
-
-```
-📋 X、何する？
-
-1. 今日のツイートを自動生成（完全自動）
-2. note記事の告知ツイートを作る
-3. ネタを1行渡してツイートにする
-4. Notionの未投稿記事を確認する
-
-番号で答えてね
-```
-
-| 選択 | 進むモード |
-|---|---|
-| 1 | モード D（daily・完全自動） |
-| 2 | Notion未投稿一覧を表示 → ユーザーが選択 → モード A |
-| 3 | 「ネタを1行教えてください」と聞く → モード B（standalone） |
-| 4 | Notion未投稿一覧を表示して終了 |
+| （なし） | **daily-auto**（メイン）— 明日分を予約 |
+| `setup` | Social Set ID 取得 → .env に書き込み |
+| `queue` | 現在のTypefullyキューを表示 |
+| `dry-run` | 生成はするが Typefully に送らない（テスト用） |
 
 ---
 
-## モード D: `daily` — 今日のツイートを自動生成
+## モード: setup（初回のみ）
 
-### Step 1: 今日のツイートタイプを決定
+`scripts/typefully.mjs` のヘルパー関数 `getSocialSets()` を呼んで、hyui_cc に紐づく Social Set ID を取得し、.env に追記する。
 
-曜日と引数の有無で分岐する。
-
-| 曜日 | デフォルトタイプ |
-|---|---|
-| 月 | 実況（今週やること宣言） |
-| 火 | ノウハウ1行 |
-| 水 | 問いかけ型 |
-| 木 | ノウハウ1行 or 失敗報告 |
-| 金 | Before/After or 実績報告 |
-| 土・日 | 実況 or 問いかけ型 |
-
-引数に1行メモがある場合（例: `/x-run daily 今日Claude Codeでエラー踏みまくった`）は、メモの内容に合ったタイプ（実況・失敗報告・Before/After）に自動切り替えする。
-
-### Step 2: タイプ別コンテンツ収集
-
-**ノウハウ1行・速報コメント系（完全自動）:**
-WebSearch で以下を検索してネタを拾う（2方向で検索する）:
+```bash
+node scripts/typefully.mjs list-social-sets
 ```
-# Claude/AI新機能系
-"Claude Code" OR "Anthropic" 新機能 OR 使い方 site:x.com OR site:note.com
-"Claude" announcement site:anthropic.com
 
-# 副業・AI副業トレンド系（ターゲット層が気にしてる話題）
-AI 副業 OR フリーランス 稼ぎ方 site:x.com
-クラウドワークス OR ココナラ AI OR Claude 活用
+出力例:
 ```
-拾った情報から「1行で伝えられる発見・Tips」を抽出してツイートに変換する。
-副業系のネタの場合は「自分の体験」として語る形に変換する（「こういう話題が出てるけど、自分はこうだった」）。
+Social Sets:
+1. ID: abc123... | hyui_cc (X)
+```
 
-**問いかけ型（完全自動）:**
-Claude / Claude Code / 副業 に関する「答えやすいYes/No or どっち派質問」を生成する。WebSearch不要。
-
-**実況・Before/After・失敗報告（メモあり）:**
-渡された1行メモを元に肉付けして280字以内に展開する。
-
-**実況（メモなし・月曜）:**
-「今週も〇〇やっていきます」系の宣言ツイートをテンプレベースで生成する。具体的な数字・案件名は入れない。
-
-### Step 3: ツイート生成 → X入力まで自動実行
-
-ツイートを生成したら、そのままブラウザで X に入力する（「投稿完了後の処理」セクションの Phase B-1〜B-3 に従う）。
+ユーザーに ID を確認してもらい、.env の `TYPEFULLY_SOCIAL_SET_ID` に書き込む。
 
 ---
 
-## モード A: `from-article` — note記事 → X投稿変換
+## モード: daily-auto（メイン）
+
+### Phase 1: コンテキスト読み込み
+
+必ず以下を読む:
+
+- `context/x-profile.md` — Hyui ブランド・ターゲット
+- `context/x-strategy.md` — アルゴリズム対策・時間帯戦略
+- `context/x-hook-formulas.md` — フック10型
+- `context/voice-samples.md` — 文体・NGフレーズ
+- `context/x-performance.md` — 過去実績・成功パターン
+- `context/writing-rules.md` — 禁止フレーズ
+- `today/` の最新記事（あれば参照）
+
+### Phase 2: Claude公式＆AI全般アカウント監視
+
+claude-in-chrome MCPで下記を順に開き、過去24時間のツイートを取得:
+
+**Tier 1（毎日チェック・8アカウント）:**
+- https://x.com/claudeai
+- https://x.com/ClaudeDevs
+- https://x.com/AnthropicAI
+- https://x.com/OpenAI
+- https://x.com/ChatGPTapp
+- https://x.com/GoogleDeepMind
+- https://x.com/GeminiApp
+- https://x.com/AIatMeta
+
+**Tier 2（公式のみ・5アカウント）:**
+- https://x.com/xai
+- https://x.com/perplexity_ai
+- https://x.com/runwayml
+- https://x.com/midjourney
+- https://x.com/suno_ai_
+
+**Tier 3（話題時のみ・6アカウント）:**
+- https://x.com/therundownai
+- https://x.com/rowancheung
+- https://x.com/MistralAI
+- https://x.com/SakanaAILabs
+- https://x.com/ELYZA_inc
+- https://x.com/cyberagent_ai
+
+**選定基準（引用RT対象）:**
+1. 新機能・モデル発表（リリース系）
+2. 重要アップデート（API・価格・仕様変更）
+3. バズ度（いいね1000以上 or 引用が多い）
+4. hyui が「文系・副業視点で語れるか」（語れないなら除外）
+
+**最大3件まで選定。** 該当なしの日は引用RTゼロでOK（無理やり作らない）。
+
+### Phase 3: 日常4本生成
+
+**時間帯別テンプレ（固定）:**
+
+| 枠 | 時間 | テーマ | フック型候補 |
+|---|---|---|---|
+| 朝 | 08:00 | 作業Before/After | 数字型・Before/After型 |
+| 昼 | 12:30 | AIニュース所感 | 驚き発見型・逆張り型 |
+| 夜前半 | 20:00 | 副業の裏側 | 実況型・問題提起型 |
+| 夜後半 | 22:00 | 問いかけ・共感 | 問いかけ型・希少性型 |
+
+**曜日別特化:**
+
+| 曜日 | 朝 | 昼 | 夜前半 | 夜後半 |
+|---|---|---|---|---|
+| 月 | 今週計画宣言 | AIニュース所感 | 先週の副業振り返り | 問いかけ |
+| 火 | 通常Before/After | 通常 | 通常 | 通常 |
+| 水 | 通常 | 通常 | **数字報告（収益・時短）** | 通常 |
+| 木 | 通常 | 通常 | 通常 | 通常 |
+| 金 | 通常 | 通常 | **今週使ってよかったツール** | 通常 |
+| 土 | 軽め（作業しない日は実況） | 通常 | 通常 | 通常 |
+| 日 | 通常 | 通常 | **今週の学び振り返り** | 問いかけ |
+
+**ネタソース（優先順）:**
+
+1. `today/` の最新記事（あればBefore/Afterや失敗談を抜き出し）
+2. `x/published/` の過去7日ログ（同じネタ連投を避ける重複チェック）
+3. `note/published/` の過去記事（実績引用OK）
+4. `context/x-performance.md` の成功パターン
+5. ユーザーから1行メモ（引数で渡せる: `/x-run daily-auto "今日は/loopでブログ1本書いた"`）
+
+**文体ルール（絶対）:**
+
+- 一人称「自分」統一
+- **「文系の自分でもできた」**を各日1〜2本に自然挿入
+- 断定語尾は「できる」じゃなくて「できた」（実体験フレーム）
+- ハッシュタグ原則なし（月1〜2本の固定ポストのみ `#Claude` `#AI副業`）
+- 280字以内（改行込み）
+- フック1行目は `context/x-hook-formulas.md` の10型から選択・宣言必須
+- NGフレーズ（`context/voice-samples.md` 準拠）: 「〜でしょう」「重要です」「まず最初に」等
+
+### Phase 4: 画像戦略（段階運用）
+
+**Phase 4a（Phase 1 運用: 最初の1〜2週間）**
+
+- 全投稿を **画像なしで送信**
+- Typefully UI で翌朝ユーザーが手動で画像追加
+- Chat上には「推奨画像: 作業スクショ / ロゴ+短文カード / なし」の指示だけ表示
+
+**Phase 4b（Phase 2 運用: 安定後）**
 
-### Step 1: 記事読み込み + アトミックアイデア抽出
+- 朝 Before/After: `x/images/YYYYMMDD_morning.png` をユーザーが用意 → 検出して添付
+- 昼 AIニュース所感: 引用元の公式ツイートをブラウザでスクショ → 自動添付
+- 夜前半 副業の裏側: 任意（ユーザーメモに画像パス指定できる）
+- 夜後半 問いかけ: 画像なし
+- 引用RT: 画像なし（引用カードで代用）
 
-引数がファイルパスなら直接読み込む。
-引数なし（Phase 0 でユーザーが選択した場合）は Notion レコードから `note URL` と `草稿パス` を取得してファイルを読む。
+**初期は Phase 4a で運用。** ユーザーから「画像自動化したい」と言われたら Phase 4b に切り替える。
 
-読み取る情報:
-- 記事タイプ（速報/実録/ノウハウ）
-- 記事の核心（一番伝えたいこと）
-- Before/After や数字（あれば）
-- note URL（frontmatter or Notion レコードから取得）
+### Phase 5: ドラフト承認（ユーザー）
 
-**アトミックアイデア抽出（X変換前に必須）:**
-
-記事全体を読んだ後、「Xで独立して成立するアトミックアイデア」を 3〜7 個抽出する。
-
-条件:
-- 各アイデアは記事全体を読まなくても理解できる、独立した主張または体験
-- Before/After・数字・発見・驚きのいずれかを含む
-- 同じ内容を言い換えただけのアイデアはカウントしない（重複NG）
-
-抽出できたアイデアの中から、最もXで伸びそうな1〜3個を選んでツイート化する。
-全アイデアをツイートにする必要はない。「これは絶対伸びる」と思えるものだけ使う。
-
-### Step 2: ツイートパターン判定
-
-| 記事タイプ | X 出力パターン |
-|---|---|
-| 速報（sokuho） | 単発ツイート 1〜2 本（速報 + note 誘導） |
-| 実録（jituroku） | note 誘導ツイート + ノウハウスレッド（任意） |
-| ノウハウ（knowhow） | ノウハウスレッド（5〜8 ツイート） + note 誘導 |
-
-### Step 3: ツイート生成
-
-**単発ツイート（速報）:**
-
-```
-[フック1行 — 事実ファースト or 一番驚いた点]
-[自分の視点・感想（1〜2行）]
-[詳しくは note に書いた]
-
-※ URL はリプライに置く
-```
-
-**note誘導ツイート（固定フォーマット）:**
-
-```
-[数字 or 状況変化（例: 「0→14万」「2週間で0件→翌月5.5万」）]
-[失敗談 or 体験（1〜2行。「〜だった」「〜してみたら〜だった」）]
-[何が分かるか or 読むべき人（1行）]
-[セール中の場合のみ: 今だけ○円（通常○円）]
-
-※ URL はリプライに置く
-※ noteサムネを画像として添付する（後述）
-```
-
-このフォーマットは記事タイプ（速報/実録/ノウハウ）によらず統一する。
-
-**引用リポスト文（6時間後用・note告知と同時に生成する）:**
-
-note告知ツイートを生成したら、必ず引用リポスト文もセットで生成する。
-元ツイートのURLは投稿後に確定するため、プレースホルダー `{元ツイートURL}` のまま出力する。
-
-引用文は元ツイートと**違う角度**で書くこと。同じ内容の繰り返しはNG。
-
-```
-パターン例（元が数字系なら → 「なぜそうなったか」を補足）:
-  朝のツイートの補足
-
-  [元ツイートで触れなかった背景や理由（1〜2行）]
-  [読むべき人への一言]
-
-パターン例（元が体験系なら → 「一番の失敗」を切り出す）:
-  さっきのやつ、一番詰まったのが
-
-  [失敗・詰まりポイントを1つ深掘り（1〜2行）]
-  [記事にはこれも全部書いた]
-```
-
-**ノウハウスレッド（5〜8 ツイート）:**
-
-```
-ツイート1（フック）:
-  [「これ知らない人多すぎる」「〇〇したら〇〇になった」系のフック]
-
-ツイート2〜6（中身）:
-  [1ツイート1アイデア。箇条書き禁止。文章で書く]
-
-ツイート7（まとめ + 誘導）:
-  [まとめ1行 + 「詳しくは note に書いた」 + URL]
-```
-
-**文体ルール:**
-- `context/voice-samples.md` のサンプルに合わせる
-- 一人称: 「自分」「僕」
-- 1ツイートは最大 280 字（改行込み）
-- ハッシュタグ: スレッドの最後のツイートのみ 0〜2 個
-- AI 感のある言い回し禁止
-
-### Step 4: Notion ステータス更新
-
-草稿保存後、Notion の note記事 DB レコードを更新:
-- `Xステータス`: 未投稿 → **草稿完成**
-- `X草稿パス`: 保存したドラフトファイルのパス
-
----
-
-## モード B: `standalone` — 単独ツイート / スレッド生成
-
-### Step 1: トピック確認
-
-ユーザーが指定したトピックを受け取る。指定がなければ聞く:
-- 実況ツイート（今やってること）
-- Tips・ノウハウ（1つの技術・工夫）
-- 実績報告（スキ数・案件・PV）
-
-### Step 2: フック型選択 → ツイート生成
-
-**YOU MUST: ツイートを書く前に `context/x-hook-formulas.md` からフック型を 1 つ選び、宣言してから書くこと。**
-
-```
-フック型選択フロー:
-1. ネタの性質を確認（実績/ノウハウ/速報/実況/問いかけ）
-2. x-hook-formulas.md の 10 型から最も合うものを選ぶ
-3. 「使用フック型: ○○型」と宣言する
-4. 型のテンプレートに沿って 1 行目を書く
-5. 必要なら 2〜3 バリエーションを生成して最良を選ぶ
-```
-
-**声スタイルクローン（langgptai パターン）:**
-`context/voice-samples.md` と `context/x-performance.md`（エンゲージメント高ツイート）から以下を抽出してツイートに反映:
-- 語尾パターン（「〜した」「〜だった」「〜かも」等、どれが多いか）
-- 感情表現の強さ（控えめ/適度/強め）
-- 専門用語の説明レベル（どこまで省略しているか）
-- 改行の使い方（1文1行か、まとめて書くか）
-
-`context/voice-samples.md` のサンプルと照らし合わせてトーンを整え、単発 or スレッドを判断して出力する。
-
----
-
-## モード C: `trend` — トレンドスキャン → ツイート + note依頼
-
-### Step 1: トレンドスキャン
-
-**Step 1-a: xmcp で X 上のリアルタイムトレンドを取得（優先）**
-
-xmcp が設定されている場合、まず X API から直接検索する（site:x.com のWebSearchより精度が高い）:
-
-```
-mcp__xmcp__searchRecentTweets または mcp__xmcp__tweetsSearchRecent で以下を検索:
-  クエリ1: "(Claude Code OR Anthropic OR Claude) lang:ja -is:retweet"
-    → パラメータ: max_results=20, tweet.fields=public_metrics,created_at
-    → エンゲージメント（いいね+リポスト数）が高い投稿を優先
-  クエリ2: "(Claude Code OR claude_code) lang:ja -is:retweet"
-    → 日本語コミュニティの反応を把握
-
-取得した結果から:
-  - いいね10件以上 or リポスト5件以上のツイートを「バズコンテンツ」として記録
-  - 繰り返し言及されているトピックを「トレンドキーワード」として抽出
-```
-
-xmcp が使えない場合は Step 1-b に進む。
-
-**Step 1-b: WebSearch でリリース情報・コミュニティ動向を取得**
-
-WebSearch で以下を検索（過去 24〜48 時間）:
-
-```
-# 公式・リリース情報（Claude/Anthropic）
-"Claude Code" OR "Anthropic" OR "Claude" new release announcement
-"Claude" site:anthropic.com announcement OR update
-
-# 副業・AI副業コミュニティの動向（ターゲット層が気にしてる話題）
-AI 副業 稼ぎ方 OR 始め方 site:note.com OR site:x.com
-クラウドワークス AI 受注 OR 案件
-副業 初心者 AI OR Claude 活用
-
-# Claude活用コミュニティ（日本語）
-"Claude Code" 使い方 OR 活用 site:note.com OR site:zenn.dev
-"Claude Code" tips OR ノウハウ lang:ja
-
-# GitHub リポジトリ動向（注目度急上昇を検知）
-"claude-code" site:github.com new release OR update
-
-# YouTube動画リサーチ（YouTube Transcript MCP が利用可能な場合）
-"Claude Code" 解説 OR レビュー site:youtube.com （最新1週間）
-→ ヒットした動画があれば字幕テキストを取得してコミュニティの反応・話題を把握
-```
-
-### Step 2: ツイートアイデア生成
-
-スキャン結果から 3〜5 件のツイートアイデアを生成して提示。各アイデアに:
-- ツイートタイプ（速報/実況/ノウハウ/引用 RT）
-- ドラフト文（完成形）
-- 推奨投稿時間
-
-### Step 3: note 記事依頼（→ Notion ネタ帳）
-
-ツイートアイデアのうち「深掘りすれば note 記事になる」ものを選別し、ユーザーに確認する:
-
-```
-📝 note 記事にできそうなネタ:
-- [トピック名]: [一言説明]（推定スコア: ○点）
-
-Notionのネタ帳に追加しますか？
-```
-
-承認されたら Notion「ネタ帳」DB（data_source: `collection://1a603b4f-d1e4-4ed7-8c75-c7c0a5b7e595`）に追加:
-- タイトル: ネタの仮タイトル
-- ソース: **X発案**
-- ステータス: 未使用
-- メモ: X でのトレンド情報、スキャン日時
-
----
-
-## 画像添付ルール
-
-X はテキストのみより画像付きの方がリーチが高い。
-
-### note記事告知ポスト（`from-article` モード）
-
-**必ず note のサムネイル画像を使う。** Canva/Gemini 生成カードは使わない。
-
-```
-サムネのダウンロード手順（ユーザーが行う）:
-1. note.com の記事ページを開く
-2. 記事上部のサムネイル画像を右クリック → 「名前をつけて保存」
-3. X の投稿フォームで画像として添付する
-```
-
-ドラフトファイルの「投稿メモ」に以下を記載する:
-```
-画像: noteサムネを添付（記事ページからダウンロードして添付してください）
-```
-
-### スレッド・単独ノウハウポスト（`standalone` モード）
-
-テキストのみで十分。画像が欲しい場合のみ Canva/Gemini で生成する（任意）。
-
-### 速報ポスト（`trend` モード）
-
-画像は任意。速報性が優先なので、画像生成に時間をかけない。
-
----
-
-## Phase 出力: 保存
-
-### 保存先
-
-- スレッド: `drafts/threads/draft_{日付}_{トピック要約}.md`
-- 単発: `drafts/singles/draft_{日付}_{トピック要約}.md`
-
-### ファイルフォーマット
-
-```markdown
----
-type: thread | single
-source_article: {note記事パス or "standalone"}
-source_notion_id: {Notion レコード ID or ""}
-created: YYYY-MM-DD
-status: draft
-note_url: {URL or TBD}
----
-
-# ツイート草稿
-
-## ツイート1
-{本文}
-
-## ツイート2
-{本文}
-...
-
-## 投稿メモ
-- 推奨投稿時間: {時間帯}
-- ハッシュタグ案: {0〜2個}
-- note URL: {URL or TBD}
-```
-
-### コンソール出力
-
-- 生成したツイート数
-- ファイルパス
-- 推奨投稿時間
-- Notion 更新状況
-
----
-
-## 投稿完了後の処理
-
-ユーザーが X に投稿したら、Notion レコードを最終更新:
-- `Xステータス`: 草稿完成 → **投稿済み**
-- `XURL`: 投稿した X のポスト URL
-
-実行コマンド例:
-```
-/x-run done {notion_record_id} {x_post_url}
-```
-
----
-
-## 品質ゲート
-
-- [ ] 1ツイート 280 字以内（改行込み）
-- [ ] フックが1行目にある
-- [ ] AI 感のある言い回しがない
-- [ ] ハッシュタグ 2 個以内
-- [ ] 宣伝感がない（体験・実況ベース）
-- [ ] note リンクが入るべき場所に入っている
-
----
-
-## 投稿ルール（絶対厳守）
-
-**YOU MUST NOT: ツイートを即時投稿すること。いかなる場合も禁止。**
-
-### ブラウザで X を操作する前に必ず実行すること
-
-X のブラウザ操作を開始する前に、**ログイン中のアカウントが `@moyuchi_cc` であることを必ず確認する**。
-
-```
-確認手順:
-1. x.com を開く
-2. 右上のアイコン or プロフィールページでアカウント名を確認
-3. @moyuchi_cc であることを目視確認してから作業を開始する
-```
-
-**アカウントが違った場合は即停止。** 絶対に操作せず、ユーザーにアカウントの切り替えを依頼する:
-```
-⚠️ ログイン中のアカウントが @moyuchi_cc ではありません（現在: @{確認したアカウント名}）
-   アカウントを @moyuchi_cc に切り替えてから、もう一度実行してください。
-```
-
-### 投稿方法（X 予約投稿機能を使う・固定）
-
-ドラフト保存後、**必ず**ブラウザで以下まで操作する。即時投稿・手動コピペ案内は禁止。
-
-#### Phase B-1: アカウント確認
-
-```
-1. mcp__claude-in-chrome__tabs_context_mcp でタブ状況を確認
-2. 新しいタブを開いて x.com にアクセス
-3. ログインユーザーを確認（プロフィールアイコン or x.com/settings/account）
-4. @moyuchi_cc でなければ即停止してユーザーに切り替えを依頼
-```
-
-#### Phase B-2: 予約投稿セット（1ツイートずつ）
-
-スレッドの場合はツイート1を入力後、リプライとして続きを繋げる。
-
-```
-1. x.com/compose/post を開く
-2. 草稿テキストを textarea に入力（mcp__claude-in-chrome__form_input）
-3. 📅（スケジュール）アイコンをクリック
-4. 推奨日時（月/日/年 時:分）を日付・時刻フィールドに入力
-5. 「確認」ボタンをクリック（スケジュール確定ダイアログがある場合）
-6. ← ここで停止。スクリーンショットを撮ってユーザーに確認を求める →
-```
-
-#### Phase B-3: ユーザーへの確認メッセージ（固定フォーマット）
-
-```
-📅 予約投稿の準備ができました
-
-記事: {記事タイトル}
-投稿日時: {YYYY-MM-DD HH:MM}
-プレビュー: {ツイート1の冒頭30字}...
-
-「スケジュール」ボタンを押してください。
-押したら完了を教えてもらえると Notion ステータスを「投稿済み」に更新します。
-```
-
-送信・スケジュール確定ボタンは必ずユーザーが押す。Claude は押さない。
-
----
-
-## 関連スキル
-
-- `content-engine` — 素材からプラットフォーム別コンテンツを生成
-- `crosspost` — X + LinkedIn + Threads + Bluesky への同時展開
-
----
-
-## 完了後の案内（ユーザーへのTODO）
-
-x-run 完了時は以下のフォーマットで必ず表示する:
+以下のフォーマットでチャットに全投稿を表示:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━
-✅ 今日のTODO
+📅 明日（YYYY-MM-DD）の予約投稿プレビュー
+━━━━━━━━━━━━━━━━━━━━━━━━━
 
-【1】note 投稿
-  タイトル : {記事タイトル}
-  価格     : {無料 or ¥500}
-  タグ     : {タグ一覧}
-  手順:
-    1. note.com/notes/new でエディタを開く
-    2. タイトルを入力
-    3. {HTMLファイルパス} の内容をペースト
-    4. サムネイルをアップロード（プロンプトは /note-run の出力を参照）
-    5. 「投稿する」を押す
+▼ 日常ツイート 4本
 
-【2】X 予約投稿の確定
-  投稿予定 : {x_scheduled_time}
-  画像     : noteサムネをダウンロードして添付してください（記事ページの上部画像を右クリック保存）
-  URL      : リプライに note URL を貼ってください（本文には入れない）
-  開いているタブで「スケジュール」ボタンを押して確定してください。
-  ※スレッドの場合は全ツイートが繋がっていることを確認してから押す
+【朝 08:00】Before/After型
+──────────
+{本文}
+──────────
+推奨画像: 作業スクショ
 
-【3】6時間後の引用リポストを予約する
-  元ツイートが公開されたらURLをコピーして、以下の文で引用ツイートを予約してください（6時間後に設定）:
-  ────────────────
-  {引用リポスト文}
-  ────────────────
-  手順: x.com/compose/post を開く → 上記テキストを入力 → 元ツイートURLを貼り付け → 📅で6時間後に予約
+【昼 12:30】驚き発見型
+──────────
+{本文}
+──────────
+推奨画像: なし（Phase 1運用）
 
-【4】固定ポストを更新
-  note 告知ツイートの場合、プロフィールの固定ポストをこの投稿に更新してください。
-  手順: ツイート右上の「…」→「固定ツイート」を選択
-  ※前回の固定ポストより反応が良さそうな場合のみ更新。毎回更新しなくてOK。
+【夜前半 20:00】実況型
+──────────
+{本文}
+──────────
+推奨画像: 作業画面スクショ
+
+【夜後半 22:00】問いかけ型
+──────────
+{本文}
+──────────
+推奨画像: なし
+
+▼ 引用RT {N}本
+
+【引用RT 1 / 予定 09:30】
+引用元: @claudeai の https://x.com/claudeai/status/...
+元ツイート要約: 「Claude Opus 4.7 リリース」
+──────────
+{コメント文}
+──────────
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
+
+この内容でTypefullyに予約投稿してOK？
+ → "OK" or "送信して"  : そのまま送信
+ → "修正: {番号} {指示}": 該当投稿を再生成
+ → "キャンセル"         : 中止
 ```
+
+ユーザーの返答に従う。**送信ボタンは明示承認があるまで押さない**（絶対厳守）。
+
+### Phase 6: Typefully送信
+
+**B案採用（即自動投稿モード）:**
+
+- ドラフト作成時に `publish_at` に明日の時刻（ISO 8601）を指定
+- Typefully キューに入った時点で自動投稿される
+- 失敗時はエラーログを `x/logs/YYYYMMDD_error.log` に記録
+
+`scripts/typefully.mjs` の `createDraft()` を呼ぶ:
+
+```javascript
+import { createDraft } from './scripts/typefully.mjs';
+
+// 日常ツイート
+await createDraft({
+  posts: [{ text: '本文', media_ids: [] }],
+  publishAt: '2026-04-24T08:00:00+09:00',
+});
+
+// 引用RT
+await createDraft({
+  posts: [{
+    text: 'コメント本文',
+    quote_post_url: 'https://x.com/claudeai/status/xxx',
+  }],
+  publishAt: '2026-04-24T09:30:00+09:00',
+});
+```
+
+### Phase 7: 投稿履歴保存
+
+`x/scheduled/YYYYMMDD.json` に記録:
+
+```json
+{
+  "date": "2026-04-24",
+  "created_at": "2026-04-23T23:45:00+09:00",
+  "posts": [
+    {
+      "type": "daily",
+      "slot": "morning",
+      "publish_at": "2026-04-24T08:00:00+09:00",
+      "hook_type": "Before/After型",
+      "text": "...",
+      "draft_id": "typefully_draft_id",
+      "share_url": "..."
+    },
+    {
+      "type": "quote_rt",
+      "source_account": "claudeai",
+      "source_url": "https://x.com/claudeai/status/...",
+      "publish_at": "2026-04-24T09:30:00+09:00",
+      "text": "...",
+      "draft_id": "..."
+    }
+  ]
+}
+```
+
+### Phase 8: 完了報告
+
+チャット上:
+```
+✅ {N}件の予約投稿をTypefullyに送信しました
+
+内訳:
+- 日常4本（朝/昼/夜前半/夜後半）
+- 引用RT {M}本
+
+Typefullyで確認:
+https://typefully.com/queue
+
+次回 /x-run は明日の同じ時間に実行してください。
+```
+
+Discord通知（リードWebhook）:
+```bash
+printf '{"embeds":[{"title":"✅ X予約投稿完了","color":5763719,"fields":[{"name":"投稿日","value":"{明日の日付}","inline":true},{"name":"本数","value":"{N}件","inline":true},{"name":"内訳","value":"日常4本 + 引用RT {M}本","inline":false}],"footer":{"text":"hyui_cc"}}]}' \
+  | curl -H "Content-Type: application/json" -X POST -d @- "{LEAD_WEBHOOK}"
+```
+
+---
+
+## モード: queue（Typefullyキュー確認）
+
+`scripts/typefully.mjs` の `getQueue()` を呼んで、現在予約中の投稿を時系列で表示。
+
+---
+
+## モード: dry-run（テスト）
+
+Phase 1〜5 までは通常通り実行。Phase 6（Typefully送信）だけスキップ。生成内容の確認用。
+
+---
+
+## 品質ゲート（投稿前に必ずチェック）
+
+- [ ] 1ツイート280字以内
+- [ ] フック10型から1つ宣言している
+- [ ] AI感のある言い回しがない（`context/voice-samples.md` NGリスト照合）
+- [ ] 「文系の自分でもできた」が日4本中1〜2本に入っている
+- [ ] ハッシュタグなし（or 固定ポスト日のみ最大2個）
+- [ ] 引用RTの `quote_post_url` がURL形式（tweet ID ではない）
+- [ ] `publish_at` が ISO 8601 の `+09:00` 形式で指定されている
+- [ ] 280字内でフックが1行目にある
+
+---
+
+## 禁止事項（絶対厳守）
+
+- **送信ボタンをユーザー承認なしに押さない**（Typefullyドラフト作成も「送信」扱い）
+- **APIキーをチャットログに表示しない**（環境変数経由のみ）
+- **既存のTypefullyキューを上書き・削除しない**（新規ドラフト作成のみ）
+- **引用RTに日本語インフルエンサーを含めない**（今回の方針。将来変更可）
+- **同じ引用元のツイートに2日連続で引用RTしない**（重複防止）
+
+---
+
+## トラブルシューティング
+
+### エラー: `401 Unauthorized`
+- APIキーが間違ってる、または v1 キー（v2 が必要）
+- `.env` のキー再確認
+
+### エラー: `404 social_set_id not found`
+- `/x-run setup` で Social Set ID を取り直す
+
+### エラー: `Media processing failed`
+- Phase 4b で画像アップロード時に発生
+- S3 PUT 時に Content-Type を設定していないか確認（設定すべきでない）
+
+### Phase 2 で Chrome がログアウト状態
+- ユーザーに claude-in-chrome で手動ログインを依頼
+- 解決するまで引用RTはスキップ（日常4本だけ送信）
+
+---
+
+## 関連ファイル
+
+- `scripts/typefully.mjs` — Typefully API ヘルパー
+- `context/typefully-api-research.md` — API v2 仕様詳細
+- `context/x-influencer-research.md` — 引用RT対象アカウント詳細
+- `context/x-profile.md` — hyui ブランド設計
+- `context/x-strategy.md` — ツイートタイプ・アルゴリズム戦略
+- `context/x-hook-formulas.md` — フック10型
+- `context/voice-samples.md` — 文体・NGフレーズ
+- `context/x-performance.md` — 過去実績

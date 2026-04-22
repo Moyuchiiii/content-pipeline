@@ -1,0 +1,25 @@
+# 環境変数・認証（絶対コミット禁止）
+.env
+.env.local
+.env.*.local
+
+# 依存関係
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# ビルド成果物
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
