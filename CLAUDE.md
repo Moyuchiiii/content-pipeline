@@ -98,10 +98,11 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 **note-run が自動管理:**
 - 記事名・記事タイプ・ステータス・トピック・メモ（Phase 2/8）
-- Xステータス = `未投稿` セット（Phase 8）
+- **noteURL・note公開日・Xステータス(`未投稿`)・ステータス(`完了`)（Phase 9 Step 1 でユーザーに URL を聞いて自動入力）**
 
 **brain-run が自動管理:**
-- Brainステータス・Brain価格・Brain還元率・Brain公開日
+- Brainステータス・Brain価格・Brain還元率・Brain公開日（Phase 7 で草稿完成時）
+- **BrainURL・Brain公開日（最終）・Brainステータス(`投稿済み`)（Phase 8 Step 1 でユーザーに URL を聞いて自動入力）**
 
 **x-run が自動管理:**
 - Xステータス = `投稿済み`（Phase 7-3・告知採用時のみ）
@@ -110,10 +111,15 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 **collect-stats が自動管理:**
 - note PV・noteスキ（Step 4で記事名キーに upsert）
 
-**ユーザー手動更新:**
-- noteURL（note投稿後）
-- XURL（X告知投稿後）
-- BrainURL・Brain売上（Brain販売開始後・月次）
+**ユーザー手動更新（スキル側で自動化していない）:**
+- XURL（X告知投稿後・note-run/brain-run の範囲外・Typefully 管理）
+- Brain売上（月次手動・collect-stats 拡張で自動化検討中）
+
+### 投稿URLヒアリングの流れ
+
+- `/note-run` が Phase 9 の最後で「noteに投稿した？ URL教えて」と聞く → URL を受け取ったら Notion 自動更新
+- `/brain-run` が Phase 8 の最後で「Brain に投稿した？ URL と最終価格・還元率・公開日を教えて」と聞く → 自動更新
+- 「まだ」と答えた場合は Notion 更新をスキップし、後で Notion UI から手動更新 or 次回スキル実行時に再度ヒアリング
 
 ### Xステータスの意味
 
