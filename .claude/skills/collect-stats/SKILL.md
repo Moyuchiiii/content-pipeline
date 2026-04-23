@@ -191,7 +191,7 @@ URL: https://note.com/stats
 ### Step 2: 記事データ抽出
 
 ```javascript
-// 記事タイトル・PV・スキ数・売上を抽出
+// 記事タイトル・note PV・noteスキを抽出
 const text = document.body.innerText;
 // タイトルと数値のペアを検出
 console.log(text);
@@ -199,29 +199,28 @@ console.log(text);
 
 取得するデータ（全記事分）:
 - 記事タイトル
-- PV数
-- スキ数
+- note PV数
+- noteスキ数
 - コメント数
-- 売上（有料記事のみ）
-- 公開日
+- note公開日
 
 ### Step 3: note-performance.md 更新
 
 `context/note-performance.md` を読み込んで更新する。
 
 **既存レコードの扱い:**
-- 既存記事 → PV・スキ数を最新値で上書き
+- 既存記事 → note PV・noteスキを最新値で上書き
 - 新規記事（note-performance.mdにない） → 新しいセクションを追加
 
 **新規記事の追記フォーマット:**
 ```markdown
 ### 記事N: {タイトル}
 - URL: https://note.com/moyuchi_aistu/n/{id}
-- 公開日: YYYY-MM-DD
-- 価格: 無料 or ¥{価格}
-- PV: {数値}
+- note公開日: YYYY-MM-DD
+- note価格: 無料 or ¥{価格}
+- note PV: {数値}
 - コメント: {数値}
-- スキ数: {数値}
+- noteスキ: {数値}
 - テーマ: {タグや内容から1行}
 - 学び: （後で追記）
 ```
@@ -232,9 +231,8 @@ console.log(text);
 収集したデータと照合して各レコードを `mcp__notion__notion-update-page` で更新する。
 
 更新するフィールド:
-- PV
-- スキ数
-- 売上推計（スキ数 × 価格 × 1.5）
+- note PV
+- noteスキ
 
 ### Step 5: note-performance.md の PDCA分析を更新
 
@@ -242,8 +240,8 @@ console.log(text);
 ## PDCA分析（{今日の日付}更新）
 
 ### 成功パターン
-- スキ数TOP: {タイトル}（{スキ数}スキ、スキ転換率{%}）
-- PV TOP: {タイトル}（{PV}PV）
+- noteスキTOP: {タイトル}（{noteスキ}スキ、スキ転換率{%}）
+- note PV TOP: {タイトル}（{note PV}PV）
 
 ### 課題
 - （データから読み取れる課題）
@@ -273,7 +271,7 @@ console.log(text);
 
 --- note ---
 収集記事数: {N}件
-総PV: {数値} / 総スキ: {数値}
+総note PV: {数値} / 総noteスキ: {数値}
 更新ファイル: context/note-performance.md
 Notion更新: {N}件
 

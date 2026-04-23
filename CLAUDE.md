@@ -68,26 +68,56 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 ### 共有DB
 | DB | data_source | 用途 |
 |---|---|---|
-| note記事管理 | `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2` | 記事ステータス・Xステータス管理 |
+| 記事管理 | `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2` | 記事ステータス・Xステータス管理 |
 | ネタ帳 | `collection://1a603b4f-d1e4-4ed7-8c75-c7c0a5b7e595` | X発案ネタ・未使用ネタのストック |
 
-### note記事DBの追加フィールド（x-pipeline用）
-| フィールド名 | タイプ | 値の選択肢 |
-|---|---|---|
-| `Xステータス` | select | 未投稿 / 草稿完成 / 投稿済み |
-| `X草稿パス` | text | ドラフトファイルの絶対パス |
-| `XURL` | url | 投稿後の X ポスト URL |
+### 記事管理DB フィールド一覧（18フィールド）
 
-### note記事DBの追加フィールド（brain-pipeline用）
-| フィールド名 | タイプ | 値の選択肢 |
+| フィールド名 | タイプ | 備考 |
 |---|---|---|
-| `Brainステータス` | select | 未作成 / 草稿完成 / 投稿済み |
-| `Brain 草稿パス` | text | ドラフトファイルの絶対パス |
-| `Brain URL` | url | 投稿後の Brain 商品ページ URL |
-| `Brain 価格` | number | ¥ |
-| `Brain 還元率` | number | % |
-| `Brain 公開日` | date | 投稿日 |
-| `Brain 売上` | number | 月次更新 |
+| 記事名 | title | 記事タイトル |
+| 記事タイプ | select | 速報 / 実録 / ノウハウ |
+| ステータス | select | 進行中 / 完了 / 投稿済み |
+| トピック | text | 選定理由・元ネタ |
+| メモ | text | PDCA記録・メモ |
+| note公開日 | date | note投稿日 |
+| noteURL | url | note投稿後のURL |
+| note PV | number | ページビュー数 |
+| noteスキ | number | スキの数 |
+| note価格 | number | ¥（有料記事の場合） |
+| Xステータス | select | 未投稿 / 草稿完成 / 投稿済み |
+| XURL | url | 投稿後の X ポスト URL |
+| Brainステータス | select | 未作成 / 草稿完成 / 投稿済み / 告知済み |
+| BrainURL | url | 投稿後の Brain 商品ページ URL |
+| Brain価格 | number | ¥ |
+| Brain還元率 | number | % |
+| Brain公開日 | date | 投稿日 |
+| Brain売上 | number | 月次更新 |
+
+### フィールド更新責任分界
+
+**note-run が自動管理:**
+- 記事名・記事タイプ・ステータス・トピック・メモ（Phase 2/8）
+- Xステータス = `未投稿` セット（Phase 8）
+
+**brain-run が自動管理:**
+- Brainステータス・Brain価格・Brain還元率・Brain公開日
+
+**x-run が自動管理:**
+- Xステータス = `投稿済み`（Phase 7-3・告知採用時のみ）
+- Brainステータス = `告知済み`（Phase 7-3・Brain告知時のみ）
+
+**collect-stats が自動管理:**
+- note PV・noteスキ（Step 4で記事名キーに upsert）
+
+**ユーザー手動更新:**
+- noteURL（note投稿後）
+- XURL（X告知投稿後）
+- BrainURL・Brain売上（Brain販売開始後・月次）
+
+### Xステータスの意味
+
+Xステータスは **note/brain 告知ツイートのステータス** を表す。日常4本ツイート・引用RT・バズ宣伝リプは `x/scheduled/YYYYMMDD.json` と Typefully で管理され、Notion には記録しない。
 
 ### 連携フロー
 

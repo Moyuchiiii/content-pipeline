@@ -53,7 +53,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__cl
 1. https://note.com/moyuchi_aistu/stats を開く
 2. get_page_text で全記事のPV・スキ・売上を取得
 3. context/note-performance.md を更新
-4. Notion「note記事管理」DB（collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2）を更新
+4. Notion「記事管理」DB（collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2）を更新
 ```
 
 失敗した場合: 「note stats: 取得失敗（最終TODOに記載）」と内部メモして Step 2 へ進む。止まらない。
