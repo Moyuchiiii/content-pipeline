@@ -180,6 +180,83 @@ const tweets = [...document.querySelectorAll('article[data-testid="tweet"]')]
 
 **Chrome MCP がログアウト状態なら系統 D はスキップ**して報告に明記。
 
+### 系統 E: X 検索・トレンドスキャン（公式アカウント外も含む広域・2026-04-24 追加）
+
+公式アカウント発信を待たず、メディア・個人・ニュース系から流れてくる**ホットなトピック**（例: GPT-5.5 リーク話題等）を拾う。系統 D だけだと公式が発表する前の盛り上がりや、第三者解説で広がる話題を取り逃す。
+
+ツール: `mcp__claude-in-chrome__*`
+
+#### E-1: キーワード横断検索（Live タブ・最新順）
+
+各検索 URL を Chrome MCP で開き、直近 24 時間のバズツイートを抽出:
+
+```
+https://x.com/search?q={キーワード}&f=live&src=typed_query
+```
+
+**検索キーワード（毎回実行・横断）:**
+
+| カテゴリ | キーワード |
+|---|---|
+| OpenAI 次世代モデル | `"GPT-5"` / `"GPT-5.5"` / `"GPT-6"` / `"OpenAI 新モデル"` |
+| Claude 系 | `"Claude" 新機能` / `"Claude" リリース` / `"Claude Code"` 速報 |
+| Anthropic 系 | `"Anthropic"` 発表 / `"Anthropic"` 新製品 |
+| 競合大手 | `"Gemini" 新機能` / `"Grok" リリース` / `"Llama"` 新版 |
+| メディア生成 | `"Sora"` / `"Veo"` / `"Nano Banana"` |
+| AI エージェント | `"AIエージェント"` バズ / `"computer use"` |
+| 副業文脈 | `"AI 副業"` 月10万 / `"Claude 副業"` 案件 |
+
+**JS でタイムライン取得（系統 D と同じロジック・Live タブ用）:**
+
+```javascript
+const tweets = [...document.querySelectorAll('article[data-testid="tweet"]')]
+  .slice(0, 20)
+  .map(a => {
+    const text = a.innerText;
+    const likesMatch = text.match(/(\d+(?:,\d+)*|\d+(?:\.\d+)?[Kk万])\s*$/m);
+    const linkMatch = a.querySelector('a[href*="/status/"]')?.href;
+    return { text, rawLikes: likesMatch?.[1], url: linkMatch };
+  });
+```
+
+**バズ閾値（系統 E）**:
+- いいね **1,000 超** OR リポスト **200 超**
+- 直近 **24 時間以内** の投稿のみ
+
+#### E-2: トレンドタブ監視
+
+`https://x.com/explore/tabs/trending` を開いて急上昇トピックを取得:
+
+```javascript
+const trends = [...document.querySelectorAll('[data-testid="trend"]')]
+  .map(t => t.innerText);
+```
+
+AI / テック関連のトレンドキーワードを抽出（「Claude」「GPT」「Anthropic」「OpenAI」「AI」等の文字を含むもの）し、各トレンドに対して E-1 の検索を追加実行。
+
+#### 系統 E の出力振り分けルール
+
+抽出したバズツイートは以下の基準で各ネタ帳へ振り分け:
+
+| ツイート性質 | 投入先 | ネタタイプ |
+|---|---|---|
+| AI 公式の新機能リーク・速報 | noteネタ帳 + Xネタ帳 | note=速報 / X=速報所感 |
+| 副業視点で語れるトピック | Xネタ帳 | 引用RT候補 or リアクション |
+| バズってる解説スレッド | Xネタ帳 | 引用RT候補 |
+| 技術解説でnote記事化できる | noteネタ帳 | ノウハウ |
+| Brain 商品ネタになりそう | Brainネタ帳 | 商材タイプ自動判定 |
+
+#### 系統 D との違い
+
+| 系統 | 監視対象 | カバレッジ |
+|---|---|---|
+| **D** | 公式アカウント 19 個 | 公式発表は確実に取れるが、第三者経由で広がる話題は取り逃す |
+| **E** | キーワード検索 + トレンドタブ | **公式外の発信も含めてホットな話題を拾える**。例: GPT-5.5 リーク等は公式より先にメディアが報じる |
+
+両方併用することで、AI 系のホットトピックを取りこぼさない構造にする。
+
+**Chrome MCP がログアウト状態なら系統 E もスキップ**して報告に明記。
+
 ---
 
 ## Phase 2: プラットフォーム適合度判定
