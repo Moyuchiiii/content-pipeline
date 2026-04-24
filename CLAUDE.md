@@ -76,20 +76,28 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 ## スキル
 
-- `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下するため）。個別実行を推奨: `/collect-stats` → `/note-run` → `/content-engine` → `/x-run` → `/brain-run`
-- `/note-run` : note記事のみ生成。トピック選定→競合調査→記事生成→編集→最終稿出力
-- `/x-run` : 毎日実行で翌日の X 予約投稿を生成→承認→Typefully送信する自動パイプライン。日常 1〜4 本（朝/昼/夜前半/夜後半の目安・スキップ可）+ 引用RT 0〜3本（AI全般公式アカウント対象）+ 告知差し替え（pending_cta）+ バズ宣伝リプ
-- `/brain-run` : noteで作った記事を Brain 向けに拡張リライトして販売ドラフト生成。コード全文・プロンプト全文・テンプレ付きの ¥1,980〜版を brain/today/ に出力。投稿は手動
+**推奨実行フロー（2026-04-24 改訂）:**
+`/source-run`（ネタ発掘・3ネタ帳投入） → `/note-run` `/x-run` `/brain-run` のいずれか（ネタ帳から拾って生成） → `/collect-stats`（実績集計）
+
+- `/source-run` : **ネタ発掘専任**（2026-04-24 新設）。広域スキャン（副業・Claude新機能・Brain市場・X公式19アカウント）→ プラットフォーム適合度判定 → 3ネタ帳に振り分け投入。ユーザー手動投入モード（`add`）も対応
+- `/note-run` : note記事のみ生成。**noteネタ帳から候補取得** → 6項目スコアリング → 競合調査 → 記事生成 → 編集 → 最終稿出力
+- `/x-run` : 毎日実行で翌日の X 予約投稿を生成→承認→Typefully送信する自動パイプライン。日常 1〜4 本（朝/昼/夜前半/夜後半の目安・スキップ可）+ **Xネタ帳から引用RT候補取得** + 告知差し替え（pending_cta）+ バズ宣伝リプ
+- `/brain-run` : noteで作った記事を Brain 向けに拡張リライト（ルートA/B）または **Brainネタ帳から先行企画ネタ取得**（ルートC・`from-idea`）。販売ドラフト生成。投稿は手動
 - `/content-engine` : 1ネタ→複数フォーマット展開。note草稿からXスレッド・単発ツイート・カードテキストを一括生成
 - `/collect-stats` : X Analytics・noteダッシュボードをブラウザ操作でデータ収集。x-performance.md / note-performance.md / Notion を自動更新
+- `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下のため）
 
 ## Notion連携
 
 ### 共有DB
 | DB | data_source | 用途 |
 |---|---|---|
-| 記事管理 | `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2` | 記事ステータス・Xステータス管理 |
-| ネタ帳 | `collection://1a603b4f-d1e4-4ed7-8c75-c7c0a5b7e595` | X発案ネタ・未使用ネタのストック |
+| 記事管理 | `collection://812aa728-8d3e-42e4-a9cd-6a91c303b2c2` | 記事ステータス・Xステータス・Brain価格等の管理 |
+| noteネタ帳 | `collection://1a603b4f-d1e4-4ed7-8c75-c7c0a5b7e595` | note 記事ネタストック（旧「ネタ帳」改名） |
+| Xネタ帳 | `collection://6af7d0ce-64a0-4347-a5e3-325d27b440b8` | X 投稿ネタストック（リアクション・引用RT候補・日常等・2026-04-24 新設） |
+| Brainネタ帳 | `collection://1198a5a1-6955-41da-928b-ad79f07d2a1b` | Brain 商品ネタストック（note 派生 + Brain 単独ネタ・2026-04-24 新設） |
+
+各ネタ帳の共通フィールド: ネタ名 / ステータス / 発見日 / 発案元 / 優先度 / メモ。各ネタ帳固有のフィールドは `context/source-strategy.md` 参照。
 
 ### 記事管理DB フィールド一覧（18フィールド）
 
@@ -145,25 +153,55 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 Xステータスは **note/brain 告知ツイートのステータス** を表す。日常4本ツイート・引用RT・バズ宣伝リプは `x/scheduled/YYYYMMDD.json` と Typefully で管理され、Notion には記録しない。
 
-### 連携フロー
+### 連携フロー（2026-04-24 改訂版）
 
-**note → X:**
-1. `/note-run` が記事を完成させる
-2. Notion の `Xステータス` を **未投稿** にセット（自動）
-3. `/x-run` 起動時に未投稿記事を自動検知 → ツイート生成
-4. 投稿後に `Xステータス` を **投稿済み** に更新
+**全体パイプライン:**
+```
+                    /source-run
+                  （広域スキャン）
+                         │
+        ┌────────────────┼────────────────┐
+        ↓                ↓                ↓
+   noteネタ帳       Xネタ帳        Brainネタ帳
+        │                │                │
+        ↓                ↓                ↓
+   /note-run         /x-run         /brain-run
+                                  （from-idea）
+        │                │                │
+        ↓                ↓                ↓
+   note 投稿         Typefully     Brain 投稿
+        │                │                │
+        └────────────────┴────────────────┘
+                         ↓
+                  /collect-stats
+              （実績集計・Notion更新）
+```
 
-**note → Brain:**
-1. `/note-run` が記事を完成させる（実録・ノウハウタイプのみ Brain 化推奨）
-2. note 投稿後、`/brain-run` でドラフト生成
-3. `brain/today/` に本文・メタ情報を出力
-4. ユーザーが手動で Brain に投稿（自動投稿は reCAPTCHA のためリスク高）
-5. 投稿後に Notion の `Brainステータス` を **投稿済み** に更新
+**ネタ → note 記事:**
+1. `/source-run` が広域スキャンで noteネタ帳に候補投入
+2. `/note-run` が noteネタ帳「未使用」を取得 → 6項目スコアリング → 1本選定
+3. 採用ネタを `採用済み` に更新、見送りを `見送り` に
+4. 記事完成後に Phase 9 で noteURL ヒアリング → 記事管理DB に noteURL・note公開日・Xステータス`未投稿` を自動記録
+5. **同時に `x/pending_cta/note_*.json` を書き出し**（x-run の告知用）
 
-**X → note:**
-1. `/x-run trend` でトレンドをスキャン
-2. 「記事化すべき」ネタを Notion ネタ帳に **X発案** として追加（自動）
-3. `/note-run` がネタ帳の X発案ネタを優先ピックアップ
+**ネタ → X ツイート:**
+1. `/source-run` が Xネタ帳に投入（引用RT候補・速報所感・フック案など）
+2. または、ユーザーが「このリアクションしたい」と Claude Code に投げて手動投入
+3. `/x-run` が Xネタ帳「未使用」から拾って日常ツイート・引用RT生成
+4. 採用ネタを `採用済み` に更新
+5. 並行: pending_cta JSON もスキャンして note/Brain 告知差し替え
+
+**ネタ → Brain 商品:**
+1. **ルート A/B（既存）**: 既存 note 記事から Brain 化（note 起点）
+2. **ルート C（新）**: `/source-run` が Brainネタ帳に投入した「Brain 単独ネタ」を `/brain-run from-idea` で拾う
+3. ドラフト完成後にユーザーが手動で Brain 投稿
+4. Phase 8 で BrainURL ヒアリング → 記事管理DB & Brainネタ帳ステータス自動更新
+
+**ユーザー手動ネタ投入:**
+- 「このツイートにリアクションしたい: {URL}」「このネタで note 書きたい」を Claude Code に投げる
+- リードが対応するネタ帳に `mcp__notion__notion-create-pages` で投入
+- 発案元 = `ユーザー手動`、ステータス = `未使用`
+- 詳細フローは `context/source-strategy.md`「ユーザー手動投入の受付」参照
 
 ## フォルダ構成
 
@@ -198,6 +236,7 @@ content-pipeline/
     drafts/knowhow/             # ノウハウ記事の Brain 草稿バックアップ
     published/                  # 投稿済みログ
   .claude/skills/
+    source-run/SKILL.md         # /source-run スキル定義（2026-04-24 新設・ネタ発掘専任）
     note-run/SKILL.md           # /note-run スキル定義
     x-run/SKILL.md              # /x-run スキル定義
     brain-run/SKILL.md          # /brain-run スキル定義
