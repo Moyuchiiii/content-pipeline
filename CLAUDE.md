@@ -76,8 +76,24 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 ## スキル
 
-**推奨実行フロー（2026-04-24 改訂）:**
-`/source-run`（ネタ発掘・3ネタ帳投入） → `/note-run` `/x-run` `/brain-run` のいずれか（ネタ帳から拾って生成） → `/collect-stats`（実績集計）
+**推奨実行フロー（2026-04-24 改訂・順序重要）:**
+
+```
+1️⃣ /source-run      （ネタ発掘・3ネタ帳投入）
+       ↓
+2️⃣ /note-run        （noteネタ帳から記事生成・x/pending_cta/note_*.json 出力）
+       ↓
+3️⃣ /brain-run       （Brainネタ帳から商品生成・x/pending_cta/brain_*.json 出力）
+       ↓
+4️⃣ /x-run           （Xネタ帳 + pending_cta から翌日の予約投稿生成・告知ツイート組込）
+       ↓
+5️⃣ /collect-stats   （実績集計・Notion更新）
+```
+
+**順序ルール:**
+- `/x-run` は **最後**に実行する。note-run / brain-run の出力した `pending_cta` JSON を取り込んで告知ツイートに差し替えるため
+- note-run も brain-run も今日不要ならスキップしてOK（その日 pending_cta 追加なしで x-run 実行）
+- /source-run はネタ帳に十分な「未使用」ネタがあれば毎回実行不要
 
 - `/source-run` : **ネタ発掘専任**（2026-04-24 新設）。広域スキャン（副業・Claude新機能・Brain市場・X公式19アカウント）→ プラットフォーム適合度判定 → 3ネタ帳に振り分け投入。ユーザー手動投入モード（`add`）も対応
 - `/note-run` : note記事のみ生成。**noteネタ帳から候補取得** → 6項目スコアリング → 競合調査 → 記事生成 → 編集 → 最終稿出力

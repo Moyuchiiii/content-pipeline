@@ -533,10 +533,18 @@ Phase 0 でキャッシュした各ネタ帳の `未使用` レコードと、Ph
 - 系統 D ❌: Chrome MCP ログアウト → ブラウザで X ログイン後に /source-run 再実行
 - 系統 X ❌: {具体的理由}
 
-🚀 おすすめ次アクション:
-- /note-run    → noteネタ帳 高優先 {hi_count} 件あり
-- /x-run       → Xネタ帳 高優先 {hi_count} 件あり
+🚀 おすすめ次アクション（順序重要・x-run は最後）:
+
+【1番目】記事生成系を先に実行（pending_cta を出力）
+- /note-run            → noteネタ帳 高優先 {hi_count} 件あり
 - /brain-run from-idea → Brainネタ帳 high target_fit {hi_count} 件あり
+
+【2番目】最後に x-run（pending_cta + Xネタ帳を取り込んで予約投稿生成）
+- /x-run → Xネタ帳 高優先 {hi_count} 件 + 今日生成した告知も組込
+
+理由: note-run / brain-run が出力する x/pending_cta/*.json を
+      x-run Phase 2.5 が取り込んで翌日の告知ツイートに差し替える設計。
+      x-run を先に走らせると今日の新記事告知が抜ける。
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
