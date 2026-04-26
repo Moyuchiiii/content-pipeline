@@ -48,16 +48,12 @@
 
 ---
 
-## 💎 Brain 投稿済み（全件・累計1本）
+## 💎 Brain 投稿済み（全件・累計2本）
 
 | 公開日 | タイトル | URL | 価格 | 還元率 | 主張・キーフレーズ |
 |---|---|---|---|---|---|
+| 2026-04-27 09:00 | **Claude Code を使ったクラウドワークス受注実録 — データ入力 / Excel / Web 3 ジャンルの作業ログ** ★Brain 2本目 | https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY | ¥100（初動2日）→¥2,980 | 40% | 応募文9本・プロンプト15本・3ジャンル並行 / 先着50部・初動¥100セール / レビュー特典 Notion ページ https://www.notion.so/Claude-Code-17-34d8795a75fd812a95abc6ce82dd33b5 / 投稿時点 販売0 |
 | 2026-04-22 | **Claude Design 実戦メモ — 非エンジニアが 7 日で触った記録** ★Brain 1本目 | https://brain-market.com/u/moyuchi/a/{要確認} | ¥2,980 | 50% | 7日間 / Claude Design / 非エンジニア / 提案資料・LPの叩き台 / 副業向け |
-
-**Brain 投稿予定（草稿）**:
-| 投稿予定 | タイトル | URL | 価格 | 還元率 | 主張 |
-|---|---|---|---|---|---|
-| 2026-04-27 | Claude Code を使ったクラウドワークス受注実録 — データ入力 / Excel / Web 3 ジャンルの作業ログ ★Brain 2本目 | https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY | ¥100→¥2,980 | 40% | 応募文9本・プロンプト15本・3ジャンル並行 / 先着50部・初動2日¥100 |
 
 ---
 
