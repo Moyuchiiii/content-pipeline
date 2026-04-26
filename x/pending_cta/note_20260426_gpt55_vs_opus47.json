@@ -1,0 +1,18 @@
+{
+  "type": "note",
+  "created_at": "2026-04-26T03:50:00+09:00",
+  "source": "content-pipeline/today/draft_2026-04-26_gpt55_vs_opus47.html",
+  "title": "GPT-5.5 vs Claude Opus 4.7、副業案件で実測したら『どっちも使う』が正解だった",
+  "url": "https://note.com/moyuchi_aistu/n/nf6328d6ecac6",
+  "atomic_ideas": [
+    "GPT-5.5 vs Claude Opus 4.7、ベンチマーク10本で Opus 4.7=6勝、GPT-5.5=4勝。圧勝じゃなくて役割分担",
+    "Terminal-Bench 2.0 は GPT-5.5=82.7% / Opus 4.7=69.4% でコーディング系GPT-5.5圧勝。MCP-Atlas は逆で Opus 4.7=79.1% / GPT-5.5=75.3%",
+    "ChatGPT Plus加入してる人は GPT-5.5 タダで来た。Claudeも継続、ChatGPTも継続が副業者の正解",
+    "副業者の道具箱に強い武器が増えただけ。乗り換え判断より『自分のワークフローのどこに挿し込むか』を考える方が成果に近い"
+  ],
+  "image_path": null,
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

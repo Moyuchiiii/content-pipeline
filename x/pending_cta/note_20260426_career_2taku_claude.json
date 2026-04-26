@@ -1,0 +1,18 @@
+{
+  "type": "note",
+  "created_at": "2026-04-26T17:45:00+09:00",
+  "source": "note/drafts/jituroku/draft_20260426_career_2taku_claude.md",
+  "title": "「就活か、副業フルコミットか」をClaudeに渡したら、2週間悩んでた答えが5分で出てきた話",
+  "url": null,
+  "atomic_ideas": [
+    "2週間ぐるぐる悩んだキャリア2択を Claude に渡したら5分で13項目の比較表が返ってきた",
+    "自分が事前に出してた6項目に対して Claude が追加してきた7項目（社会保険・キャリア初期の選択肢の幅・30歳時点の選択肢など）が完全に盲点だった",
+    "AI は答えをくれない。くれるのは「考える材料」と「自分の盲点」。決断は自分のスピードでできるようになる",
+    "プロンプトのコツは2つ：「わたしが見えてない軸も入れて」と書く + 「3択」を最初に明示する（両立フェーズを足すと立体的になる）"
+  ],
+  "image_path": null,
+  "article_type": "jituroku",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "normal"
+}

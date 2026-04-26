@@ -1,0 +1,18 @@
+{
+  "type": "brain",
+  "created_at": "2026-04-24T23:00:00+09:00",
+  "source": "brain/today/brain_20260424_cw_5832_writer.html",
+  "title": "クラウドワークス AI案件分解メモ — 非エンジニアの制作者が5,832件から選んだ案件タイプ",
+  "url": null,
+  "atomic_ideas": [
+    "note 版の無料記事の上に、応募文テンプレ 5 パターン全文・Claude 指示プロンプト 10 本全文・実案件 3 件ケーススタディ・検索キーワード 30 個以上・継続案件化チェックリストを同梱（note版の約6倍の容量）",
+    "AI 案件 5,832 件を 5 領域に分解し、非エンジニアが選ぶべき 2 領域（業務自動化・Web アプリ UI）と避けるべき 3 領域（AI ライティング・プロンプト・データ分析）を判定基準付きで公開",
+    "クラウドワークス AI 案件で「ライター以外」の 2,800 件に到達したい非エンジニアの制作者向け"
+  ],
+  "image_path": "brain/today/images/brain_20260424_cw_5832_writer/thumb.png",
+  "article_type": "brain_jituroku",
+  "price": 2980,
+  "referral_rate": 40,
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

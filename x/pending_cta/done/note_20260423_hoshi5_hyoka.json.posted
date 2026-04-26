@@ -1,0 +1,19 @@
+{
+  "type": "note",
+  "created_at": "2026-04-23T18:00:00+09:00",
+  "source": "note/drafts/jituroku/draft_20260423_hoshi5_hyoka.html",
+  "title": "大学生がCW案件で★5評価を取り続けたら、2件目の依頼が勝手に来た話",
+  "url": "https://note.com/moyuchi_aistu/n/n8b80ca3a70e2",
+  "atomic_ideas": [
+    "CWで★4を1件もらうと総合評価は最大★4.9止まり。応募が通らなくなる実体験",
+    "★5は『期待通り』じゃ取れない。『期待を少しでも超える』で初めて取れる",
+    "納品前の4チェック（隠れ要件/セルフレビュー/おまけ改善/動作動画）を固定化したら、応募も営業もしてないのに継続依頼2件（¥18,000+¥45,000）が勝手に来た",
+    "Claudeで発注者目線セルフレビューするプロンプトは、非エンでも3分でコピペ可",
+    "動作確認を1分動画で渡すと「この人は時間を取らせない」という信頼に変わる"
+  ],
+  "image_path": "x/images/20260424_note_hoshi5.png",
+  "article_type": "jituroku",
+  "price": "paid_500",
+  "target_fit": "high",
+  "suggested_priority": "normal"
+}
