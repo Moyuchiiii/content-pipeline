@@ -188,7 +188,12 @@ export async function uploadMedia(filePath) {
  * @param {string} opts.publishAt ISO 8601（例: "2026-04-24T08:00:00+09:00"）/ "now" / "next-free-slot"
  * @param {string} [opts.draftTitle] 内部管理用タイトル
  * @param {string[]} [opts.tags]
- * @param {string} [opts.replyToUrl] リプライ先のXツイートURL（バズ宣伝リプ用）
+ * @param {string} [opts.replyToUrl] リプライ先のXツイートURL（バズ宣伝リプ用・X限定）
+ * @param {boolean} [opts.crossPostToThreads=false] X と同じ本文を Threads にもクロスポストする。
+ *   ただし以下の場合は自動で false 扱い:
+ *   - replyToUrl が指定されている（バズ宣伝リプ）
+ *   - posts のいずれかが quote_post_url を持つ（引用RT）
+ *   - Threads は両方とも未対応 / 仕様差が大きいため X 限定運用
  */
 export async function createDraft({
   posts,
@@ -196,6 +201,7 @@ export async function createDraft({
   draftTitle,
   tags,
   replyToUrl,
+  crossPostToThreads = false,
 }) {
   if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
   if (!Array.isArray(posts) || posts.length === 0) {
@@ -211,8 +217,22 @@ export async function createDraft({
     xPlatform.settings = { reply_to_url: replyToUrl };
   }
 
+  const platforms = { x: xPlatform };
+
+  const hasQuotePost = posts.some((p) => p && p.quote_post_url);
+  const canCrossPost = crossPostToThreads && !replyToUrl && !hasQuotePost;
+
+  if (canCrossPost) {
+    const threadsPosts = posts.map(({ quote_post_url: _q, ...rest }) => rest);
+    platforms.threads = {
+      enabled: true,
+      posts: threadsPosts,
+      settings: {},
+    };
+  }
+
   const body = {
-    platforms: { x: xPlatform },
+    platforms,
     publish_at: publishAt,
     share: false,
   };
@@ -230,6 +250,10 @@ async function main() {
 
   if (cmd === 'list-social-sets') {
     const sets = await getSocialSets();
+    if (process.argv.includes('--raw')) {
+      console.log(JSON.stringify(sets, null, 2));
+      return;
+    }
     const list = sets.results || sets.data || sets.items || [];
     console.log(`Social Sets (${list.length} found):`);
     list.forEach((s, i) => {
@@ -244,6 +268,24 @@ async function main() {
   if (cmd === 'me') {
     const me = await getMe();
     console.log(JSON.stringify(me, null, 2));
+    return;
+  }
+
+  if (cmd === 'inspect-set') {
+    const id = process.argv[3] || SOCIAL_SET_ID;
+    if (!id) {
+      console.error('Usage: inspect-set <social_set_id>');
+      process.exit(1);
+    }
+    for (const path of [`/social-sets/${id}`, `/social-sets/${id}/profiles`, `/social-sets/${id}/accounts`]) {
+      console.log(`\n=== GET ${path} ===`);
+      try {
+        const res = await callApi(path);
+        console.log(JSON.stringify(res, null, 2));
+      } catch (e) {
+        console.log(`(error) ${e.message}`);
+      }
+    }
     return;
   }
 

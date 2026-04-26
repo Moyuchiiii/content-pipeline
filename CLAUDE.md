@@ -23,6 +23,19 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 2. **実録記事（jituroku）**: 困ってたこと→AIに頼んだら解決した→稼げた、の体験全記録。Claude Codeは「使った手段」として登場。週1本。有料1,500〜2,000円
 3. **ノウハウ記事（knowhow）**: 非エンジニアでもAIで副業できる方法・手順。Claude活用は「道具の使い方」として説明。月2本。無料 or 有料
 
+## hyui アカウント対応表（X / Threads・2026-04-27 追加）
+
+ハンドル名はアンダースコアの数で X と Threads/IG を区別する。混同しないこと。
+
+| プラットフォーム | ハンドル | アンダースコア |
+|---|---|---|
+| X | `@hyui_cc` | 1つ |
+| Threads | `@hyui__cc` | **2つ** |
+| Instagram | `@hyui__cc` | **2つ**（Threads と同期） |
+| note | （URLは旧ハンドル維持）`note.com/moyuchi_aistu` | - |
+
+Typefully Social Set ID `300622` に X+Threads 両方が紐付け済み。`/x-run` 実行時は同じ Social Set から両方に同時投稿（クロスポスト）。
+
 ## X ツイートタイプ
 
 | タイプ | 頻度 | 役割 |
