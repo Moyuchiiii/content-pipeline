@@ -74,6 +74,24 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 
 詳細: `.claude/skills/x-run/SKILL.md` Phase 3 冒頭の「運用方針」参照
 
+## ハルシネーション防止（2026-04-26 追加・全 run 共通絶対ルール）
+
+**全 run（note-run / brain-run / x-run / source-run）の Phase 0 / Phase 1 で必ず読む:**
+- `context/published-history.md` — 直近30日の note / Brain / X 投稿履歴・「初」「N本目」インデックス・数値実績ストック
+- `context/archive/published-{先月YYYY-MM}.md` — 30日より前の月次圧縮アーカイブ
+
+**事実主張の事前チェック義務:**
+- 「初」「最初」「N本目」「初めて」「初投稿」「初告知」「デビュー」を含む文を生成する前に **`published-history.md` の主張インデックスと必ず照合**する
+- 過去の数値実績（月14万・¥55,000・¥160,000・¥2,980 など）を本文に入れる際も同ファイルの「数値・実績の重要主張ストック」と一致するか確認
+- 矛盾があれば即修正。記憶ベースで「たぶんこうだった」は禁止
+
+**月初自動圧縮:**
+- 毎月 1〜3 日の最初の x-run 実行時に、先月分エントリを `archive/published-{先月}.md` に圧縮移動
+- 詳細ロジックは `.claude/skills/x-run/SKILL.md` Phase 1 「月初圧縮トリガー」参照
+
+**事故事例（参考）:**
+- 2026-04-26: x-run night1/night2 で「Brain で初めての商品を出す」ハルシネーション混入（実際は Brain 2本目）。原因は `brain/published/` 既存投稿（4/22 Claude Design 教科書）を参照していなかったこと
+
 ## スキル
 
 **推奨実行フロー（2026-04-24 改訂・順序重要）:**

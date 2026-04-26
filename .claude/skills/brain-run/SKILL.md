@@ -17,6 +17,21 @@ note は「実体験の記録・入門・ダイジェスト（無料 or ¥500）
 
 ### ① コンテキスト読み込み
 
+### 🔴 最優先で読むファイル（2026-04-26 追加・ハルシネーション防止）
+
+**0-A. `context/published-history.md`（必読・最優先）**
+- 直近30日の note / Brain / X 投稿履歴・「初」「N本目」「Brain N本目」インデックスが入ってる
+- **「Brain 初投稿」「Brain で初めての商品」「N本目」等の主張をする前に必ずここと照合**
+- 例: Brain 1本目は 2026-04-22「Claude Design 実戦メモ」既出 → 今後の記事で「Brain 初」主張は禁止
+- ティーザー文・告知文に紛れ込みやすいので、生成後 grep で「初/最初/初めて」全件チェック必須
+
+**0-B. `context/archive/published-{先月YYYY-MM}.md`（必読）**
+- 30日より前の月次圧縮アーカイブ
+- Brain 過去商品の累計把握用
+
+**0-C. 月初圧縮トリガー（毎月 1〜3 日の最初の起動時）**
+- `published-history.md` の最古エントリが「先月以前」なら、先月分を `archive/published-{先月}.md` に Append し published-history.md から削除
+
 **Brain 特化コンテキスト（最優先）:**
 - `context/brain-profile.md` — Brain プロフィール（3パターン・文体ガイド・カテゴリ・タグ戦略）
 - `context/brain-strategy.md` — Brain 運用戦略・商品ラインナップ計画・価格戦略・審査対策・**特典設計ガイド**・ローンチタイミング・複数カテゴリ出品・レビュー獲得施策
