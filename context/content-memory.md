@@ -129,10 +129,15 @@ note-run 実行回数: 56
 | 2026-04-03 | 20回 | workflow-audit SKILL.md月1回→週1回に統一、existing-articles.md記事18追加（MCP Elicitation）、content-memory.mdセッション記録を9件→5件に整理、価格戦略の乖離（note-strategy実録¥1,500-2,000 vs SKILL.md¥500）を確認・要判断 |
 | 2026-04-04 | 25回 | content-memory.md重複セッション記録5エントリー削除（4/3分が6件→1件に整理）、existing-articles.md記事24・25追加（context_compact・plugins_fukugyou）、次回監査日を2026-04-10→2026-04-07に修正 |
 | 2026-04-14 | 35回 | スキ数TOP・Xフック型表を実測データに全面更新、空セッション記録約25件クリーンアップ、次回2026-05-14に再設定 |
+| 2026-04-27 | 56回 | **workflow-audit SKILL.md 全面改訂** (Phase 0/1.5/3.5・必須チェックリスト・提案テンプレ・却下提案セクション)。**note-run SKILL.md 「mid-content CTA 121%（HubSpot）」訂正** (HubSpot公式に該当データなし・2026-04-27 sasaki-search 検証で判明)。改訂版で初動実施: 提案A note-strategy.md にメイン商品セール終了後 (5/14) の3ルート方針追記、提案C x-run SKILL.md「赤髪SNS研究所調査30〜50%」を留保表現に修正。**Phase 3.5 で提案D「高スキ記事への遡及CTA」を却下** (大規模アカウント前提データの小規模適用懸念・ROI 確率算定不完全)。Phase 0 で2026-04-14 未対応4件を3択決着 (実装2件・既実装1件・保留1件)。 |
 
 ### 次回予定
 - 日付: **2026-05-14**
-- 確認ポイント: メイン商品Hyui版¥2,000のPV・売上初動、plugin_monitors(4/14)のスキ数、note-strategy.md実録価格設定の見直し、全記事メイン商品CTA有無点検
+- 確認ポイント:
+  - メイン商品 Hyui版 ¥2,000 のセール終了 (5/14) 前の販売数確定 → 3ルート (A/B/C) のどれを発動するか決定
+  - 残り未検証クレーム全件チェック: x-run/SKILL.md:343 「単発91%」、brain-strategy-research.md:78 「月曜エンゲージメント42%」(poco-tech)、brain-strategy-research.md:312 「レビュー4.5以上で成約率30%アップ」
+  - 2026-04-27 監査の保留1件 (note-run Phase8 重複ログバグ修正) の再評価
+  - Brain 2本目 (4/27 投稿) の販売推移チェック (¥100→¥2,980 へ価格復帰タイミング決定)
 
 ### 2026-04-10（managed_agents）
 - ドラフト: draft_20260410_managed_agents.html（速報・無料・score21）
