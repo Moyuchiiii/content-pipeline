@@ -7,7 +7,7 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 56
+note-run 実行回数: 57
 次回 workflow-audit: 2026-05-14（月次・前回2026-04-14）
 ```
 
@@ -68,6 +68,11 @@ note-run 実行回数: 56
 ---
 
 ## セッション記録（直近5件）
+
+### 2026-04-28（claude_quality_postmortem）
+- ドラフト: draft_2026-04-28_claude-quality-postmortem.html（速報・無料・score27）
+- スコア: Phase2=27点 / 品質=89/100
+- PDCA学習: Anthropic 4/23公式postmortem（https://www.anthropic.com/engineering/april-23-postmortem）を副業者の共感記事として展開。note.com競合12本以上ありだが全てエンジニア視点→副業者×文系大学生×7週間自責の感情曲線はブルーオーシャン。Step 0事実確認スウィープ全件WebSearch/WebFetch検証（3つの原因・各日付・v2.1.116・影響モデル全部一次情報照合）。voice-samples.md「わたし」統一・段落全体型太字・コロン禁止（h3は｜区切り）。中盤CTA+末尾CTA=メイン商品2箇所配置。あわせて読みたい2本（Google$40B・GPT-5.5 vs Opus 4.7）。直近速報3本連続だったが共感ベースで実録寄りトーンに振って速報臭を抑制。バランス制御: 直近5本全無料→「無料連投時の有料チャンス」だが速報スキ転換率低迷で無料維持。Veo 3.1候補はpersona-hyui.md NG領域（動画副業未経験）でペルソナ違反→不採用判定。
 
 ### 2026-04-27（sora_end_video_sidejob）
 - ドラフト: draft_20260427_sora_end_video_sidejob.html（速報・無料・score28）

@@ -1,0 +1,19 @@
+{
+  "type": "note",
+  "created_at": "2026-04-28T01:50:00+09:00",
+  "source": "note/drafts/sokuho/draft_2026-04-28_claude-quality-postmortem.html",
+  "title": "『Claude 賢くないな』を7週間自責してたら、自分のせいじゃなかった話",
+  "url": null,
+  "atomic_ideas": [
+    "Anthropic が4/23公式postmortemで Claude Code 品質低下バグ3つを認めて謝罪。3/4〜4/20の49日が劣化期間",
+    "副業者として『Claude 賢くないな』を7週間自責してたら、Anthropic 側のバグだった話",
+    "影響モデルは Sonnet 4.6 / Opus 4.6 / Opus 4.7。API 直接利用は影響なし",
+    "学び: 自責する前に Anthropic 公式リリースノートを見る癖をつける",
+    "品質低下7週間の中で副業月14万に到達できてた。ツールが完璧じゃなくても結果は出せる"
+  ],
+  "image_path": null,
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "normal"
+}
