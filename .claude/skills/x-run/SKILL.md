@@ -37,6 +37,30 @@ hyui の X / Threads 投稿を Typefully 経由で毎日自動予約するパイ
 
 ## Phase 0: 起動判定
 
+### ⓪ Typefully Auto-Retweet 運用ルール（2026-04-28 追加・必読）
+
+**Default OFF・告知系のみ個別ON 運用。** 詳細は `context/x-strategy.md` の「Typefully Auto-Retweet 運用ルール」セクション必読。
+
+このスキルが Typefully に投稿スケジュールするとき、生成する投稿のタイプによって Auto-RT フラグを判定する：
+
+**Auto-RT ONフラグを付ける投稿:**
+- note記事公開告知（pending_cta から取り込んだ note_*.json 由来）
+- メイン商品の販促ツイート
+- Brain告知ツイート（pending_cta brain_*.json 由来）
+- 実績報告ツイート（数字・売上・PV・スキ数）
+- 渾身のノウハウスレッドの1ツイート目
+
+**Auto-RT OFFフラグを付ける投稿:**
+- 日常実況（朝/昼/夜の short post）
+- 問いかけ型・コメント誘発型
+- 引用RT（@claudeai 等）
+- バズ宣伝リプ
+- 短文の感情吐露
+
+[WebSearch済 Typefully公式] 各リポストはTypefullyが24時間後に自動解除するため、プロフィール画面が乱れない。3段階RT構成（6時間後・25時間後・7日後10:30）はユーザー側で設定済。
+
+ただし現状の Typefully API では auto_retweet フラグの個別投稿制御は [要検証]。実装方針確定までは、ユーザーが Typefully UI で個別投稿に手動で Auto-RT スイッチON するのが運用ルール。スキルからは「この投稿は Auto-RT ONを推奨」というコメントをdraft内のメタ情報に記載しておく。
+
 ### ① 環境変数チェック
 
 ```bash
