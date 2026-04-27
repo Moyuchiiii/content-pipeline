@@ -1,0 +1,70 @@
+{
+  "date": "2026-04-27",
+  "created_at": "2026-04-27T04:40:41.545Z",
+  "note_url": null,
+  "brain_url": "https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY",
+  "emergency_recovery": "本日キュー全空状態から13:40に滑り込み生成・送信",
+  "posts": [
+    {
+      "slot": "noon_late",
+      "type": "cta_brain",
+      "hook_type": "数字先行・告知",
+      "publish_at": "2026-04-27T14:00:00+09:00",
+      "text": "先着50部・¥100スタート（48時間限定）。\n\nBrain で新しい商品公開した。Claude Code × クラウドワークス受注実録、データ入力 / Excel / Web の3ジャンルの作業ログ。\n\n応募0件で詰まってた頃から、3ジャンルで案件取れるまでの記録を全部書いた。\n\n詳細はBrain↓",
+      "reply": "https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY",
+      "quote_post_url": null,
+      "image_source": "x/images/samune.png",
+      "media_ids": [
+        "89f905ca-8d95-47c0-b728-171850ac808a"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": "x/pending_cta/brain_20260425_cw_3genre_jissokuLog.json",
+      "draft_id": 8867640,
+      "private_url": "https://typefully.com/?d=8867640&a=300622"
+    },
+    {
+      "slot": "night1",
+      "type": "cta_brain",
+      "hook_type": "事実先行・補足告知",
+      "publish_at": "2026-04-27T20:00:00+09:00",
+      "text": "Brain で新しい商品出してから半日経った。\n\n特典の Notion ページを地味に作り込んだやつを今朝公開した。\nClaude Code × CW の応募テンプレ集と継続案件チェックリスト、レビュー書いてくれた人にだけ送ってる。\n\n商品本編より特典の方が時間かかった気がする。\n\n¥100セール、48時間で終わる。早めに動いてもらえるとありがたい。",
+      "reply": "https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY",
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": "x/pending_cta/brain_20260425_cw_3genre_jissokuLog.json",
+      "draft_id": 8867641,
+      "private_url": "https://typefully.com/?d=8867641&a=300622"
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "内心代弁・X4型",
+      "publish_at": "2026-04-27T22:00:00+09:00",
+      "text": "Brain で新しいの出した日、なんか変な気持ちで終わりそう。\n\n前のは手探りだったけど、今回はある程度型ができた状態で出した。\n\nうまくいかない方が多いから、今日も静かにベッドで天井見てる感じ。\nそれでも止めずに続けてきた人だけが残るのは、副業もBrainも同じだなと思う。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "draft_id": 8867642,
+      "private_url": "https://typefully.com/?d=8867642&a=300622"
+    }
+  ],
+  "quote_rts": [],
+  "buzz_promo_replies": [],
+  "media_registry": {
+    "samune": "89f905ca-8d95-47c0-b728-171850ac808a"
+  }
+}

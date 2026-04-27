@@ -1,0 +1,18 @@
+{
+  "type": "brain",
+  "created_at": "2026-04-25T22:55:00+09:00",
+  "source": "brain/today/brain_20260425_cw_3genre_jissokuLog.md",
+  "title": "Claude Code を使ったクラウドワークス受注実録 — データ入力 / Excel / Web 3 ジャンルの作業ログ",
+  "url": "https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY",
+  "atomic_ideas": [
+    "応募文テンプレ9本（ジャンル別3本ずつ）+ Claude Codeプロンプト15本+ 実装コード全文をBrain版で全公開。note版にはなかったジャンル横断の網羅性で勝負",
+    "データ入力 / Excel / Webアプリの3ジャンル並行体制を、応募0件の状態からどう積み上げたかの作業ログ。3ヶ月で各ジャンルの単価帯と作業時間が手元に揃う",
+    "Webアプリ案件のキックスタート時間が2時間→5分に。修正指示翻訳プロンプト・Auto Mode の deny rules 設定・Claude Code に既存コードベースを丸投げで読ませる指示文も同梱"
+  ],
+  "image_path": "D:/Claude/bussines/projects/content-pipeline/brain/today/images/brain_20260425_cw_3genre_jissokuLog/thumb.png",
+  "article_type": "brain_jituroku",
+  "price": 2980,
+  "referral_rate": 40,
+  "target_fit": "high",
+  "suggested_priority": "high"
+}
