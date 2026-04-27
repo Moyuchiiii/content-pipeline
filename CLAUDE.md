@@ -91,12 +91,15 @@ Typefully Social Set ID `300622` に X+Threads 両方が紐付け済み。`/x-ru
 
 **全 run（note-run / brain-run / x-run / source-run）の Phase 0 / Phase 1 で必ず読む:**
 - `context/published-history.md` — 直近30日の note / Brain / X 投稿履歴・「初」「N本目」インデックス・数値実績ストック
+- `context/persona-hyui.md`（**2026-04-27 追加・人格 Single Source of Truth**）— Hyui の経歴・思想・スタンス・公開済エピソード・口癖・NG領域・応援/距離取る相手の集約
 - `context/archive/published-{先月YYYY-MM}.md` — 30日より前の月次圧縮アーカイブ
 
 **事実主張の事前チェック義務:**
 - 「初」「最初」「N本目」「初めて」「初投稿」「初告知」「デビュー」を含む文を生成する前に **`published-history.md` の主張インデックスと必ず照合**する
 - 過去の数値実績（月14万・¥55,000・¥160,000・¥2,980 など）を本文に入れる際も同ファイルの「数値・実績の重要主張ストック」と一致するか確認
+- **人格・思想・経歴の主張**（副業歴・キャリア観・組織観・親世代観・就活スタンス・使ってる道具・公開済エピソード）を生成する前に **`persona-hyui.md` と必ず照合**する
 - 矛盾があれば即修正。記憶ベースで「たぶんこうだった」は禁止
+- 一人称は「わたし」統一（ひらがな・全プラットフォーム・persona-hyui.md セクション 8 参照）
 
 **月初自動圧縮:**
 - 毎月 1〜3 日の最初の x-run 実行時に、先月分エントリを `archive/published-{先月}.md` に圧縮移動
