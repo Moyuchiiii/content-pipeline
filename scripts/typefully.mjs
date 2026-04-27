@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 // Typefully API v2 ヘルパー
-// 用途: hyui_cc の X 予約投稿を自動化する /x-run スキルから呼び出す
+// 用途: hyui_cc の X / Threads 予約投稿を自動化する /x-run スキルから呼び出す
 // 仕様: https://support.typefully.com/en/articles/8718287-typefully-api
 // 調査メモ: projects/content-pipeline/context/typefully-api-research.md
+//
+// 2026-04-28 マルチプラットフォーム対応:
+//   3 Social Set 切り替え（クロスポスト / X専用 / Threads専用）
+//   target 引数で配信先を選択
 
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -34,6 +38,8 @@ function loadEnv() {
 const env = loadEnv();
 const API_KEY = env.TYPEFULLY_API_KEY;
 const SOCIAL_SET_ID = env.TYPEFULLY_SOCIAL_SET_ID;
+const X_ONLY_SOCIAL_SET_ID = env.TYPEFULLY_X_ONLY_SOCIAL_SET_ID;
+const THREADS_ONLY_SOCIAL_SET_ID = env.TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID;
 
 if (!API_KEY) {
   console.error('❌ TYPEFULLY_API_KEY が .env に設定されていません');
@@ -44,6 +50,34 @@ const headers = {
   Authorization: `Bearer ${API_KEY}`,
   'Content-Type': 'application/json',
 };
+
+/**
+ * target に応じた Social Set ID を返す
+ * - 'cross' (default): クロスポスト用（X+Threads 両方紐付け）
+ * - 'x-only': X単独投稿用（引用RT・バズリプ用）
+ * - 'threads-only': Threads単独投稿用（長文体験談・連続投稿用）
+ *
+ * 専用 ID が未設定なら警告してクロスポスト用にフォールバック
+ */
+function resolveSocialSetId(target = 'cross') {
+  switch (target) {
+    case 'x-only':
+      if (!X_ONLY_SOCIAL_SET_ID) {
+        console.warn('⚠️ TYPEFULLY_X_ONLY_SOCIAL_SET_ID が未設定。クロスポスト用にフォールバック');
+        return SOCIAL_SET_ID;
+      }
+      return X_ONLY_SOCIAL_SET_ID;
+    case 'threads-only':
+      if (!THREADS_ONLY_SOCIAL_SET_ID) {
+        console.warn('⚠️ TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID が未設定。クロスポスト用にフォールバック');
+        return SOCIAL_SET_ID;
+      }
+      return THREADS_ONLY_SOCIAL_SET_ID;
+    case 'cross':
+    default:
+      return SOCIAL_SET_ID;
+  }
+}
 
 async function callApi(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
@@ -65,13 +99,14 @@ export async function getMe() {
   return callApi('/me');
 }
 
-export async function getQueue({ startDate, endDate } = {}) {
-  if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
+export async function getQueue({ startDate, endDate, target = 'cross' } = {}) {
+  const socialSetId = resolveSocialSetId(target);
+  if (!socialSetId) throw new Error(`Social Set ID not configured for target=${target}`);
   const params = new URLSearchParams();
   if (startDate) params.set('start_date', startDate);
   if (endDate) params.set('end_date', endDate);
   const query = params.toString();
-  const path = `/social-sets/${SOCIAL_SET_ID}/queue${query ? `?${query}` : ''}`;
+  const path = `/social-sets/${socialSetId}/queue${query ? `?${query}` : ''}`;
   return callApi(path);
 }
 
@@ -81,15 +116,17 @@ export async function getQueue({ startDate, endDate } = {}) {
  * @param {string} [opts.startDate] ISO 8601 日付（例: "2026-04-16"）
  * @param {string} [opts.endDate] ISO 8601 日付
  * @param {number} [opts.limit] 取得件数上限
+ * @param {string} [opts.target='cross'] 'cross' | 'x-only' | 'threads-only'
  */
-export async function getAnalytics({ startDate, endDate, limit } = {}) {
-  if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
+export async function getAnalytics({ startDate, endDate, limit, target = 'cross' } = {}) {
+  const socialSetId = resolveSocialSetId(target);
+  if (!socialSetId) throw new Error(`Social Set ID not configured for target=${target}`);
   const params = new URLSearchParams();
   if (startDate) params.set('start_date', startDate);
   if (endDate) params.set('end_date', endDate);
   if (limit) params.set('limit', String(limit));
   const query = params.toString();
-  const path = `/social-sets/${SOCIAL_SET_ID}/analytics/x/posts${query ? `?${query}` : ''}`;
+  const path = `/social-sets/${socialSetId}/analytics/x/posts${query ? `?${query}` : ''}`;
   return callApi(path);
 }
 
@@ -104,19 +141,21 @@ export async function getAnalytics({ startDate, endDate, limit } = {}) {
  * @param {number} [opts.likesThreshold=100] いいね閾値
  * @param {number} [opts.impressionsThreshold=10000] インプ閾値
  * @param {number} [opts.retweetsThreshold=10] リポスト閾値
+ * @param {string} [opts.target='cross'] 対象 Social Set
  */
 export async function detectBuzz({
   days = 7,
   likesThreshold = 100,
   impressionsThreshold = 10000,
   retweetsThreshold = 10,
+  target = 'cross',
 } = {}) {
   const endDate = new Date().toISOString().slice(0, 10);
   const startDate = new Date(Date.now() - days * 86400000)
     .toISOString()
     .slice(0, 10);
 
-  const data = await getAnalytics({ startDate, endDate, limit: 100 });
+  const data = await getAnalytics({ startDate, endDate, limit: 100, target });
   const posts = data.results || data.data || data.posts || [];
 
   const extract = (p) => ({
@@ -143,7 +182,7 @@ export async function detectBuzz({
       tweet_id: p.post_id || p.id,
       tweet_url:
         p.url ||
-        (p.post_id ? `https://x.com/moyuchi_cc/status/${p.post_id}` : null),
+        (p.post_id ? `https://x.com/hyui_cc/status/${p.post_id}` : null),
       text: p.preview_text || p.text || '',
       likes: m.likes,
       retweets: m.retweets,
@@ -155,12 +194,13 @@ export async function detectBuzz({
   });
 }
 
-export async function uploadMedia(filePath) {
-  if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
+export async function uploadMedia(filePath, target = 'cross') {
+  const socialSetId = resolveSocialSetId(target);
+  if (!socialSetId) throw new Error(`Social Set ID not configured for target=${target}`);
   const fileName = filePath.split(/[\\/]/).pop();
 
   const { media_id, upload_url } = await callApi(
-    `/social-sets/${SOCIAL_SET_ID}/media/upload`,
+    `/social-sets/${socialSetId}/media/upload`,
     { method: 'POST', body: JSON.stringify({ file_name: fileName }) }
   );
 
@@ -172,7 +212,7 @@ export async function uploadMedia(filePath) {
 
   for (let i = 0; i < 30; i++) {
     const { status } = await callApi(
-      `/social-sets/${SOCIAL_SET_ID}/media/${media_id}`
+      `/social-sets/${socialSetId}/media/${media_id}`
     );
     if (status === 'ready') return media_id;
     if (status === 'failed') throw new Error('Media processing failed');
@@ -182,18 +222,23 @@ export async function uploadMedia(filePath) {
 }
 
 /**
- * Typefully ドラフト作成
+ * Typefully ドラフト作成（マルチプラットフォーム対応・2026-04-28 改修）
+ *
  * @param {object} opts
  * @param {Array<{text: string, media_ids?: string[], quote_post_url?: string}>} opts.posts
  * @param {string} opts.publishAt ISO 8601（例: "2026-04-24T08:00:00+09:00"）/ "now" / "next-free-slot"
  * @param {string} [opts.draftTitle] 内部管理用タイトル
  * @param {string[]} [opts.tags]
  * @param {string} [opts.replyToUrl] リプライ先のXツイートURL（バズ宣伝リプ用・X限定）
- * @param {boolean} [opts.crossPostToThreads=false] X と同じ本文を Threads にもクロスポストする。
+ * @param {string} [opts.target='cross'] 配信先選択
+ *   - 'cross': クロスポスト Social Set。crossPostToThreads が true なら X+Threads、false なら X のみ
+ *   - 'x-only': X専用 Social Set（引用RT・バズリプ向け）。常に X のみに送信
+ *   - 'threads-only': Threads専用 Social Set。Threads にのみ送信（X 設定無視）
+ * @param {boolean} [opts.crossPostToThreads=false] target='cross' のときのみ有効。
  *   ただし以下の場合は自動で false 扱い:
  *   - replyToUrl が指定されている（バズ宣伝リプ）
  *   - posts のいずれかが quote_post_url を持つ（引用RT）
- *   - Threads は両方とも未対応 / 仕様差が大きいため X 限定運用
+ *   - target が 'threads-only' / 'x-only' のとき
  */
 export async function createDraft({
   posts,
@@ -201,34 +246,53 @@ export async function createDraft({
   draftTitle,
   tags,
   replyToUrl,
+  target = 'cross',
   crossPostToThreads = false,
 }) {
-  if (!SOCIAL_SET_ID) throw new Error('TYPEFULLY_SOCIAL_SET_ID が未設定');
+  const socialSetId = resolveSocialSetId(target);
+  if (!socialSetId) throw new Error(`Social Set ID not configured for target=${target}`);
   if (!Array.isArray(posts) || posts.length === 0) {
     throw new Error('posts は非空配列が必要');
   }
   if (!publishAt) throw new Error('publishAt が必要');
 
-  const xPlatform = {
-    enabled: true,
-    posts,
-  };
-  if (replyToUrl) {
-    xPlatform.settings = { reply_to_url: replyToUrl };
-  }
+  const platforms = {};
 
-  const platforms = { x: xPlatform };
-
-  const hasQuotePost = posts.some((p) => p && p.quote_post_url);
-  const canCrossPost = crossPostToThreads && !replyToUrl && !hasQuotePost;
-
-  if (canCrossPost) {
+  if (target === 'threads-only') {
+    // Threads専用: X 設定は無視・Threads のみ
     const threadsPosts = posts.map(({ quote_post_url: _q, ...rest }) => rest);
     platforms.threads = {
       enabled: true,
       posts: threadsPosts,
       settings: {},
     };
+  } else {
+    // 'cross' or 'x-only': X 必須
+    const xPlatform = {
+      enabled: true,
+      posts,
+    };
+    if (replyToUrl) {
+      xPlatform.settings = { reply_to_url: replyToUrl };
+    }
+    platforms.x = xPlatform;
+
+    // クロスポスト判定（target='cross' のときのみ）
+    const hasQuotePost = posts.some((p) => p && p.quote_post_url);
+    const canCrossPost =
+      target === 'cross' &&
+      crossPostToThreads &&
+      !replyToUrl &&
+      !hasQuotePost;
+
+    if (canCrossPost) {
+      const threadsPosts = posts.map(({ quote_post_url: _q, ...rest }) => rest);
+      platforms.threads = {
+        enabled: true,
+        posts: threadsPosts,
+        settings: {},
+      };
+    }
   }
 
   const body = {
@@ -239,7 +303,7 @@ export async function createDraft({
   if (draftTitle) body.draft_title = draftTitle;
   if (tags) body.tags = tags;
 
-  return callApi(`/social-sets/${SOCIAL_SET_ID}/drafts`, {
+  return callApi(`/social-sets/${socialSetId}/drafts`, {
     method: 'POST',
     body: JSON.stringify(body),
   });
@@ -261,7 +325,15 @@ async function main() {
       const name = s.name || '(no name)';
       console.log(`${i + 1}. ID: ${s.id} | ${account} | ${name}`);
     });
-    console.log('\n→ 対応する ID を .env の TYPEFULLY_SOCIAL_SET_ID に記入してください');
+    console.log('\n→ 用途別に対応する ID を .env に登録してください:');
+    console.log('   TYPEFULLY_SOCIAL_SET_ID            : クロスポスト用（X+Threads）');
+    console.log('   TYPEFULLY_X_ONLY_SOCIAL_SET_ID     : X専用（引用RT・バズリプ用）');
+    console.log('   TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID : Threads専用（長文体験談用）');
+
+    console.log('\n現在の.env登録状況:');
+    console.log(`  クロスポスト    : ${SOCIAL_SET_ID || '(未設定)'}`);
+    console.log(`  X専用            : ${X_ONLY_SOCIAL_SET_ID || '(未設定)'}`);
+    console.log(`  Threads専用      : ${THREADS_ONLY_SOCIAL_SET_ID || '(未設定)'}`);
     return;
   }
 
@@ -290,17 +362,21 @@ async function main() {
   }
 
   if (cmd === 'queue') {
-    const queue = await getQueue();
+    const target = process.argv[3] || 'cross';
+    const queue = await getQueue({ target });
+    console.log(`=== Queue for target=${target} ===`);
     console.log(JSON.stringify(queue, null, 2));
     return;
   }
 
   if (cmd === 'test-draft') {
-    const testText = `テストドラフト ${new Date().toISOString()}`;
+    const target = process.argv[3] || 'cross';
+    const testText = `テストドラフト ${new Date().toISOString()} (target=${target})`;
     const res = await createDraft({
       posts: [{ text: testText }],
       publishAt: 'next-free-slot',
-      draftTitle: 'API疎通テスト',
+      draftTitle: `API疎通テスト (${target})`,
+      target,
     });
     console.log(JSON.stringify(res, null, 2));
     console.log('\n→ Typefully UI で確認してください: https://typefully.com/queue');
@@ -308,10 +384,10 @@ async function main() {
   }
 
   console.error(`Usage:
-  node scripts/typefully.mjs list-social-sets    Social Set 一覧取得
-  node scripts/typefully.mjs me                  アカウント情報取得
-  node scripts/typefully.mjs queue               現在のキュー確認
-  node scripts/typefully.mjs test-draft          テスト用ドラフトを next-free-slot で作成
+  node scripts/typefully.mjs list-social-sets         Social Set 一覧取得
+  node scripts/typefully.mjs me                       アカウント情報取得
+  node scripts/typefully.mjs queue [target]           現在のキュー確認 (target: cross|x-only|threads-only)
+  node scripts/typefully.mjs test-draft [target]      テストドラフト作成 (target: cross|x-only|threads-only)
 `);
   process.exit(1);
 }

@@ -61,13 +61,20 @@ hyui の X / Threads 投稿を Typefully 経由で毎日自動予約するパイ
 
 ただし現状の Typefully API では auto_retweet フラグの個別投稿制御は [要検証]。実装方針確定までは、ユーザーが Typefully UI で個別投稿に手動で Auto-RT スイッチON するのが運用ルール。スキルからは「この投稿は Auto-RT ONを推奨」というコメントをdraft内のメタ情報に記載しておく。
 
-### ① 環境変数チェック
+### ① 環境変数チェック（2026-04-28 マルチプラットフォーム対応・3 ID）
 
 ```bash
 # projects/content-pipeline/.env から読み込む
-TYPEFULLY_API_KEY  必須
-TYPEFULLY_SOCIAL_SET_ID  必須（初回は空・setup モードで取得）
+TYPEFULLY_API_KEY                    必須
+TYPEFULLY_SOCIAL_SET_ID              必須（クロスポスト用 X+Threads）
+TYPEFULLY_X_ONLY_SOCIAL_SET_ID       推奨（X専用・引用RT/バズリプ用）
+TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID 推奨（Threads専用・長文体験談用）
 ```
+
+3 種の Social Set 配信先用途:
+- **クロスポスト**: 日常実況・告知・スレッド連投 → X+Threads 両方
+- **X専用**: 引用RT（@claudeai 等）・バズ宣伝リプ → X のみ
+- **Threads専用**: 500字フル活用の長文体験談・連続投稿 → Threads のみ
 
 未設定なら:
 ```
@@ -76,20 +83,23 @@ TYPEFULLY_SOCIAL_SET_ID  必須（初回は空・setup モードで取得）
 → 完了後 /x-run setup を実行して Social Set ID を取得します
 ```
 
+専用 ID（X-only / Threads-only）が未設定の場合は警告のみ出して、クロスポスト Social Set にフォールバック。
+
 ### ② 起動ルート判定
 
 | 引数 | 処理 |
 |---|---|
-| （なし） | **daily-auto**（メイン）— 明日分を予約 |
+| （なし） | **daily-auto**（メイン）— 明日分の X+Threads クロスポスト + 引用RT + 告知 + バズリプを予約 |
 | `setup` | Social Set ID 取得 → .env に書き込み |
-| `queue` | 現在のTypefullyキューを表示 |
+| `queue [target]` | 現在のTypefullyキューを表示（target: cross / x-only / threads-only） |
+| `threads-only` | **Threads単独投稿モード（2026-04-28 新設）** — Threadsネタ帳から長文体験談・連続投稿を生成して Threads 専用 Social Set に予約 |
 | `dry-run` | 生成はするが Typefully に送らない（テスト用） |
 
 ---
 
-## モード: setup（初回のみ）
+## モード: setup（初回・追加 Social Set 登録時）
 
-`scripts/typefully.mjs` のヘルパー関数 `getSocialSets()` を呼んで、hyui_cc に紐づく Social Set ID を取得し、.env に追記する。
+`scripts/typefully.mjs` のヘルパー関数 `getSocialSets()` を呼んで、hyui_cc に紐づく Social Set ID 一覧を取得する。
 
 ```bash
 node scripts/typefully.mjs list-social-sets
@@ -97,11 +107,23 @@ node scripts/typefully.mjs list-social-sets
 
 出力例:
 ```
-Social Sets:
-1. ID: abc123... | hyui_cc (X)
+Social Sets (3 found):
+1. ID: abc123... | @hyui_cc | クロスポスト用
+2. ID: def456... | @hyui_cc | X専用
+3. ID: ghi789... | @hyui__cc | Threads専用
+
+→ 用途別に対応する ID を .env に登録してください:
+   TYPEFULLY_SOCIAL_SET_ID            : クロスポスト用（X+Threads）
+   TYPEFULLY_X_ONLY_SOCIAL_SET_ID     : X専用（引用RT・バズリプ用）
+   TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID : Threads専用（長文体験談用）
+
+現在の.env登録状況:
+  クロスポスト    : abc123...
+  X専用            : def456...
+  Threads専用      : ghi789...
 ```
 
-ユーザーに ID を確認してもらい、.env の `TYPEFULLY_SOCIAL_SET_ID` に書き込む。
+ユーザーが Typefully UI で名付けた Social Set 名と照合して、.env に 3 ID を登録する。
 
 ---
 
@@ -721,26 +743,28 @@ N本目（まとめ + note誘導）:
 - Typefully キューに入った時点で自動投稿される
 - 失敗時はエラーログを `x/logs/YYYYMMDD_error.log` に記録
 
-`scripts/typefully.mjs` の `createDraft()` を呼ぶ:
+`scripts/typefully.mjs` の `createDraft()` を呼ぶ。**2026-04-28 改修: target 引数で配信先 Social Set を指定**:
 
 ```javascript
 import { createDraft } from './scripts/typefully.mjs';
 
-// 日常ツイート（X+Threads クロスポスト）
+// 日常ツイート（クロスポスト Social Set・X+Threads 両方）
 await createDraft({
   posts: [{ text: '本文', media_ids: [] }],
   publishAt: '2026-04-24T08:00:00+09:00',
+  target: 'cross',
   crossPostToThreads: true,  // ✅ Threads にも流す
 });
 
-// 告知ツイート（X+Threads クロスポスト・画像付き）
+// 告知ツイート（クロスポスト・画像付き）
 await createDraft({
   posts: [{ text: '告知本文', media_ids: [thumbnailId] }],
   publishAt: '2026-04-24T20:00:00+09:00',
+  target: 'cross',
   crossPostToThreads: true,  // ✅ note/Brain 告知も Threads クロスポスト
 });
 
-// スレッド連投（X+Threads クロスポスト）
+// スレッド連投（クロスポスト）
 await createDraft({
   posts: [
     { text: '1本目（フック）' },
@@ -748,29 +772,67 @@ await createDraft({
     { text: '3本目（まとめ）' },
   ],
   publishAt: '2026-04-24T20:00:00+09:00',
-  crossPostToThreads: true,  // ✅ Threads もスレッド連投対応
+  target: 'cross',
+  crossPostToThreads: true,
 });
 
-// 引用RT（X 限定・Threads スキップ）
+// 引用RT（X専用 Social Set 経由・Threads スキップ）
 await createDraft({
   posts: [{
     text: 'コメント本文',
     quote_post_url: 'https://x.com/claudeai/status/xxx',
   }],
   publishAt: '2026-04-24T09:30:00+09:00',
-  // crossPostToThreads は指定不要（quote_post_url 検出で自動 X 限定化）
+  target: 'x-only',  // ✅ X専用 Social Set（フォールバック: クロスポスト）
 });
 
-// バズ宣伝リプ（X 限定・Threads スキップ）
+// バズ宣伝リプ（X専用 Social Set 経由）
 await createDraft({
   posts: [{ text: '宣伝リプ本文' }],
   publishAt: '2026-04-24T10:00:00+09:00',
-  replyToUrl: 'https://x.com/moyuchi_cc/status/xxx',
-  // replyToUrl 検出で自動 X 限定化
+  target: 'x-only',  // ✅ X専用 Social Set
+  replyToUrl: 'https://x.com/hyui_cc/status/xxx',
+});
+
+// セルフ引用RT（告知の翌朝補足コメント・X専用）
+await createDraft({
+  posts: [{
+    text: '補足コメント',
+    quote_post_url: 'https://x.com/hyui_cc/status/{自分の告知ツイートID}',
+  }],
+  publishAt: '2026-04-25T07:00:00+09:00',
+  target: 'x-only',
+});
+
+// Threads 単独・長文体験談（Threads専用 Social Set 経由）
+// /x-run threads-only モードから呼ばれる
+await createDraft({
+  posts: [{ text: '500字の長文体験談本文' }],
+  publishAt: '2026-04-24T21:00:00+09:00',
+  target: 'threads-only',  // ✅ Threads専用 Social Set
+});
+
+// Threads 連続投稿（Thread-to-Lead 型・5〜7本）
+await createDraft({
+  posts: [
+    { text: '1本目（フック）' },
+    { text: '2本目' },
+    { text: '3本目' },
+    { text: '4本目' },
+    { text: '5本目（CTA）' },
+  ],
+  publishAt: '2026-04-24T21:00:00+09:00',
+  target: 'threads-only',
 });
 ```
 
-**重要**: `crossPostToThreads: true` を指定しても、posts のいずれかが `quote_post_url` を持つ場合や `replyToUrl` が指定されている場合は、`createDraft` 側で自動的に Threads を無効化する。X 限定運用の取り違えを防ぐ安全装置。
+**target 引数の挙動**:
+- `target: 'cross'` → クロスポスト Social Set。`crossPostToThreads: true` で X+Threads 両方、false で X のみ
+- `target: 'x-only'` → X専用 Social Set。Threads 設定は無視・常に X 単独
+- `target: 'threads-only'` → Threads専用 Social Set。X 設定は無視・常に Threads 単独
+- 専用 ID（x-only / threads-only）が未設定なら警告してクロスポストにフォールバック
+
+**重要（自動 X 限定化）**: `target: 'cross'` でも posts のいずれかが `quote_post_url` を持つ場合や `replyToUrl` が指定されている場合は、`createDraft` 側で自動的に Threads を無効化する。X 限定運用の取り違えを防ぐ安全装置。
 
 ### Phase 7: 投稿履歴保存 + pending_cta クリーンアップ
 
@@ -890,9 +952,154 @@ printf '{"embeds":[{"title":"✅ X+Threads 予約投稿完了","color":5763719,"
 
 ---
 
+## モード: threads-only（Threads単独投稿モード・2026-04-28 新設）
+
+500字フル活用の長文体験談・連続投稿（Thread-to-Lead 型）を **Threads 専用 Social Set** に予約する。daily-auto のクロスポストとは独立。
+
+### 起動例
+
+```bash
+/x-run threads-only          # 1本生成して予約
+/x-run threads-only thread   # 5〜7本の連続投稿
+/x-run threads-only dry-run  # 生成のみ（送信スキップ）
+```
+
+### Phase TO-1: 環境変数チェック
+
+```
+TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID  必須
+```
+
+未設定なら警告:
+```
+⚠️ TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID が未設定です
+→ /x-run setup で 3 ID を取得して .env に登録してください
+→ 一時的にクロスポスト Social Set にフォールバックします
+```
+
+### Phase TO-2: コンテキスト読み込み（最低限）
+
+- `context/persona-hyui.md` — Hyui 人格・先輩フレーム・公開済エピソード
+- `context/published-history.md` — 過去主張との重複チェック
+- `context/x-strategy.md` — Threads 仕様（500字・連続投稿）
+- `context/voice-samples.md` — 文体・先輩フレーム表現
+- `context/writing-rules.md` — 禁止フレーズ・先輩フレームルール
+- `context/x-anti-ai-patterns.md` — AI感NGパターン
+
+### Phase TO-3: ネタ取得
+
+#### Step 1: Threadsネタ帳から「Threads単独」候補取得
+
+`mcp__notion__notion-fetch` で Threadsネタ帳（`collection://6af7d0ce-64a0-4347-a5e3-325d27b440b8`）を参照:
+- ステータス=`未使用`
+- ネタタイプ=`長文体験談` または `連続投稿`
+
+#### Step 2: フォールバック
+
+ネタ帳に該当なしの場合、`persona-hyui.md` セクション 5 「公開済エピソード引き出し」から **未公開角度** を生成提案:
+- 副業の 1 日のリアルなタイムライン
+- クライアントとのやり取りで詰まった話
+- Claude プロンプト試行錯誤の裏側
+- 月14万到達後の「失ったもの」深掘り（既存記事で書ききれなかった話）
+
+### Phase TO-4: 本文生成
+
+#### 単発長文モード（500字）
+
+構成:
+1. **フック（80〜120字）**: 「先輩のお姉さん」感のある問いかけ or 体言止めの強い1文
+2. **本論（300字前後）**: 等身大ストーリー・失敗開示・数字・Before/After
+3. **締め（80〜120字）**: 「先輩から君へ」のアクション提示 or 共感誘発の余韻
+
+文体:
+- 一人称「わたし」統一
+- 「ちょっと先を歩いた先輩」感
+- 「これから始める君へ」の語りかけ
+
+#### 連続投稿モード（5〜7本・Thread-to-Lead 型）
+
+構成:
+- **1本目（150字程度・フック）**: 強いテーゼ・体言止め・数字先行
+- **2〜N-1本目（各200〜300字）**: ストーリー展開・各本で1メッセージ
+- **N本目（CTA）**: noteメイン商品 or 関連無料記事へ誘導
+  - URL は本文ではなくリプライに置く
+
+### Phase TO-5: ユーザー承認
+
+生成内容を表示してユーザー承認を待つ。**送信はユーザー承認後**（絶対厳守）。
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━
+🧵 Threads 単独投稿（プレビュー）
+
+【予定 21:00】長文体験談（500字）
+配信: ❌ X / ✅ Threads
+──────────
+{本文}
+──────────
+
+この内容でTypefullyに予約投稿してOK？
+ → "OK" or "送信して"  : そのまま送信
+ → "修正: {指示}"       : 再生成
+ → "キャンセル"         : 中止
+━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+### Phase TO-6: Typefully送信
+
+```javascript
+await createDraft({
+  posts: threadsPosts,
+  publishAt: '2026-04-29T21:00:00+09:00',
+  target: 'threads-only',
+  draftTitle: 'Threads単独 - 長文体験談 - 2026-04-29',
+});
+```
+
+### Phase TO-7: 履歴保存
+
+`x/scheduled/threads-only_YYYYMMDD.json` に追記:
+
+```json
+{
+  "date": "2026-04-29",
+  "type": "threads-only",
+  "mode": "long-form" | "thread",
+  "publish_at": "2026-04-29T21:00:00+09:00",
+  "posts_count": 1,
+  "text": "...",
+  "draft_id": "...",
+  "social_set": "threads-only"
+}
+```
+
+### 推奨投稿時間（[実機確認済 x-profile.md] Threadsターゲット 25-34歳）
+
+- 平日 **21:00-22:30**（読み物層が最もアクティブ）
+- 週末 10:00-12:00 / 21:00-23:00
+
+### 投稿頻度
+
+**週 1〜2 本**（運用初期）。クロスポストとは別カウント。
+[WebSearch済] Meta公式推奨は週 2-5 回・hyui の長文体験談は質優先で週 1-2。
+
+### NG 事項
+
+- X からのコピペ流用（Threads は読み物寄りなので長文化必須）
+- ハッシュタグ 3 個以上（Threads は 1 個推奨）
+- URL 本文直埋め（リプライに分離）
+
+---
+
 ## モード: queue（Typefullyキュー確認）
 
-`scripts/typefully.mjs` の `getQueue()` を呼んで、現在予約中の投稿を時系列で表示。
+```bash
+/x-run queue              # クロスポスト Social Set のキュー
+/x-run queue x-only       # X専用 Social Set のキュー
+/x-run queue threads-only # Threads専用 Social Set のキュー
+```
+
+`scripts/typefully.mjs` の `getQueue({ target })` を呼んで、現在予約中の投稿を時系列で表示。
 
 ---
 
