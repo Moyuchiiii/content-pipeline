@@ -1,6 +1,6 @@
 {
-  "date": "2026-04-30",
-  "created_at": "2026-04-28T19:11:06.413Z",
+  "date": "2026-04-29",
+  "created_at": "2026-04-28T19:18:28.038Z",
   "note_url": "https://note.com/moyuchi_aistu/n/n51272e7fff1a",
   "brain_url": null,
   "posts": [
@@ -8,7 +8,7 @@
       "slot": "morning",
       "type": "daily",
       "hook_type": "会話感スタート・短文実況",
-      "publish_at": "2026-04-30T08:00:00+09:00",
+      "publish_at": "2026-04-29T08:00:00+09:00",
       "text": "4ヶ月前のわたし、AIに案件説明コピペして「応募文書いて」って投げてた。\n\n3週間応募ゼロ。\n\n今日 note にしたけど、変わったのは1点だけ。\n「書いて」じゃなくて「クライアントの困りごとを5つ並べて」から始めるようになっただけ。\n\n丸投げ → 道具派、ここの切替が全部だった。",
       "reply": null,
       "quote_post_url": null,
@@ -21,20 +21,20 @@
       "source_cta": null,
       "notion_xneta_id": null,
       "auto_rt_recommended": false,
-      "draft_id": 8891059,
-      "private_url": "https://typefully.com/?d=8891059&a=300622"
+      "draft_id": 8891122,
+      "private_url": "https://typefully.com/?d=8891122&a=300622"
     },
     {
       "slot": "noon",
       "type": "daily",
       "hook_type": "速報ブラケット・副業視点",
-      "publish_at": "2026-04-30T12:30:00+09:00",
+      "publish_at": "2026-04-29T12:30:00+09:00",
       "text": "【速報】NEC が日本企業初の Anthropic グローバルパートナーになった。\n\nClaude Cowork で金融/製造/政府向け業界特化AI を共同開発するらしい。\n\n副業で Claude にどっぷり依存してる文系大学生として\n「日本企業に Claude が本格普及したら案件単価上がりそう」と勝手に楽観してる。\n\n詳細↓",
       "reply": "https://www.anthropic.com/news/anthropic-nec",
       "quote_post_url": null,
       "image_source": "x/images/anthropic.png",
       "media_ids": [
-        "6217391c-cfb3-4784-b5c2-d9f8f9ed66c4"
+        "25fbd508-fb98-48a8-8150-0f7251c05497"
       ],
       "cross_posted_to": [
         "x",
@@ -43,14 +43,14 @@
       "source_cta": null,
       "notion_xneta_id": "3508795a-75fd-816f-abf4-fced1603b3de",
       "auto_rt_recommended": false,
-      "draft_id": 8891060,
-      "private_url": "https://typefully.com/?d=8891060&a=300622"
+      "draft_id": 8891124,
+      "private_url": "https://typefully.com/?d=8891124&a=300622"
     },
     {
       "slot": "night1",
       "type": "cta_note",
       "hook_type": "速報・告知・数字フック",
-      "publish_at": "2026-04-30T20:00:00+09:00",
+      "publish_at": "2026-04-29T20:00:00+09:00",
       "text": "AI副業に挑戦する人の9割が3ヶ月以内に挫折するらしい。\n\n原因はツールじゃなかった。\n「AIを丸投げ先で使うか・道具で使うか」の1点だけ。\n\nわたしは前者で3週間応募ゼロ→後者に切替で1週間で3スカウト→月14万まで来た。\n\nその境界線を全部書いた。\n\n詳細はnote↓",
       "reply": "https://note.com/moyuchi_aistu/n/n51272e7fff1a",
       "quote_post_url": null,
@@ -60,17 +60,17 @@
         "x",
         "threads"
       ],
-      "source_cta": "x/pending_cta/note_20260429_ai-fukugyo-marubuke.json",
+      "source_cta": "x/pending_cta/done/note_20260429_ai-fukugyo-marubuke.json.posted",
       "notion_xneta_id": null,
       "auto_rt_recommended": true,
-      "draft_id": 8891061,
-      "private_url": "https://typefully.com/?d=8891061&a=300622"
+      "draft_id": 8891125,
+      "private_url": "https://typefully.com/?d=8891125&a=300622"
     },
     {
       "slot": "night2",
       "type": "daily",
       "hook_type": "問いかけ代替X1・自分の立場先出し",
-      "publish_at": "2026-04-30T22:00:00+09:00",
+      "publish_at": "2026-04-29T22:00:00+09:00",
       "text": "副業で AI 使うとき\n「全部AIにやらせる派」と「AIに整理させて自分で書き直す派」がいる。\n\nわたしは後者。\n\n前者は最初の1ヶ月だけ楽。3ヶ月目で消える。\n後者は最初しんどいけど積み上がる。\n\n差は「AIに任せる範囲を決めれるかどうか」。\nそれだけだった。",
       "reply": null,
       "quote_post_url": null,
@@ -83,19 +83,19 @@
       "source_cta": null,
       "notion_xneta_id": "3508795a-75fd-8121-9f25-dedf309d0617",
       "auto_rt_recommended": false,
-      "draft_id": 8891062,
-      "private_url": "https://typefully.com/?d=8891062&a=300622"
+      "draft_id": 8891126,
+      "private_url": "https://typefully.com/?d=8891126&a=300622"
     }
   ],
   "buzz_promo_replies": [],
   "quote_rts": [],
   "media_registry": {
-    "x/images/anthropic.png": "6217391c-cfb3-4784-b5c2-d9f8f9ed66c4"
+    "x/images/anthropic.png": "25fbd508-fb98-48a8-8150-0f7251c05497"
   },
   "notes": [
+    "4/30 既予約 4本（draft 8891059-8891062）を削除し 4/29 にスライド（公開当日告知のため）",
     "セルフ引用RT (翌朝07:00補足) は告知投稿後にURL確定するため、次回 /x-run で別途予約",
     "バズ宣伝リプ 0本（フォロワー段階1〜100人・直近7日 likes 5以上の該当ツイートなし）",
-    "引用RT 0本（source-run 系統D/E スキップで X 公式新鮮URL未取得）",
-    "pending_cta note_20260429_ai-fukugyo-marubuke.json は送信成功後に done/ 移動"
+    "引用RT 0本（source-run 系統D/E スキップで X 公式新鮮URL未取得）"
   ]
 }
