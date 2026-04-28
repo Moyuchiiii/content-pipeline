@@ -757,6 +757,20 @@ source-run 起動時、各ネタ帳の `未使用` レコードを走査:
 - **発見日から 30 日経過** したネタは `見送り` に自動更新（メモに「30 日経過自動見送り」追記）
 - これにより未使用ネタの肥大化を防ぐ
 
+## today/source-run/ の自動クリーンアップ
+
+source-run 起動時、`today/source-run/` 配下の古いバックアップを削除:
+- **7 日以上前** の `failed-*.json` を削除
+- **目的**: today/ 配下は常に「最新の作業セット」だけが残る状態を保つ
+
+実装例（Bash）:
+```bash
+# 7日経過した failed-*.json を削除
+find today/source-run/ -name "failed-*.json" -type f -mtime +7 -delete 2>/dev/null
+```
+
+`today/source-run/` が空または該当ファイルなしならスキップ。
+
 ---
 
 ## エラーハンドリング
