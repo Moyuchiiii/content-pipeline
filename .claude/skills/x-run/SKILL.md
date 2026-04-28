@@ -89,10 +89,11 @@ TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID 推奨（Threads専用・長文体験談用
 
 | 引数 | 処理 |
 |---|---|
-| （なし） | **daily-auto**（メイン）— 明日分の X+Threads クロスポスト + 引用RT + 告知 + バズリプを予約 |
+| （なし） | **daily-auto**（メイン）— 明日分の X+Threads クロスポスト + 引用RT + 告知 + バズリプ + **Threads-only 自動判定（Phase 2.8）** を一括予約 |
 | `setup` | Social Set ID 取得 → .env に書き込み |
 | `queue [target]` | 現在のTypefullyキューを表示（target: cross / x-only / threads-only） |
-| `threads-only` | **Threads単独投稿モード（2026-04-28 新設）** — Threadsネタ帳から長文体験談・連続投稿を生成して Threads 専用 Social Set に予約 |
+| `threads-only` | **Threads単独投稿モード（手動・上書き用）** — daily-auto の自動判定でスキップされた日にユーザーが明示的に Threads 長文だけ追加したい場合に使う |
+| `skip-threads` | 当日の自動 Threads-only 判定をスキップ（疲れた日・ネタ薄い日用） |
 | `dry-run` | 生成はするが Typefully に送らない（テスト用） |
 
 ---
@@ -358,6 +359,81 @@ Typefully が `platforms.x.settings.reply_to_url` で指定ツイートへのリ
 #### ゼロ件の日
 
 バズなしの日は Phase 2.7 の出力ゼロ。無理やり宣伝しない。
+
+### Phase 2.8: Threads 単独投稿の自動判定（2026-04-29 追加・全自動運用）
+
+**目的**: ユーザーは `/x-run` だけ叩けば、その日に Threads 単独の長文体験談を入れるべきかをスキルが自動判定して予約する。`/x-run threads-only` を別途叩く必要なし。
+
+#### 発火条件（すべて満たすと自動生成）
+
+1. ✅ **頻度条件**: `x/scheduled/` 過去7日のログを走査して `type: "threads_only"` のレコード数が **0〜1本** （週1〜2本ペース維持・3本以上ある日はスキップ）
+2. ✅ **ネタ条件**: Threadsネタ帳（`collection://6af7d0ce-64a0-4347-a5e3-325d27b440b8`）に `ネタタイプ: 長文体験談 OR 連続投稿` の未使用レコードがある、または直近24時間以内に note 公開がある（再パッケージ可）
+3. ✅ **環境条件**: `TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID` が設定済（未設定なら警告のみ・スキップ）
+
+#### スキップ条件（いずれか該当でスキップ）
+
+- ❌ 過去7日に Threads-only 投稿が **2本以上** ある（過剰投稿防止・読者疲労リスク）
+- ❌ Threadsネタ帳に未使用ネタなし、かつ直近24時間以内に note 公開なし（質を担保するため無理に作らない）
+- ❌ ユーザーが `/x-run skip-threads` で明示的にスキップ指定
+
+#### 判定ロジック実装例
+
+```javascript
+// scripts/typefully.mjs に追加予定の判定関数
+async function shouldGenerateThreadsOnly() {
+  // 1. 過去7日のThreads-only投稿数カウント
+  const recentThreadsOnly = await countRecentThreadsOnlyPosts({ days: 7 });
+  if (recentThreadsOnly >= 2) return { skip: true, reason: 'recent_2plus' };
+
+  // 2. ネタ availability チェック
+  const ideaAvailable = await checkThreadsNetaOrRecentNote();
+  if (!ideaAvailable) return { skip: true, reason: 'no_idea' };
+
+  // 3. 環境変数チェック
+  if (!process.env.TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID) {
+    return { skip: true, reason: 'env_not_configured' };
+  }
+
+  return { skip: false };
+}
+```
+
+#### Threads-only ON 判定時のフロー
+
+1. Threadsネタ帳から `長文体験談` または `連続投稿` の未使用ネタを優先度順に取得
+2. ネタなしなら `today/note/` の最新記事を Threads向けに「読み物として再パッケージ」（500字フル活用）
+3. **21:00枠** で予約（[実機確認済 x-profile.md] Threads ターゲット 25-34歳・読み物層が最もアクティブ）
+4. cross の night1 (20:00) や night2 (22:00) と1時間ずらす（タイムライン上の被り回避）
+5. `target: 'threads-only'` で `createDraft()` 呼び出し
+6. ネタ採用時は Notion ステータスを `採用済み` に更新
+
+#### Phase 5 ユーザー承認に組み込み
+
+ドラフトプレビューに「Threads単独」セクションを追加（発火時のみ表示）:
+
+```
+▼ Threads単独 1本（→ Threads 限定・Threads専用 Social Set経由）
+
+【夜 21:00】長文体験談（500字）
+配信: ❌ X / ✅ Threads
+──────────
+{本文}
+──────────
+画像: なし
+発火理由: 過去7日 Threads-only 投稿 0本・ネタ帳「長文体験談」あり
+```
+
+スキップ時は理由をログ出力（プレビュー非表示）:
+```
+ℹ️ Threads-only 自動判定: スキップ（reason: recent_2plus / no_idea / env_not_configured）
+```
+
+#### 実装方針（段階運用）
+
+- **Phase A（現状）**: SKILL.md にロジック明文化・リードが手動で判定して必要なら同セッション内で生成（Threads-only 用スクリプトを別途生成 or 既存 daily スクリプトに混ぜる）
+- **Phase B（将来）**: `scripts/typefully.mjs` に `shouldGenerateThreadsOnly()` ヘルパー関数追加・x-run-{date}.mjs 内で1関数呼ぶだけで判定〜生成〜予約完了
+
+現時点では Phase A 運用。次回以降の `/x-run` 起動時に、リードがこのフェーズを必ず実行する。
 
 ### Phase 3: 日常ツイート生成（1〜4本・気分次第でスキップ可・2026-04-24 緩和）
 
@@ -937,6 +1013,7 @@ mv x/pending_cta/note_20260423_xxx.json x/pending_cta/done/note_20260423_xxx.jso
 - スレッド {T}本 → X+Threads
 - 引用RT {Q}本 → X 限定
 - バズ宣伝リプ {B}本 → X 限定
+- Threads単独 {TH}本 → Threads 限定（Phase 2.8 自動発火 / スキップ理由: {reason}）
 
 Typefullyで確認:
 https://typefully.com/queue

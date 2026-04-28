@@ -1,0 +1,17 @@
+{
+  "type": "note",
+  "created_at": "2026-04-28T22:00:00+09:00",
+  "source": "note/drafts/sokuho/draft_2026-04-28_connectors-everyday-life.html",
+  "title": "Claudeに旅行予約からSpotifyまで繋がった日、副業に集中するために生活タスクを整理し直した話",
+  "url": "https://note.com/moyuchi_aistu/n/nfabe227d4f44",
+  "atomic_ideas": [
+    "Claude Connectors大型アップデート(4/24)・Tripadvisor/Booking/Spotify/Audible/Instacart/AllTrails/Thumbtack/TurboTax等15サービス追加・累計200超",
+    "副業大学生として『任せたい3タスク（旅行・買い物・税金）』『任せたくないタスク（クライアント返信・案件選定）』の整理",
+    "生活タスクをClaudeに丸投げして1日40分・月20時間捻出するシミュレーション"
+  ],
+  "image_path": "today/draft_2026-04-28_connectors-everyday-life.html",
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "normal"
+}

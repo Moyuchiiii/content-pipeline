@@ -1,0 +1,23 @@
+{
+  "type": "brain",
+  "created_at": "2026-04-28T05:50:00+09:00",
+  "source": "brain/today/brain_2026-04-28_main_14man_journey.md",
+  "title": "Claude Code 副業立ち上げ実録 — 文系大学生のクラウドワークス受注作業ログ全公開",
+  "url": null,
+  "atomic_ideas": [
+    "note メイン商品（¥2,000）を Brain 完全版にリビルド。14日カリキュラム化 + プロンプト 20 本 + コード 3 案件全文 + CLAUDE.md 5 種で計 33,000 字超の作業マニュアル",
+    "ローンチ初動 ¥1,980（先着 50 部・3 日間限定）→ 定価 ¥3,980。note 読者がそのまま買えるライン + Brain 完成版価格の二段構え",
+    "実録 + 教科書ハイブリッド構成。Day1〜Day14 で初応募から月 10 万円台運用までを毎日 30 分〜 2 時間で進められる構造",
+    "失敗記録 7 件 + トラブルシュート 12 件で「成功談だけじゃない一次情報」を担保。文系・非エンジニア・プログラミング未経験向け"
+  ],
+  "image_path": "brain/today/images/brain_2026-04-28_main_14man_journey/thumb.png",
+  "article_type": "brain_jituroku_hybrid",
+  "launch_price": 1980,
+  "list_price": 3980,
+  "launch_period_days": 3,
+  "launch_seats": 50,
+  "referral_rate": 50,
+  "target_fit": "high",
+  "suggested_priority": "high",
+  "memo": "Brain 3本目（4/22 Claude Design・4/27 CW3ジャンル に続く）。メイン商品 note¥2,000 の Brain 完全版・販売開始 2026-04-28 想定。値上げ 2026-05-01 9:00。レビュー特典として業種別応募文 30 本を Notion 公開ページで配布予定"
+}
