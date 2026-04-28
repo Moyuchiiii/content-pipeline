@@ -253,7 +253,7 @@ async function main() {
   const cmd = process.argv[2];
 
   if (cmd === 'test') {
-    const outputPath = resolve(__dirname, '..', 'today', `gemini_test_${Date.now()}.png`);
+    const outputPath = resolve(__dirname, '..', 'today', 'note', `gemini_test_${Date.now()}.png`);
     const result = await generateImage({
       prompt: '黒猫が木の床に座っている、柔らかな自然光、シンプルなテスト画像',
       aspectRatio: '16:9',
