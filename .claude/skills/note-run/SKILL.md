@@ -762,20 +762,6 @@ https://note.com/moyuchi_aistu/n/na548ac967740
 {記事タイプ別プロンプト（下記テンプレを使用）}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🤖 サムネ自動生成（推奨・2026-04-28 追加・Gemini API 経由）
-
-手動で gemini.google.com に貼り付ける代わりに、以下のコマンドで自動生成できる:
-
-\`\`\`bash
-cd D:/Claude/bussines/projects/content-pipeline && node scripts/gemini-image.mjs gen-inline "{上記サムネプロンプト全文}" "today/note/thumb_{記事ID}.png" 16:9 1K
-\`\`\`
-
-- 料金: $0.067/枚（≈ ¥10）
-- モデル: gemini-3.1-flash-image-preview（Nano Banana 2）
-- 出力: today/note/thumb_{記事ID}.png（MIME に応じて .jpg に自動補正される場合あり）
-- ラッパー詳細: `scripts/gemini-image.mjs`
-- リードがユーザー指示で代行実行する場合: 上記コマンドの "{記事ID}" 等を実値に展開して Bash 実行
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
 **出力ルール:**
