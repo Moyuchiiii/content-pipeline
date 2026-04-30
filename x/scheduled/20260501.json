@@ -1,0 +1,91 @@
+{
+  "date": "2026-05-01",
+  "created_at": "2026-04-30T06:34:51.718Z",
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "Before/After体言止め",
+      "publish_at": "2026-05-01T07:00:00+09:00",
+      "text": "朝起きて Claude Code 開いた瞬間、昨日の続きが20分かかってたのが1分で戻れるようになった。\n\n新しく出た /recap コマンドが、これまでの会話・修正したファイル・次にやるタスクを自動でまとめてくれる。\n\n授業挟んでも、夜寝落ちしても、戻ってきた時の「えっと何してたっけ」が消える。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": "x/images/claude_code.png",
+      "media_ids": [
+        "764d4a62-dab6-46d4-b13a-9dcd413a91c2"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3528795a-75fd-81b5-8a55-e90d731e963e",
+      "auto_rt_recommended": false,
+      "draft_id": 8909514,
+      "private_url": null
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "速報所感・体言止め",
+      "publish_at": "2026-05-01T12:30:00+09:00",
+      "text": "Claude Code に /team-onboarding ってコマンドが地味に来てた。\n\n自分の使用履歴を分析してチーム向けオンボーディングガイドを自動生成するやつ。\n\n個人副業のわたしは「次の案件に切り替える時の自分用クイックリファレンス」に使えそう。試したい。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": "x/images/claude_code.png",
+      "media_ids": [
+        "764d4a62-dab6-46d4-b13a-9dcd413a91c2"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3528795a-75fd-81fb-96eb-e31dcc6bcbb7",
+      "auto_rt_recommended": false,
+      "draft_id": 8909515,
+      "private_url": null
+    },
+    {
+      "slot": "night1",
+      "type": "cta_note",
+      "hook_type": "数字フック告知",
+      "publish_at": "2026-05-01T20:00:00+09:00",
+      "text": "副業の提案資料案件、Claude → 手で資料化 で45分かかってたのが、Gemini に資料化任せて20分になった。\n\n4月29日リリースで Gemini が Docs もスライドも PDF も Excel も全部チャット直生成できるようになって、本文 Claude × ファイル化 Gemini の2層分担が刺さる。\n\nWorkspace案件持ってる副業者向け。\n\n詳細はnote↓",
+      "reply": "https://note.com/moyuchi_aistu/n/nc33fe22e12e4",
+      "quote_post_url": null,
+      "image_source": "x/images/gemini.png",
+      "media_ids": [
+        "d8e7c445-9d57-46f3-84ba-3569517913c3"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": "x/pending_cta/note_20260430_gemini-files-claude-vs-gemini.json",
+      "notion_xneta_id": null,
+      "auto_rt_recommended": true,
+      "draft_id": 8909516,
+      "private_url": null
+    },
+    {
+      "slot": "night2",
+      "type": "quote_rt",
+      "hook_type": "共感・自虐風",
+      "publish_at": "2026-05-01T23:00:00+09:00",
+      "text": "これ笑った。\n\nAnthropic も Google も Mistral も新機能・新モデル出してて、Claude派のわたしは追いきれないくらい便利になってるんだけど、\n\nOpenAI さん側のゴブリンはちょっと心配になってきた。\n\n副業で Claude に集中できる時期、いま意外と貴重かも。",
+      "reply": null,
+      "quote_post_url": "https://x.com/i__t/status/2049697065660493949",
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3528795a-75fd-812d-a527-d9663d34013a",
+      "auto_rt_recommended": false,
+      "draft_id": 8909517,
+      "private_url": null
+    }
+  ]
+}
