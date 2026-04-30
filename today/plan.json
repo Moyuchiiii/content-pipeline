@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "date": "2026-04-30",
+  "generated_at": "2026-04-30T15:00:00+09:00",
+  "generated_by": "source-run",
+  "regenerated_count": 0,
+
+  "note": {
+    "execute": true,
+    "primary_topic": {
+      "notion_page_id": "3528795a-75fd-816f-ac39-fee083bc4f5b",
+      "title": "Sundar Pichai: Gemini が Docs/Sheets/Slides/PDF 直接生成｜Claude派の自分はどう使い分ける",
+      "type": "速報",
+      "priority": "高",
+      "reason": "高優先・速報24h以内・109万閲覧の巨大バズ・副業の提案資料/データ集計案件で使い分けの視点が出せる"
+    },
+    "alternatives": [
+      {
+        "notion_page_id": "3528795a-75fd-81d4-8dca-e2074f44a84d",
+        "title": "Anthropic Sydney オフィス開設 + Canva/Xero パートナーシップ｜副業の道具がまた変わる"
+      },
+      {
+        "notion_page_id": "3528795a-75fd-81ed-8813-f21443ef9be7",
+        "title": "Anthropic 売上 $9B→$30B 急増・Broadcom 3.5GW TPU契約｜Claude依存してる文系大学生として安心した話"
+      }
+    ]
+  },
+
+  "brain": {
+    "execute": false,
+    "skip_reason": "Brain 直近2日前(4/28)に3本目投稿・販売動向観察期間（連投ガード・直近3日以内ルール）",
+    "primary_topic": null,
+    "alternatives": [
+      {
+        "notion_page_id": "3528795a-75fd-8180-af34-c5c6c50d7671",
+        "title": "副業大学生の Claude Code 24時間自動化テンプレ集｜Routines + /ultrareview + /recap + /team-onboarding 完全活用ガイド"
+      },
+      {
+        "notion_page_id": "3528795a-75fd-813e-ae4d-dc99e905693d",
+        "title": "Claude Design × Canva Affinity / Adobe Express｜文系大学生がLP直すまで7日間の作業ログ集"
+      }
+    ]
+  },
+
+  "x": {
+    "execute": true,
+    "slots": {
+      "morning": {
+        "type": "Before/After",
+        "topic_id": "3528795a-75fd-81b5-8a55-e90d731e963e",
+        "title": "/recap Before/After｜長時間セッションの復帰時間、20分→1分になった",
+        "推奨時間帯": "朝07:00"
+      },
+      "noon": {
+        "type": "速報所感",
+        "topic_id": "3528795a-75fd-81fb-96eb-e31dcc6bcbb7",
+        "title": "Claude Code /team-onboarding 速報｜副業の引き継ぎ資料がコマンド1個になった",
+        "推奨時間帯": "昼12:30"
+      },
+      "night1": {
+        "type": "告知",
+        "topic_id": "pending_cta:auto",
+        "title": "今日のnote記事告知（Sundar Pichai Gemini所感）— pending_cta経由で取込",
+        "推奨時間帯": "夜20:00"
+      },
+      "night2": {
+        "type": "引用RT",
+        "topic_id": "3528795a-75fd-812d-a527-d9663d34013a",
+        "title": "「OpenAIだけがゴブリン話してる」AI界隈4社対比風刺ツイート 引用RT候補",
+        "推奨時間帯": "夜23:00"
+      }
+    },
+    "expected_pending_cta_from": ["note-run"]
+  },
+
+  "execution_order": ["note-run", "x-run"],
+
+  "actual": {
+    "note_executed": null,
+    "note_topic_id_used": null,
+    "brain_executed": null,
+    "brain_topic_id_used": null,
+    "x_executed": null,
+    "x_slots_used": null
+  }
+}

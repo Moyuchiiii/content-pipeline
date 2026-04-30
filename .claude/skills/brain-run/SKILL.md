@@ -57,11 +57,29 @@ note は「実体験の記録・入門・ダイジェスト（無料 or ¥500）
 - `D:/Claude/bussines/search/brain-article-structure-2026-04-21.md` — Brain 売れ筋 8 商品の本文構成パターン・目次の作り方・無料/有料ゾーン設計・15 項目チェックリスト（**Phase 2 で必ず参照**）
 - `context/source-strategy.md` — ネタ帳 DB 構造・source-run との連携ルール（あれば参照）
 
+### ②-pre. today/plan.json 確認（2026-04-30 新設・必須）
+
+**最優先**: `today/plan.json` の存在と当日付チェック。
+
+1. `today/plan.json` を読み込む
+2. ファイルが**存在しない** OR `plan.date` ≠ 今日 の場合:
+   ```
+   ⚠️ 今日のコンテンツプランがありません（today/plan.json が無い or 当日付けでない）
+   → /source-run plan を先に実行することを強く推奨します
+   → 続行する場合は「strict-skip-plan」と入力してください
+   ```
+   ユーザーが続行指示を出さなければ処理中断。
+3. 当日付の plan.json があれば:
+   - `plan.brain.execute === false` の場合: 「今日は Brain スキップ予定（理由: {skip_reason}）。それでも書きますか？」と確認 → ユーザーが「書く」と答えなければ処理中断
+   - `plan.brain.execute === true` の場合: `plan.brain.primary_topic.notion_page_id` を Brainネタ帳から取得して **ルート C（from-idea）の自動採用**として処理
+
+plan.brain.execute=true の場合、引数なしで `/brain-run` を叩いても自動でルートCに分岐する。引数で明示的に他ルートを指定された場合（`/brain-run latest` 等）は plan を上書き可能。
+
 ### ② 対象 note 記事の特定
 
 以下の優先順で対象記事を決定する：
 
-**ルート A（自動）: 引数なし**
+**ルート A（自動）: 引数なし かつ plan.brain.execute=false の場合**
 1. `today/note/` 配下に HTML ファイルがあればそれを対象
 2. なければ `note/drafts/{sokuho,jituroku,knowhow}/` から最新更新日のファイルを選択
 3. 見つからない場合はエラー終了（「Brain化できる note 記事が見つかりません。先に /note-run を実行してください」）
@@ -73,8 +91,9 @@ note は「実体験の記録・入門・ダイジェスト（無料 or ¥500）
 /brain-run url {note_url} # 既に投稿済み note 記事を URL で指定
 ```
 
-**ルート C（新・2026-04-24 追加）: Brainネタ帳から取得**
+**ルート C（plan 経由 or 明示指定・2026-04-24 追加 / 2026-04-30 plan.json 連携）: Brainネタ帳から取得**
 ```
+（plan.brain.execute=true の場合は引数なしで自動分岐）
 /brain-run from-idea            # Brainネタ帳の「未使用」「target_fit=high」から1件選択
 /brain-run from-idea {ネタ名}    # Brainネタ帳の指定ネタを使用
 ```

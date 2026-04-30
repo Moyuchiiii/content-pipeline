@@ -91,7 +91,27 @@ Notion記事管理DBの全レコードを取得し、以下を自動分析する
 
 ネタ探し機能は `/source-run` に統合済み。note-run はネタ帳から候補を読み込む。
 
-### Step 1: noteネタ帳の「未使用」レコード取得
+### Step 0: today/plan.json 確認（2026-04-30 新設・必須）
+
+**最優先**: `today/plan.json` の存在と当日付チェック。
+
+1. `today/plan.json` を読み込む
+2. ファイルが**存在しない** OR `plan.date` ≠ 今日 の場合:
+   ```
+   ⚠️ 今日のコンテンツプランがありません（today/plan.json が無い or 当日付けでない）
+   → /source-run plan を先に実行することを強く推奨します
+   → 続行する場合は「strict-skip-plan」と入力してください
+   ```
+   ユーザーが続行指示を出さなければ処理中断。
+3. 当日付の plan.json があれば:
+   - `plan.note.execute === false` の場合: 「今日は note スキップ予定（理由: {skip_reason}）。それでも書きますか？」と確認 → ユーザーが「書く」と答えたら続行
+   - `plan.note.execute === true` の場合: `plan.note.primary_topic.notion_page_id` を **採用候補のトップ**として使う
+
+採用方針:
+- plan の `primary_topic` が存在 → スコアリングをスキップして即採用（PDCA加算は併用してスコア表示のみ生成）
+- ユーザーが「primary topic を変えたい」と明示的に指示した場合は alternatives から選ぶか、ステータス=未使用 の他レコードからスコアリング再評価
+
+### Step 1: noteネタ帳の「未使用」レコード取得（plan なし or 上書き時のみ）
 
 `mcp__notion__notion-fetch` で `collection://1a603b4f-d1e4-4ed7-8c75-c7c0a5b7e595` を参照し、ステータス=未使用のレコードを全件取得。
 

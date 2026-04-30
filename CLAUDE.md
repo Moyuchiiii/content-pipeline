@@ -108,28 +108,53 @@ Typefully Social Set ID `300622` に X+Threads 両方が紐付け済み。`/x-ru
 **事故事例（参考）:**
 - 2026-04-26: x-run night1/night2 で「Brain で初めての商品を出す」ハルシネーション混入（実際は Brain 2本目）。原因は `brain/published/` 既存投稿（4/22 Claude Design 教科書）を参照していなかったこと
 
+## 今日のコンテンツプラン (today/plan.json・2026-04-30 新設・運用必須)
+
+content-pipeline を使う日は**必ず `/source-run plan` を起点として叩く**。各 run（note-run / brain-run / x-run）は起動時に `today/plan.json` を読み込んで「今日の自分の役割」を確認する設計。
+
+**設計の核**:
+- **source-run** が `today/plan.json` を Single Source of Truth として書き出す
+- **各 run** は Phase 0 で `today/plan.json` 確認 → 当日付なら従う・無ければ警告して中断
+- **plan.json は当日のみ有効**（翌日になったら必ず source-run 再実行）
+
+**運用ルール**:
+- 朝起きて作業前に `/source-run plan`（軽量・1分）を必ず叩く
+- ネタ帳在庫が薄い時 or 新ネタ仕込みたい時は `/source-run`（フル・5系統スキャン）を叩く
+- 計画が気に入らなければ `/source-run plan` 再実行（プラン更新） or `today/plan.json` を直接編集
+- 各 run は plan.execute=false でも「それでも書く？」と確認するのでオーバーライド可能
+
+**plan.json なしで各 run 起動した場合**:
+- 警告 + ユーザーに「strict-skip-plan」入力を要求
+- ユーザーが続行指示を出せば既存ロジック（スコアリング・自動判定）で動作
+- ただし計画なしの実行は**告知タイミング・スロット配分が最適化されない**ため非推奨
+
+詳細スキーマ・生成ロジックは `.claude/skills/source-run/SKILL.md` の「Phase 6: 今日のコンテンツプラン生成」参照。
+
 ## スキル
 
-**推奨実行フロー（2026-04-24 改訂・順序重要）:**
+**推奨実行フロー（2026-04-30 改訂・plan.json 起点）:**
 
 ```
-1️⃣ /source-run      （ネタ発掘・3ネタ帳投入）
+0️⃣ /source-run plan  （毎回必須・軽量1分・today/plan.json を生成/更新）
        ↓
-2️⃣ /note-run        （noteネタ帳から記事生成・x/pending_cta/note_*.json 出力）
+   ＊ ネタ帳在庫薄い時のみ /source-run（フル・5系統スキャン）に置換可
        ↓
-3️⃣ /brain-run       （Brainネタ帳から商品生成・x/pending_cta/brain_*.json 出力）
+1️⃣ /note-run        （plan.note.execute=true なら primary_topic 採用・x/pending_cta/note_*.json 出力）
        ↓
-4️⃣ /x-run           （Xネタ帳 + pending_cta から翌日の予約投稿生成・告知ツイート組込）
+2️⃣ /brain-run       （plan.brain.execute=true なら primary_topic 採用・x/pending_cta/brain_*.json 出力）
        ↓
-5️⃣ /collect-stats   （実績集計・Notion更新）
+3️⃣ /x-run           （plan.x.slots + pending_cta + Xネタ帳から翌日の予約投稿生成・告知ツイート組込）
+       ↓
+4️⃣ /collect-stats   （実績集計・Notion更新）
 ```
 
 **順序ルール:**
+- `/source-run plan` を**毎回必ず最初に**叩く（軽量・1分・既存ネタ帳からプラン生成）
 - `/x-run` は **最後**に実行する。note-run / brain-run の出力した `pending_cta` JSON を取り込んで告知ツイートに差し替えるため
-- note-run も brain-run も今日不要ならスキップしてOK（その日 pending_cta 追加なしで x-run 実行）
-- /source-run はネタ帳に十分な「未使用」ネタがあれば毎回実行不要
+- note-run も brain-run も今日不要なら plan.execute=false で済む（自動でスキップ判定）
+- ネタ帳在庫が薄くなったら `/source-run`（フル・5系統スキャン）でネタ補充
 
-- `/source-run` : **ネタ発掘専任**（2026-04-24 新設）。広域スキャン（副業・Claude新機能・Brain市場・X公式19アカウント）→ プラットフォーム適合度判定 → 3ネタ帳に振り分け投入。ユーザー手動投入モード（`add`）も対応
+- `/source-run` : **ネタ発掘 + 今日のプラン生成専任**（2026-04-24 新設・2026-04-30 plan.json 統合）。広域スキャン（副業・Claude新機能・Brain市場・X公式19アカウント）→ プラットフォーム適合度判定 → 3ネタ帳に振り分け投入 → **today/plan.json 書き出し**。`plan` サブコマンドで軽量プラン更新のみも可能。ユーザー手動投入モード（`add`）も対応
 - `/note-run` : note記事のみ生成。**noteネタ帳から候補取得** → 6項目スコアリング → 競合調査 → 記事生成 → 編集 → 最終稿出力
 - `/x-run` : 毎日実行で翌日の X 予約投稿を生成→承認→Typefully送信する自動パイプライン。日常 1〜4 本（朝/昼/夜前半/夜後半の目安・スキップ可）+ **Xネタ帳から引用RT候補取得** + 告知差し替え（pending_cta）+ バズ宣伝リプ
 - `/brain-run` : noteで作った記事を Brain 向けに拡張リライト（ルートA/B）または **Brainネタ帳から先行企画ネタ取得**（ルートC・`from-idea`）。販売ドラフト生成。投稿は手動

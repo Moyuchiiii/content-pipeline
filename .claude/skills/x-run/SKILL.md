@@ -171,9 +171,33 @@ Social Sets (3 found):
 - `today/note/` の最新記事（あれば実録ネタとして参照）
 - `x/published/` 過去7日分（重複ネタ防止）
 
+### Phase 1.5: today/plan.json 確認（2026-04-30 新設・必須）
+
+**Phase 1 完了直後に必ず実行**: `today/plan.json` の存在と当日付チェック。
+
+1. `today/plan.json` を読み込む
+2. ファイルが**存在しない** OR `plan.date` ≠ 今日 の場合:
+   ```
+   ⚠️ 今日のコンテンツプランがありません（today/plan.json が無い or 当日付けでない）
+   → /source-run plan を先に実行することを強く推奨します
+   → 続行する場合は「strict-skip-plan」と入力してください
+   ```
+   ユーザーが続行指示を出さなければ処理中断。
+3. 当日付の plan.json があれば:
+   - `plan.x.execute === false` の場合: 「今日は X スキップ予定（理由: {skip_reason}）。それでも生成しますか？」と確認 → ユーザーが「生成する」と答えなければ処理中断
+   - `plan.x.execute === true` の場合: `plan.x.slots` を Phase 3 の時間スロット決定で**採用候補のベース**として使う
+
+採用方針:
+- 各 slot（morning / noon / night1 / night2）の `topic_id` が指定されていれば、対応する Notionレコードを優先採用してネタ生成
+- `topic_id: "pending_cta:auto"` の slot は Phase 2.5 の pending_cta スキャン結果で埋める（既存ロジック踏襲）
+- `topic_id: null` の slot は Phase 3 の従来ロジック（フォールバック）でネタ選定
+- ユーザーが特定 slot を上書きしたい場合は対話で確認
+
 ### Phase 2: Xネタ帳から引用RT候補取得（旧公式アカウント監視を source-run に移管・2026-04-24 改訂）
 
 公式アカウント監視は `/source-run` に統合済み。x-run はXネタ帳から「引用RT候補」を読み込む。
+
+**plan.json 連携（2026-04-30 追加）**: `plan.x.slots.night2.topic_id` または他 slot で引用RT候補が指定されている場合は、Phase 2 のネタ取得をスキップして plan の指定 topic を採用する。
 
 #### Step 1: Xネタ帳の「未使用 + 引用RT候補」レコード取得
 
