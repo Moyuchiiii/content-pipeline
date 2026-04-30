@@ -630,11 +630,45 @@ WebFetch: https://docs.anthropic.com/en/release-notes/overview
 
 ### 保存形式
 
-**Step 1: 前回の `today/note/` を正規フォルダに移動**
-`today/note/` フォルダの中身を確認し、ファイルがあれば正規フォルダへ移動してから新規保存を行う：
-- `today/note/*.html` → `note/drafts/{記事タイプ}/`
-- `today/note/*.md` → `note/drafts/{記事タイプ}/`
-（ファイル名のタイプ部分から記事タイプを判定。`today/note/` が空ならスキップ）
+**🚨 Step 1: 前回の `today/note/` を正規フォルダに移動（絶対ルール・2026-04-30 強化）**
+
+**実行タイミング: Step 2（今回ファイルの Write）より必ず前。「Write してから整理」ではなく「整理してから Write」の順で動く。**
+
+過去事故（2026-04-30 lessons.md 参照）: Phase 8 Step 1 を飛ばして、4/29 の前回ファイルが today/note/ に残ったまま今日のファイルを Write してユーザーから「ごちゃついてる」と指摘された。再発防止のため絶対ルール化。
+
+#### 整理手順
+
+1. `ls today/note/` で既存ファイル一覧を取得
+2. **当日付（YYYY-MM-DD = 今日）でないファイル**を全件抽出（draft / delivery 問わず）
+3. ファイル名のタイプ部分（`sokuho` / `jituroku` / `knowhow`）から記事タイプを判定
+4. `note/drafts/{記事タイプ}/` に**同名ファイルが存在するか**確認
+   - 存在 + 内容一致 → today/ から削除（重複排除）
+   - 存在 + 内容相違 → 警告して上書き判断をユーザーに確認
+   - 不在 → `mv` で移動
+5. 移動後 `today/note/` には今日付ファイルだけが残ること
+6. その後で Step 2（今回ファイルの保存）に進む
+
+#### 実装例
+
+```bash
+# 整理（Phase 8 Step 1 必須）
+TODAY=$(date +%Y%m%d)
+for f in today/note/*.{html,md}; do
+  [ -f "$f" ] || continue
+  basename=$(basename "$f")
+  # 当日ファイルはスキップ
+  if [[ "$basename" == *"$TODAY"* ]]; then continue; fi
+  # 記事タイプ判定（ファイル名から推測 or 中身の type: フィールドから）
+  TYPE=$(extract_type "$basename")  # sokuho / jituroku / knowhow
+  TARGET="note/drafts/$TYPE/$basename"
+  if [ -f "$TARGET" ]; then
+    # 内容一致なら削除、相違なら警告
+    if diff -q "$f" "$TARGET" >/dev/null; then rm "$f"; else echo "⚠️ $f vs $TARGET 内容相違"; fi
+  else
+    mv "$f" "$TARGET"
+  fi
+done
+```
 
 **Step 2: 今回のファイルを2箇所に保存**
 

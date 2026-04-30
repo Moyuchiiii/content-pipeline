@@ -1,0 +1,17 @@
+{
+  "type": "note",
+  "created_at": "2026-04-30T16:00:00+09:00",
+  "source": "today/note/draft_20260430_gemini-files-claude-vs-gemini.html",
+  "title": "Geminiが Docs もスライドも全部吐ける時代になって、Claude派のわたしが副業の使い分けを書き直した話",
+  "url": null,
+  "atomic_ideas": [
+    "4月29日リリース・Gemini チャット内で Docs/Sheets/Slides/PDF/DOCX/XLSX/CSV/LaTeX/TXT/RTF/MD を直接生成可能に。Pro含む全ユーザーにグローバル展開",
+    "Claude派視点で実測。提案資料案件の所要時間が 45分→20分（本文15分→Claude / 資料化 30分→Gemini 5分）",
+    "Claude vs Gemini どちらか選ぶではなく、本文設計はClaude・ファイル化はGemini の2層分担が結論。Workspace案件持ってる副業者は Gemini 必触"
+  ],
+  "image_path": "today/note/thumbnail_20260430_gemini-files.png",
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}
