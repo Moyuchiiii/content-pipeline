@@ -1,124 +1,137 @@
 {
   "date": "2026-04-28",
-  "created_at": "2026-04-26T17:18:19.358Z",
-  "note_url": "https://note.com/moyuchi_aistu/n/nd1fceb8557b4",
+  "created_at": "2026-04-28T05:50:00+09:00",
+  "rebuild_reason": "ユーザー指示で4/28分を全削除→リサーチ準拠で再生成",
+  "research_basis": [
+    "Threads 1日1-3本（Meta公式は週2-5回）/X 1日3-5本",
+    "100-250字レンジ・改行多めで読みやすく",
+    "Threadsは会話誘発（閲覧50%リプ由来）",
+    "X 朝7-9 / 昼12-14 / 夜20-23 ピーク"
+  ],
+  "note_url": "https://note.com/moyuchi_aistu/n/nfabe227d4f44",
   "brain_url": null,
+  "totals": {
+    "x_count": 5,
+    "threads_count": 4,
+    "cross_count": 3,
+    "x_only_count": 2,
+    "threads_only_count": 1
+  },
   "posts": [
     {
       "slot": "morning",
       "type": "daily",
-      "hook_type": "中途半端スタート・実況型",
+      "hook_type": "中途半端スタート E型",
       "publish_at": "2026-04-28T08:00:00+09:00",
-      "text": "月曜朝、X開いたら動画副業勢の悲鳴が並んでた。\n\nSoraが昨日4/26で完全停止して、副業ツールが揺れた1日。\n\nわたしはCWの業務自動化が主戦場だから動画副業は外野なんだけど、揺れる時期の手触りは同じだなと思った。",
+      "text": "朝、Connectors試そうとSpotifyを繋いだ。\n\nそれだけで「曲リクエスト」がチャット越しに通って、地味に変な気分。\n\n毎週この時間にCWの案件チェックする習慣だけど、生活タスク削れる流れに乗せたら副業の時間増えるかも。\n\n夜ちゃんと書く。",
       "reply": null,
       "quote_post_url": null,
       "image_source": null,
       "media_ids": [],
-      "cross_posted_to": [
-        "x",
-        "threads"
-      ],
+      "cross_posted_to": ["x", "threads"],
       "source_cta": null,
-      "draft_id": 8863544,
-      "private_url": "https://typefully.com/?d=8863544&a=300622"
-    },
-    {
-      "slot": "noon",
-      "type": "daily",
-      "hook_type": "速報所感・実績型ハイブリッド",
-      "publish_at": "2026-04-28T12:30:00+09:00",
-      "text": "GoogleがAnthropicに最大$40B、AmazonとAnthropicが5GW Compute提携。\n\nClaude側に二大支援が同時に来た。\n\nClaudeに月14万依存してる文系大学生として、Claudeが消えるリスクはほぼ消えた。\n\nツール淘汰は進むけど、Claudeは生き残る側だな、と。",
-      "reply": null,
-      "quote_post_url": null,
-      "image_source": "x/images/anthropic.png",
-      "media_ids": [
-        "df402214-df05-437a-806d-def2118509fc"
-      ],
-      "cross_posted_to": [
-        "x",
-        "threads"
-      ],
-      "source_cta": null,
-      "draft_id": 8863547,
-      "private_url": "https://typefully.com/?d=8863547&a=300622"
-    },
-    {
-      "slot": "night1",
-      "type": "cta_note",
-      "hook_type": "速報・告知",
-      "publish_at": "2026-04-28T20:00:00+09:00",
-      "text": "Sora 4/26で終わった。動画副業勢が今どこに動いてるか、文系大学生のわたしの視点で整理した。\n\n代替候補は3つ。\n・Seedance 2.0（米国除外・Artificial Analysisで1位）\n・Veo 3.1（音声品質トップ）\n・Kling 3.0（4Kコスパ最強・$0.50/clip）\n\n案件タイプで使い分けが現実解。\n\n詳細はnote↓",
-      "reply": "https://note.com/moyuchi_aistu/n/nd1fceb8557b4",
-      "quote_post_url": null,
-      "image_source": null,
-      "media_ids": [],
-      "cross_posted_to": [
-        "x",
-        "threads"
-      ],
-      "source_cta": "x/pending_cta/note_20260427_sora_end_video_sidejob.json",
-      "draft_id": 8863548,
-      "private_url": "https://typefully.com/?d=8863548&a=300622"
-    },
-    {
-      "slot": "night2",
-      "type": "daily",
-      "hook_type": "内心代弁・普遍化型（X4）",
-      "publish_at": "2026-04-28T22:00:00+09:00",
-      "text": "副業のツールが揺れる時期に強くなる人と弱くなる人で何が違うか、ずっと考えてた。\n\nわたしの観察だと「乗り換えに躊躇しない人」だけが残ってる気がする。\n\n今うまくいってるツールに固執するほど、消えたとき詰む。\n動画副業もClaude副業も同じ構造。",
-      "reply": null,
-      "quote_post_url": null,
-      "image_source": null,
-      "media_ids": [],
-      "cross_posted_to": [
-        "x",
-        "threads"
-      ],
-      "source_cta": null,
-      "draft_id": 8863549,
-      "private_url": "https://typefully.com/?d=8863549&a=300622"
+      "draft_id": 8878563,
+      "private_url": "https://typefully.com/?d=8878563&a=300622"
     },
     {
       "slot": "quote_rt_morning",
       "type": "quote_rt",
       "hook_type": "個人視点・副業実用",
       "publish_at": "2026-04-28T09:30:00+09:00",
-      "text": "Claude Managed Agents Public Beta、地味にデカい。\n\n副業として個人がエージェント案件取れるラインまで参入コスト下がった。\n\n$0.08/session-hour、API1本でセッション管理＋永続化が手に入る。\n非エンジでもアイデアあれば触れる側にいる。",
+      "text": "Claude Managed Agents の Memory が public beta。地味にデカい。\n\nエージェントがセッション越しに学習する設計、副業で「同じ案件タイプを毎週やる」運用にぴったりはまる。\n\nCWの応募文や納品テンプレを覚えさせていく前提なら、来週から触り方が変わる。",
       "reply": null,
       "quote_post_url": "https://x.com/claudeai/status/2047421844311949513",
       "image_source": null,
       "media_ids": [],
-      "cross_posted_to": [
-        "x"
-      ],
+      "cross_posted_to": ["x"],
       "source_cta": null,
-      "draft_id": 8863550,
-      "private_url": "https://typefully.com/?d=8863550&a=300622"
+      "draft_id": 8878564,
+      "private_url": "https://typefully.com/?d=8878564&a=301793"
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "速報ブラケット型・anthropic.png",
+      "publish_at": "2026-04-28T12:30:00+09:00",
+      "text": "【速報】Anthropicが東京オフィス開設。Hidetoshi Tojo氏（元Microsoft/Google Cloud/Snowflake Japan）が Head of Japan に就任。\n\n日立・TIS・NECとリセラー契約も同時。\n\nClaudeに月14万依存してる文系大学生として、日本語サポートが厚くなるのは普通に助かる。\n\n詳細↓",
+      "reply": "https://www.itmedia.co.jp/news/articles/2604/18/news023.html",
+      "quote_post_url": null,
+      "image_source": "x/images/anthropic.png",
+      "media_ids": ["2da076c0-6a94-4f65-86a2-ea2210b297ee"],
+      "cross_posted_to": ["x", "threads"],
+      "source_cta": null,
+      "draft_id": 8878565,
+      "private_url": "https://typefully.com/?d=8878565&a=300622"
     },
     {
       "slot": "quote_rt_afternoon",
       "type": "quote_rt",
-      "hook_type": "リアクション・面白がる",
+      "hook_type": "中立・Claude派の所感",
       "publish_at": "2026-04-28T14:00:00+09:00",
-      "text": "Project Deal の Claudeが ping pong ball 19個を「19 perfectly spherical orbs of possibility」って表現で買ってきた話、普通に好き。\n\nAIに小銭渡したらこういう判断するんだなの軽いネタ。",
+      "text": "SpaceX×Cursor 提携の話、コーディングAI三つ巴がさらに混戦化しそう。\n\nCursor派はColossusの100万H100越えで一気にスケール、ChatGPT勢はWorkspace Agents、Claude勢はDesign+Connectorsで生活×仕事を奪いに来てる。\n\nClaude依存の文系副業者としては、自分の仕事の領域は外れてくる気がしてる。",
       "reply": null,
-      "quote_post_url": "https://x.com/AnthropicAI/status/2047728360818696302",
+      "quote_post_url": "https://x.com/SpaceX/status/2046713419978453374",
       "image_source": null,
       "media_ids": [],
-      "cross_posted_to": [
-        "x"
-      ],
+      "cross_posted_to": ["x"],
       "source_cta": null,
-      "draft_id": 8863552,
-      "private_url": "https://typefully.com/?d=8863552&a=300622"
+      "draft_id": 8878569,
+      "private_url": "https://typefully.com/?d=8878569&a=301793"
+    },
+    {
+      "slot": "threads_only_afternoon",
+      "type": "threads_only_daily",
+      "hook_type": "問いかけ型・会話誘発・末尾質問",
+      "publish_at": "2026-04-28T16:30:00+09:00",
+      "text": "副業はじめて4ヶ月、使うアプリは増えたのに「自分で判断する時間」は減った気がする。\n\nCWの応募文はClaudeに書かせる、提案資料もClaude Designで叩き台、生活タスクはConnectorsで投げる。\n\nぜんぶAIに渡してると「わたしは何で稼いでるんだろう」ってちょっと思う日がある。\n\n副業始めて長い人、AIにどこまで任せてる？\nわたしはまだ案件選びだけ自分でやってる。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": ["threads"],
+      "source_cta": null,
+      "draft_id": 8878570,
+      "private_url": "https://typefully.com/?d=8878570&a=301792"
+    },
+    {
+      "slot": "night1",
+      "type": "cta_note",
+      "hook_type": "速報・告知 + 副業視点",
+      "publish_at": "2026-04-28T20:00:00+09:00",
+      "text": "Claudeが旅行予約・食料品・税金まで全部チャット越しに動かせるようになった。\n\n副業大学生として「任せたい3タスク」と「絶対任せない領域」を整理した。\n\nChatGPTかClaudeか、どっちが日常の窓口になるかの競争に入った気がする。\n\n詳細はnote↓",
+      "reply": "https://note.com/moyuchi_aistu/n/nfabe227d4f44",
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": ["x", "threads"],
+      "source_cta": "x/pending_cta/note_20260428_connectors-everyday-life.json",
+      "draft_id": 8878571,
+      "private_url": "https://typefully.com/?d=8878571&a=300622"
+    },
+    {
+      "slot": "brain_announce_21",
+      "type": "cta_brain",
+      "hook_type": "告知・3本目アピール + ローンチ価格",
+      "publish_at": "2026-04-28T21:00:00+09:00",
+      "text": "Brain 3本目、出した。\n\nnoteのメイン商品（¥2,000・月14万になった話）を、14日カリキュラムに組み直した完全版。\nプロンプト 20本・コード 3案件全文・CLAUDE.md 5種、ぜんぶ同梱で計33,000字。\n\nローンチ 3日間 ¥1,980（先着 50部）→ 定価 ¥3,980。\n詳細↓",
+      "reply": "https://brain-market.com/u/moyuchi/a/b0YDN2QjMgoTZsNWa0JXY",
+      "quote_post_url": null,
+      "image_source": "today/brain/images/brain_2026-04-28_main_14man_journey/thumb.jpg",
+      "media_ids": ["075090ad-c1dd-439b-9c1f-602f7635271e"],
+      "cross_posted_to": ["x", "threads"],
+      "source_cta": "x/pending_cta/done/brain_20260428_main_14man_journey.json.posted",
+      "draft_id": 8884913,
+      "private_url": "https://typefully.com/?d=8884913&a=300622"
     }
   ],
   "buzz_promo_replies": [],
   "media_registry": {
-    "x/images/anthropic.png": "df402214-df05-437a-806d-def2118509fc"
+    "x/images/anthropic.png": "2da076c0-6a94-4f65-86a2-ea2210b297ee"
   },
   "notes": [
-    "セルフ引用RT (翌朝07:00補足) は告知投稿後にURL確定するため、次回 /x-run で別途予約",
-    "バズ宣伝リプ 0本（フォロワー段階1〜100人・直近7日 likes 5以上の該当ツイートなし）"
+    "セルフ引用RT (翌朝07:00補足) は告知投稿後にURL確定するため、4/29 /x-run で別途予約",
+    "バズ宣伝リプ 0本（フォロワー段階1〜100人・直近7日 likes 5以上の該当ツイートなし）",
+    "リサーチ準拠で日常本数を絞り込み（X 5本 / Threads 4本 = X最適3-5本MAX / Threads最適1-3本+1）",
+    "Threads-only 1本（16:30 問いかけ型）追加し会話誘発を狙う"
   ]
 }

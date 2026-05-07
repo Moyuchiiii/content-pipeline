@@ -1,0 +1,127 @@
+<hr>
+<p style="text-align: center;"><b>AIが脆弱性スキャンする時代、副業の納品物ってどう変わると思いますか？</b></p>
+<hr>
+
+<p>5月1日の朝、X を開いたら @claudeai が <strong>Claude Security の public beta 開始</strong>を告知していた。21時間で 371万インプ、いいね1.8万、リポスト2,449。たぶん今日のAI界隈で一番動いてるツイート。</p>
+
+<p>ITmedia の速報によると、AI が自分でコードベースを丸ごとスキャンして脆弱性を見つけ、パッチまで提案するツールらしい。Opus 4.7 ベース。</p>
+
+<p>でも、わたしの Claude Pro $20/月の契約には来ない。</p>
+
+<p>これは Claude Enterprise 向け。</p>
+
+<h2>@claudeai の3連スレッドを読んで、まず思ったこと</h2>
+
+<p>21時間前の @claudeai 公式ツイート、見た？</p>
+
+<blockquote><b>Claude Security is now in public beta for Claude Enterprise customers.</b><br>Claude scans your codebase for vulnerabilities, validates each finding to cut false positives, and suggests patches you can review and approve.</blockquote>
+
+<p>ポイントは3つ。</p>
+
+<blockquote><b>スキャン</b><br>コードベース全体を Opus 4.7 が読む</blockquote>
+
+<blockquote><b>検証</b><br>誤検知を減らすために、見つけた issue を AI 自身が「本当に脆弱性か？」と再判定する</blockquote>
+
+<blockquote><b>パッチ提案</b><br>修正コードを書いてくる。レビューして承認するだけ</blockquote>
+
+<p>2月に research preview だった頃から、数百の組織が production code に当ててたらしい。そのフィードバックで scheduled scans / directory-level targeting / CSV・Markdown export / webhook 通知が追加された、と @claudeai 公式が書いてる。</p>
+
+<p>「AIがコードを書く側」から「AIがコードを点検する側」に回り始めた、ってことなんだよね。</p>
+
+<h2>@zento_ai の『年額80万＋従量で諭吉100万飛ぶ』ツッコミ</h2>
+
+<p>同じタイミングで X 流れてきた @zento_ai のツイート（27分前・558インプ）が面白かった。</p>
+
+<blockquote><b>Claude Securityは年額80万円のエンプラプランに加えて、その後の実装は従量課金で吹っ飛ぶので多分100万ぐらい諭吉さんが飛んでいく〜</b></blockquote>
+
+<p>そう、Enterprise 限定なんだよ。Claude Enterprise の年額が80万円規模で、Claude Security はそこから上乗せの従量課金、というツッコミ。</p>
+
+<p>諭吉100万、飛ぶ。</p>
+
+<p>個人で副業してる文系大学生のわたしには、<strong>シンプルに別の世界の話</strong>。</p>
+
+<h2>Claude Pro $20 のわたしには関係ない、けど</h2>
+
+<p>ここで一回考えたんだよね。「来ないんだから無視でいいや」で済むのかなって。</p>
+
+<p>結論、無視できなかった。理由は2つある。</p>
+
+<p>ひとつめ。</p>
+
+<p>これから「AIが書いた納品物にAIで脆弱性スキャンかける」が、エンプラ案件の標準になる流れだから。</p>
+
+<p>クラウドワークスのAI関連案件、5,832件あって、Web系・スクリプト系で「セキュリティ意識した実装」を案件詳細に書いてるクライアントがじわじわ増えてる気がする。法人クライアントが「AI使って作った成果物、ちゃんとチェックしてあるんだよね？」を求める時代に入ってきた、ってこと。</p>
+
+<p>ふたつめ。</p>
+
+<p>Anthropic 公式ブログ（4/30米国時間）には<strong>Team / Max プランにも「近いうちに」展開予定</strong>って書いてある。Pro プランへの展開はリリース文では明示されていない。</p>
+
+<p>つまり、Max ($100/月) で副業してる人にはたぶん半年〜1年で降りてくる。Pro $20 はまだ別ラインの可能性あり。</p>
+
+<h2>Anthropic、これで6本目のセキュリティ製品ライン</h2>
+
+<p>ちょっと並べてみた（俯瞰の整理用・本数は感覚値）。</p>
+
+<blockquote><b>Anthropic のセキュリティ系プロダクト群</b><br>Claude Security（コード脆弱性・5/1）<br>Claude Code Security（先行版・既存）<br>Claude Mythos Preview（高度なサイバー脆弱性検出・4/7発表）<br>Claude Cowork enterprise security features<br>Constitutional AI / Responsible Scaling Policy（モデル安全側）<br>Bug bounty / Red team プログラム</blockquote>
+
+<p>Anthropic、明確に「セキュリティ × エンプラ × AI」を主戦場の一つに据えてきた、ってのが流れとしてある。</p>
+
+<p>これは大手の OpenAI / Google が「マルチモーダル × エンタメ」「マルチモーダル × 検索」に振ってるのと、けっこう違うルート。</p>
+
+<hr>
+<p>ちなみに、わたしが Claude Code に依存しまくって副業の月収が¥0→¥14万まで来た作業ログは、メイン記事に全部書いた。「Claude が消えたら困る」を実感する瞬間がときどき来るから、Anthropic の長期戦略をちゃんと見ておくのは副業者にも価値あるかなと思う。</p>
+<p>▶ 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話（¥2,000 ／ 初月¥1,480・〜2026-05-14）</p>
+<p>https://note.com/moyuchi_aistu/n/na548ac967740</p>
+<hr>
+
+<h2>副業の納品物の品質保証、何が変わるか整理してみた</h2>
+
+<p>「Claude Security は個人には来ない」と頭ではわかってる。けど、この流れは副業者の現場にじわじわ効いてくる。</p>
+
+<p>現時点で予想してる変化は3つ。</p>
+
+<blockquote><b>Before</b><br>「動けばOK」「テスト通ってればOK」で納品できた小規模案件</blockquote>
+
+<blockquote><b>After</b><br>「AI で生成した部分にAIで再点検しました」が標準になる可能性</blockquote>
+
+<p>あなたが今クラウドワークスで請けてる案件、Claude Code でガッと書いてそのまま納品してませんか？</p>
+
+<p>わたしは正直、書いてた。</p>
+
+<p>Excel マクロ案件で「動作確認しました、納品します」って投げて終わり、みたいなフローが多かった。</p>
+
+<p>でもこれから「AIで生成したコード、AIで点検済み」を当たり前に求められる気がしてる。エンプラ向けに普及したものは、半年遅れで小規模案件にも基準が下りてくる。SEOがそうだったし、アクセシビリティもそうだった。</p>
+
+<h2>Team / Max への順次提供は『近いうちに』、Pro は明言なし</h2>
+
+<p>Anthropic 公式リリース文には<strong>「Access for Claude Team and Max customers is coming soon」</strong>と書いてある。一方で Pro プランへの提供時期は記載されていない。</p>
+
+<p>「Coming soon」が3ヶ月なのか半年なのかはわからない。けど、Pro プラン($20)に降りてくるかは現時点で明言ナシ。</p>
+
+<p>個人的な予想は、Max ($100/月) 止まり。Pro まで降ろすと「Anthropic がコードレビューSaaS化した」みたいになって、Anthropic の戦略上たぶん別商品ラインとして切り出してくる。</p>
+
+<p>つまり、わたし含む「Claude Pro $20 で副業してる勢」は、しばらく自分のチェックリストを Claude に通す運用で乗り切る必要がある。</p>
+
+<h2>同じ場所で詰まってる君へ、3つだけ置いていく</h2>
+
+<p>5月1日時点で Claude Pro $20 派の副業者ができることを、3つだけ整理して置いていく。</p>
+
+<p>1. Claude に「セキュリティレビュー観点で読んで」って投げる癖をつける。納品前の最終チェックに1往復だけ挟む</p>
+
+<p>2. クライアント案件で「AIで作ったコード」を渡すときは、自分で<strong>「OWASP Top 10 観点でレビューして」</strong>のプロンプト1個用意しておく</p>
+
+<p>3. Anthropic の Pro/Max プラン展開を月1で確認。降りてきたら速攻で副業フローに組み込む</p>
+
+<p>これだけで、Claude Security が降りてくる前の数ヶ月で、納品物の見え方は変わる。わたしが今日「諭吉100万」を遠目に眺めて<strong>ちょっと焦った</strong>あの時間は、これで君は飛ばせる。</p>
+
+<hr>
+<p>セキュリティの話を書いておいて何だけど、わたしが副業始めたばかりの頃は「動くコード書く」だけで精一杯だった。そこから2ヶ月で月14万に来た記録は、メイン記事に納品物の作り方含めて全部書いてある。</p>
+<p>▶ 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話（¥2,000 ／ 初月¥1,480・〜2026-05-14）</p>
+<p>https://note.com/moyuchi_aistu/n/na548ac967740</p>
+
+<h3>あわせて読みたい</h3>
+
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/n44459b1adb93">Google が Claude に最大$40B 投資した。Claude 依存してる文系大学生として、安心した理由を整理した</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n52c598f3a667">「Claude 賢くないな」を7週間自責してたら、自分のせいじゃなかった話</a></li>
+</ul>

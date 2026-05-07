@@ -1,0 +1,84 @@
+{
+  "date": "2026-04-25",
+  "created_at": "2026-04-24T07:32:58.084Z",
+  "note_url": null,
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "日常実況・等身大",
+      "publish_at": "2026-04-25T08:00:00+09:00",
+      "text": "朝起きて一番に Claude のチェックしてる、最近の習慣。\n\n寝てる間に走らせた作業の結果を見るだけなんだけど、\nこれやってから副業の時間の使い方ガラッと変わった。\n\n「働く時間を増やす」じゃなくて\n「寝てる時間にも進んでる」発想に切り替わるのが大きかった。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8840084,
+      "private_url": "https://typefully.com/?d=8840084&a=300622"
+    },
+    {
+      "slot": "quote_rt",
+      "type": "quote_rt",
+      "hook_type": "引用RT・観察評価",
+      "publish_at": "2026-04-25T09:30:00+09:00",
+      "text": "この計算式、ほんとにキレイにハマる。\n\nでも文系のわたしの場合、AIライターじゃなくて\n「業務自動化スクリプト」を選んだ方が単価高かった。\n\n1件¥15,000〜¥65,000、月4〜5件で月14万になった。\n\nどのジャンル選ぶかが、実は月10万到達までの一番の変数だと思う。",
+      "reply": null,
+      "source_url": "https://x.com/AI1033659848478/status/2047514351360409928",
+      "quote_post_url": "https://x.com/AI1033659848478/status/2047514351360409928",
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8840085,
+      "private_url": "https://typefully.com/?d=8840085&a=300622"
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "速報ブラケット",
+      "publish_at": "2026-04-25T12:30:00+09:00",
+      "text": "【速報】\nGPT-5.5 が出た。OpenAIが4/23に発表。\n\nベンチマークで Claude Opus 4.7 のコーディング・推論・数学を上回ったらしい。\n\n副業で ChatGPT Plus($20) 使ってる人的には、\n今日から使えるのが一番大事なポイント。\n\nClaude と ChatGPT、並行で手元に置いて使い分ける時代が続いてる。\n\n詳細↓",
+      "reply": "元情報はこちら↓\nhttps://x.com/OpenAI/status/2047376561205325845",
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": "x/images/openai.webp",
+      "media_ids": [
+        "9f8bd18d-1b91-4b97-af11-3a48a3c24c05"
+      ],
+      "draft_id": 8840086,
+      "private_url": "https://typefully.com/?d=8840086&a=300622"
+    },
+    {
+      "slot": "night1",
+      "type": "daily",
+      "hook_type": "数字報告",
+      "publish_at": "2026-04-25T20:00:00+09:00",
+      "text": "クラウドワークスのAI関連案件、2026年は5,832件超に急増してる。\n\n2年前のわたしはそもそも「AI案件」というカテゴリがあるのも知らなかった。\n\n「AIに関心はあるけど副業どこから始めたらいいかわからない」って人、\n参入が遅れるほど不利になる業界じゃないし、\n今から始めても遅いってことはないと思う。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8840087,
+      "private_url": "https://typefully.com/?d=8840087&a=300622"
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "内心代弁・等身大",
+      "publish_at": "2026-04-25T22:00:00+09:00",
+      "text": "副業4ヶ月目の気づき。\n\n月14万稼げるようになると、お金の心配が消えて、別の悩みが出てきた。\n\n・案件を選ぶ余裕ができて、逆に何を断るか迷う\n・やれることが増えて、やりたいこともないのに走り続ける\n・休むことに罪悪感が出てくる\n\n「稼げない悩み」と「稼げる悩み」は全然違う種類のやつだった。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8840088,
+      "private_url": "https://typefully.com/?d=8840088&a=300622"
+    }
+  ],
+  "quote_rts": [],
+  "buzz_promo_replies": [],
+  "media_registry": {
+    "openai_logo": "9f8bd18d-1b91-4b97-af11-3a48a3c24c05"
+  }
+}

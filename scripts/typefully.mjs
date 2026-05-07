@@ -240,6 +240,24 @@ export async function uploadMedia(filePath, target = 'cross') {
  *   - posts のいずれかが quote_post_url を持つ（引用RT）
  *   - target が 'threads-only' / 'x-only' のとき
  */
+/**
+ * ドラフトを削除する
+ * @param {number|string} draftId - 削除対象のドラフトID
+ * @param {'cross'|'x-only'|'threads-only'} target - 対象 Social Set
+ * @returns {Promise<boolean>} 成功時 true（HTTP 204）
+ */
+export async function deleteDraft(draftId, target = 'cross') {
+  const socialSetId = resolveSocialSetId(target);
+  if (!socialSetId) throw new Error(`Social Set ID not configured for target=${target}`);
+  const res = await fetch(`${BASE}/social-sets/${socialSetId}/drafts/${draftId}`, {
+    method: 'DELETE',
+    headers,
+  });
+  if (res.status === 204) return true;
+  const body = await res.text();
+  throw new Error(`DELETE failed ${res.status}: ${body}`);
+}
+
 export async function createDraft({
   posts,
   publishAt,
@@ -255,6 +273,19 @@ export async function createDraft({
     throw new Error('posts は非空配列が必要');
   }
   if (!publishAt) throw new Error('publishAt が必要');
+
+  // 過去時刻自動 push（2026-05-07 追加・"You can't schedule a draft in the past" 事故対策）
+  if (publishAt !== 'now' && publishAt !== 'next-free-slot') {
+    const scheduled = new Date(publishAt);
+    const minFuture = new Date(Date.now() + 30 * 60 * 1000);
+    if (!Number.isNaN(scheduled.getTime()) && scheduled.getTime() < minFuture.getTime()) {
+      const original = publishAt;
+      scheduled.setDate(scheduled.getDate() + 1);
+      const pad = (n) => String(n).padStart(2, '0');
+      publishAt = `${scheduled.getFullYear()}-${pad(scheduled.getMonth() + 1)}-${pad(scheduled.getDate())}T${pad(scheduled.getHours())}:${pad(scheduled.getMinutes())}:${pad(scheduled.getSeconds())}+09:00`;
+      console.warn(`⚠️ publishAt ${original} は現在時刻+30分より過去のため翌日同時刻 ${publishAt} に自動push`);
+    }
+  }
 
   const platforms = {};
 

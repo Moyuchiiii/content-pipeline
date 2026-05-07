@@ -277,13 +277,14 @@ Authorization: Bearer YOUR_API_KEY
 
 ---
 
-## Auto-RT / Auto-Plug / Thread Finisher
+## Auto-RT / Auto-Plug / Auto-DM / Thread Finisher
 
 - これらの機能は UI から設定する「アカウントデフォルト設定」として機能する
-- **v2 API のドラフト作成リクエストに `auto_rt` / `auto_plug` / `threadfinisher` 等のパラメータは確認できなかった**（ドキュメント未確認）
-- v1 Help Center には「Auto retweet」「Auto plug」は記載されているが、APIパラメータとして明示されている記述は見つからず
-- 実際の動作: アカウント設定で Auto-RT を有効にした状態でスケジュール投稿すると、設定に従って自動 RT が実行されると思われる（※推測）
-- 確認方法: `typefully.com/docs/api` の API Playground で実際のレスポンス構造を確認するのが確実
+- **v2 API の OpenAPI スキーマ（2026-04-23 確認）では、ドラフト作成リクエストに `auto_rt` / `auto_retweet_enabled` / `auto_plug` / `auto_plug_enabled` / `auto_dm` / `threadfinisher` 等のパラメータは存在しない**
+- v2 API のドラフト作成で許可されているトップレベルフィールドは `platforms` / `draft_title` / `scratchpad_text` / `tags` / `share` / `publish_at` のみ。プラットフォーム内は `enabled` / `posts` / `settings`、Post内は `text` / `media_ids` / `quote_post_url`
+- 対応方針: **Typefully UI でアカウントデフォルト設定として ON にしておけば、API経由で作成したドラフトにも適用されるはず**（実機確認推奨）
+- 投稿ごとに閾値や文言を変える運用は API では不可。全投稿共通のAuto-Plug文なら UI 一括設定で実用的
+- 代替: セルフリプを完全自前で実装する場合、本体投稿の 6時間後などに `createDraft` でリプ投稿を予約すればOK（閾値判定なしで必ず発火）
 
 ---
 
@@ -600,7 +601,7 @@ print(json.dumps(result, indent=2, ensure_ascii=False))
 |------|------|
 | API 利用は何プランから？ | ドキュメント未確認。実機確認推奨 |
 | 具体的なレート制限（req/min 等） | ドキュメント未確認 |
-| `auto_rt` / `auto_plug` API パラメータ | v2 のリクエストボディには確認できず。UI 設定で制御する可能性あり |
+| `auto_rt` / `auto_plug` / `auto_dm` API パラメータ | **v2 OpenAPIスキーマに存在しない（2026-04-23確認）**。UI アカウント設定でのみ制御可能 |
 | Thread Finisher API パラメータ | ドキュメント未確認 |
 | Webhook v2 の設定方法 | ドキュメント未確認 |
 | アナリティクスの詳細パラメータ | エンドポイントは確認済みだが、レスポンス構造の詳細は未確認 |

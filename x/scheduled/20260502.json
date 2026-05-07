@@ -1,0 +1,92 @@
+{
+  "date": "2026-05-02",
+  "created_at": "2026-05-01T15:01:47.052Z",
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "感嘆スタート・型B",
+      "publish_at": "2026-05-02T08:00:00+09:00",
+      "text": "びっくりした。Word の Copilot 編集機能で Anthropic Claude が選べるようになる、5月中旬から。\n\nMicrosoft 4/30 発表。文書作成・推敲案件で GPT と Claude を切り替えられる時代に入る。\n\nCW の Word 案件、しばらくこれで遊べそう。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": "x/images/claude.png",
+      "media_ids": [
+        "1e2736f8-0edc-4933-a9ca-5c5821afe74e"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3538795a-75fd-81c9-87b1-dd9b217ae26b",
+      "auto_rt_recommended": false,
+      "draft_id": 8926933,
+      "private_url": null
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "速報所感・体言止め・型A",
+      "publish_at": "2026-05-02T12:30:00+09:00",
+      "text": "Claude Security が public beta になった。Opus 4.7 でコードベースをまるごとスキャンして脆弱性を見つけ、パッチも書いてくれる。\n\nただし Claude Enterprise 限定。@zento_ai の試算だと「年額80万＋従量課金で諭吉100万飛ぶ」。\n\n副業 Pro $20 派のわたしは、シンプルに別の世界の話だった。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": "x/images/claude.png",
+      "media_ids": [
+        "1e2736f8-0edc-4933-a9ca-5c5821afe74e"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3538795a-75fd-813e-a623-c5beb1da91f0",
+      "auto_rt_recommended": false,
+      "draft_id": 8926934,
+      "private_url": null
+    },
+    {
+      "slot": "night1",
+      "type": "cta_note",
+      "hook_type": "数字フック告知",
+      "publish_at": "2026-05-02T20:00:00+09:00",
+      "text": "@claudeai が昨日 Claude Security の public beta を出した。コード脆弱性をAIが点検する時代になった、けど個人 Pro 契約には来ない。\n\n「諭吉100万飛ぶ」エンプラの話を、副業大学生として遠目に眺めて整理した。\n\n副業者の納品物の品質保証、半年後どう変わるか。\n\n詳細はnote↓",
+      "reply": "https://note.com/moyuchi_aistu/n/n314d7d21e49b",
+      "quote_post_url": null,
+      "image_source": "x/images/claude.png",
+      "media_ids": [
+        "1e2736f8-0edc-4933-a9ca-5c5821afe74e"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": "x/pending_cta/note_20260501_claude-security-side-job-view.json",
+      "notion_xneta_id": null,
+      "auto_rt_recommended": true,
+      "draft_id": 8926935,
+      "private_url": null
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "問いかけ・自分の立場先出し型X1・型A体言止め",
+      "publish_at": "2026-05-02T22:00:00+09:00",
+      "text": "GPT-5.5 + Codex の /goal で AI を days 単位で走らせ続けられる時代になってる。Claude Code /loop 派のわたしは今日初めて知って結構衝撃だった。\n\nX 見てると「Claude から GPT-5.5+Codex に移った」勢も増えてきてる。\n\n両方使うのが現実解になっていきそう、と思ってて、、",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3538795a-75fd-811f-875d-d93672f4eaed",
+      "auto_rt_recommended": false,
+      "draft_id": 8926936,
+      "private_url": null
+    }
+  ]
+}

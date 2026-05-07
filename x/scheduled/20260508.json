@@ -1,0 +1,32 @@
+{
+  "date": "2026-05-08",
+  "created_at": "2026-05-07T12:45:00+09:00",
+  "plan_source": "today/plan.json (date=2026-05-07・morning slot を翌日 push)",
+  "posts": [
+    {
+      "type": "quote_rt",
+      "slot": "morning",
+      "source_account": "claudeai",
+      "source_url": "https://x.com/claudeai/status/2052060691893227611",
+      "topic_id": "3598795a-75fd-81dc-bbb4-c0b71f6f2e00",
+      "publish_at": "2026-05-08T07:00:00+09:00",
+      "text": "SpaceX提携でClaude Code 2倍。\n\nPro月3000円で副業してる文系大学生としては正直大きい。\n5時間制限が10時間相当に。\nPro/Maxのピーク制限も解除。\nOpus API も considerably 引き上げ。\n\n副業の段取り、組み直すレベル。",
+      "cross_posted_to": ["x"],
+      "draft_id": 8999767,
+      "private_url": "https://typefully.com/?d=8999767&a=301793",
+      "social_set": "x-only",
+      "note": "@claudeai SpaceX-Anthropic提携・1718万閲覧の超メガバズ・rate limit 2x for Pro/Max/Team/seat-based Enterprise"
+    },
+    {
+      "type": "cta_self_quote",
+      "slot": "morning_late",
+      "source_cta": "5/7 20:00 note告知の翌朝補足",
+      "publish_at": "2026-05-08T09:00:00+09:00",
+      "text": "昨日のSpaceX×Anthropicの話、結局いちばん変わるのは「夜帯のClaude Codeが普通に動くこと」だと思う。\n\n授業・バイト後の22-25時、副業大学生にとってここが本番。\nピーク制限解除はPro/Max対象だけど、24時間使える前提に変わった意味が大きい。\n\n副業の段取り、1週間で組み直してる。",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 8999768,
+      "private_url": "https://typefully.com/?d=8999768&a=300622",
+      "social_set": "cross"
+    }
+  ]
+}

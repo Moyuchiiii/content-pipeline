@@ -511,7 +511,7 @@ Phase 0 でキャッシュした各ネタ帳の `未使用` レコードと、Ph
   "properties": {
     "ネタ名": "<タイトル>",
     "ステータス": "未使用",
-    "ネタタイプ": "リアクション / フック案 / Before/After / 数字報告 / 日常 / 速報所感 / 問いかけ / 引用RT候補 のいずれか",
+    "ネタタイプ": "リアクション / フック案 / Before/After / 数字報告 / 日常 / 速報所感 / 問いかけ / 引用RT候補 / ストーリー型 のいずれか",
     "発案元": "source-run",
     "優先度": "高 / 中 / 低",
     "date:発見日:start": "YYYY-MM-DD",
@@ -747,7 +747,9 @@ printf '{"embeds":[{"title":"✅ source-run 完了","color":5763719,"fields":[{"
 1. Brainネタ帳（`collection://1198a5a1-6955-41da-928b-ad79f07d2a1b`）の `ステータス=未使用 + target_fit=high` レコード取得
 2. published-history.md の Brain 直近投稿日を確認
 3. `execute` 判定:
-   - **連投ガード**: 直近3日以内に Brain 投稿があれば `execute: false`、`skip_reason: "Brain直近投稿{N日前}・販売動向観察期間"`
+   - **連投ガード強化（2026-05-07・SNSマーケ業界調査反映）**: 以下のいずれかに該当すれば `execute: false`:
+     - 直近 **14日以内** に Brain 投稿（旧3日 → 業界調査結果で14日に延長）→ `skip_reason: "Brain直近投稿{N日前}・販売動向観察期間（14日ガード）"`
+     - **OR** note メイン商品の累計販売数 < **50件** [エージェント調査済 sasaki-search 業界目安] → `skip_reason: "note販売実績50件未満・Brain追加投入は信頼蓄積後"`
    - high target_fit ネタあり かつ 連投ガード解除 → `execute: true`
    - high なし、medium のみ → `execute: false`、`alternatives` に medium を残す
 4. デフォルトは保守的に `execute: false`（Brain は週0〜1本想定）

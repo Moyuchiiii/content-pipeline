@@ -1,143 +1,219 @@
+// 4/30 X+Threads 予約投稿バッチ（再送信版・Connectors告知メイン）
+// 旧版（4/29朝に自動生成・なぜか稼げない人記事告知）を全削除して再構築
+
 import { uploadMedia, createDraft } from './typefully.mjs';
-import { writeFileSync, mkdirSync, renameSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync, existsSync, renameSync } from 'fs';
+import path from 'path';
 
 const DATE = '2026-04-30';
+const NOTE_URL = 'https://note.com/moyuchi_aistu/n/nc32f948903a4';
+const QUOTE_PUSH_URL = 'https://x.com/ClaudeDevs/status/2049154855143649315';
 
-const posts = [
-  {
-    slot: 'morning',
-    type: 'daily',
-    hook_type: '会話感スタート・短文実況',
-    publish_at: `${DATE}T08:00:00+09:00`,
-    text: `4ヶ月前のわたし、AIに案件説明コピペして「応募文書いて」って投げてた。\n\n3週間応募ゼロ。\n\n今日 note にしたけど、変わったのは1点だけ。\n「書いて」じゃなくて「クライアントの困りごとを5つ並べて」から始めるようになっただけ。\n\n丸投げ → 道具派、ここの切替が全部だった。`,
-    cross_post: true,
-    draftTitle: '20260430_morning_marubuke_to_dougu',
-  },
-  {
-    slot: 'noon',
-    type: 'daily',
-    hook_type: '速報ブラケット・副業視点',
-    publish_at: `${DATE}T12:30:00+09:00`,
-    text: `【速報】NEC が日本企業初の Anthropic グローバルパートナーになった。\n\nClaude Cowork で金融/製造/政府向け業界特化AI を共同開発するらしい。\n\n副業で Claude にどっぷり依存してる文系大学生として\n「日本企業に Claude が本格普及したら案件単価上がりそう」と勝手に楽観してる。\n\n詳細↓`,
-    reply_text: `https://www.anthropic.com/news/anthropic-nec`,
-    image_path: 'x/images/anthropic.png',
-    cross_post: true,
-    draftTitle: '20260430_noon_nec_anthropic',
-    notion_xneta_id: '3508795a-75fd-816f-abf4-fced1603b3de',
-  },
-  {
-    slot: 'night1',
-    type: 'cta_note',
-    hook_type: '速報・告知・数字フック',
-    publish_at: `${DATE}T20:00:00+09:00`,
-    text: `AI副業に挑戦する人の9割が3ヶ月以内に挫折するらしい。\n\n原因はツールじゃなかった。\n「AIを丸投げ先で使うか・道具で使うか」の1点だけ。\n\nわたしは前者で3週間応募ゼロ→後者に切替で1週間で3スカウト→月14万まで来た。\n\nその境界線を全部書いた。\n\n詳細はnote↓`,
-    reply_text: `https://note.com/moyuchi_aistu/n/n51272e7fff1a`,
-    cross_post: true,
-    draftTitle: '20260430_night1_marubuke_cta',
-    source_cta: 'x/pending_cta/note_20260429_ai-fukugyo-marubuke.json',
-    auto_rt_recommended: true,
-  },
-  {
-    slot: 'night2',
-    type: 'daily',
-    hook_type: '問いかけ代替X1・自分の立場先出し',
-    publish_at: `${DATE}T22:00:00+09:00`,
-    text: `副業で AI 使うとき\n「全部AIにやらせる派」と「AIに整理させて自分で書き直す派」がいる。\n\nわたしは後者。\n\n前者は最初の1ヶ月だけ楽。3ヶ月目で消える。\n後者は最初しんどいけど積み上がる。\n\n差は「AIに任せる範囲を決めれるかどうか」。\nそれだけだった。`,
-    cross_post: true,
-    draftTitle: '20260430_night2_2極化_問いかけ',
-    notion_xneta_id: '3508795a-75fd-8121-9f25-dedf309d0617',
-  },
-];
-
-const results = [];
-const mediaRegistry = {};
-
-for (const p of posts) {
-  let mediaIds = [];
-  if (p.image_path) {
-    if (!mediaRegistry[p.image_path]) {
-      console.log(`▶ ${p.image_path} アップロード中...`);
-      mediaRegistry[p.image_path] = await uploadMedia(p.image_path);
-      console.log(`  → media_id: ${mediaRegistry[p.image_path]}`);
-    }
-    mediaIds = [mediaRegistry[p.image_path]];
-  }
-
-  const draftPosts = [{ text: p.text, media_ids: mediaIds }];
-
-  if (p.quote_post_url) {
-    draftPosts[0].quote_post_url = p.quote_post_url;
-  }
-  if (p.reply_text) {
-    draftPosts.push({ text: p.reply_text, media_ids: [] });
-  }
-
-  console.log(`▶ ${p.slot} ドラフト作成中...`);
-  const draft = await createDraft({
-    posts: draftPosts,
-    publishAt: p.publish_at,
-    draftTitle: p.draftTitle,
-    crossPostToThreads: p.cross_post,
-  });
-
-  results.push({
-    slot: p.slot,
-    type: p.type,
-    hook_type: p.hook_type,
-    publish_at: p.publish_at,
-    text: p.text,
-    reply: p.reply_text || null,
-    quote_post_url: p.quote_post_url || null,
-    image_source: p.image_path || null,
-    media_ids: mediaIds,
-    cross_posted_to: p.cross_post && !p.quote_post_url ? ['x', 'threads'] : ['x'],
-    source_cta: p.source_cta || null,
-    notion_xneta_id: p.notion_xneta_id || null,
-    auto_rt_recommended: p.auto_rt_recommended || false,
-    draft_id: draft.id,
-    private_url: draft.private_url || null,
-  });
-  console.log(`  → draft_id: ${draft.id}`);
+// メディアアップロード（夜前半告知用・サムネ画像があれば）
+const thumbPath = 'today/note/draft_20260429_claude-creative-connectors_thumb.png';
+let thumbMediaId = null;
+if (existsSync(thumbPath)) {
+  console.log(`▶ ${thumbPath} アップロード中...`);
+  const r = await uploadMedia(thumbPath, 'cross');
+  thumbMediaId = r.media_id;
+  console.log(`  → media_id: ${thumbMediaId}`);
 }
 
-const logData = {
+const posts = [];
+
+// ① 朝08:00 — 日常実況（短文・クロスポスト）
+console.log('▶ morning ドラフト作成中...');
+const morningText = `朝、Connectors の記事公開した翌日。
+
+note 投稿したらコメント来るかなって張り付いてしまうの、まだ抜けない。
+Adobe コネクタ、4ヶ月後の自分が当たり前に使ってると思う。`;
+
+const morning = await createDraft({
+  posts: [{ text: morningText }],
+  publishAt: `${DATE}T08:00:00+09:00`,
+  draftTitle: `4/30 朝 日常実況 (クロスポスト)`,
+  target: 'cross',
+  crossPostToThreads: true,
+});
+console.log(`  → draft_id: ${morning.id}`);
+posts.push({
+  slot: 'morning',
+  type: 'daily',
+  hook_type: '中途半端スタート・短文実況',
+  publish_at: `${DATE}T08:00:00+09:00`,
+  text: morningText,
+  reply: null,
+  quote_post_url: null,
+  image_source: null,
+  media_ids: [],
+  cross_posted_to: ['x', 'threads'],
+  source_cta: null,
+  notion_xneta_id: null,
+  auto_rt_recommended: false,
+  draft_id: morning.id,
+  private_url: morning.share_url,
+});
+
+// ② 昼12:30 — 引用RT @ClaudeDevs Push Notifications（X限定）
+console.log('▶ noon ドラフト作成中（引用RT・X限定）...');
+const noonText = `これが地味に効くやつ。
+
+Claude に長時間タスク投げて、ターミナル張り付き続ける時間が
+副業4ヶ月目でもまだ消えてなかった。
+
+Push 通知が来るなら、寝てる間に走らせた仕事を朝確認して、
+出かけながら修正指示を投げる、が普通になる。
+
+ベースのフローが変わる側。`;
+
+const noon = await createDraft({
+  posts: [{ text: noonText, quote_post_url: QUOTE_PUSH_URL }],
+  publishAt: `${DATE}T12:30:00+09:00`,
+  draftTitle: `4/30 昼 引用RT @ClaudeDevs Push Notifications (X限定)`,
+  target: 'x-only',
+});
+console.log(`  → draft_id: ${noon.id}`);
+posts.push({
+  slot: 'noon',
+  type: 'quote_rt',
+  hook_type: '体言止めスタート・型A',
+  publish_at: `${DATE}T12:30:00+09:00`,
+  text: noonText,
+  reply: null,
+  quote_post_url: QUOTE_PUSH_URL,
+  image_source: null,
+  media_ids: [],
+  cross_posted_to: ['x'],
+  source_cta: null,
+  notion_xneta_id: '3518795a-75fd-81e7-8ce5-de406907f5b6',
+  auto_rt_recommended: false,
+  draft_id: noon.id,
+  private_url: noon.share_url,
+});
+
+// ③ 夜前半20:00 — note告知 Connectors（クロスポスト・本体+リプ・Auto-RT推奨ON）
+console.log('▶ night1 ドラフト作成中（note告知・クロスポスト）...');
+const night1Text = `Adobe・Canva・Blender が、全部 Claude から動かせるようになった。
+
+副業のクリエイティブ系案件のフローが
+今日から少しずつ書き換わる側だと思う。
+
+「9連携で何が変わって、何は変わらないか」を
+文系大学生の副業視点で全部整理した。
+
+詳細はnote↓`;
+
+const night1Posts = [{ text: night1Text }];
+if (thumbMediaId) {
+  night1Posts[0].media_ids = [thumbMediaId];
+}
+night1Posts.push({ text: NOTE_URL });
+
+const night1 = await createDraft({
+  posts: night1Posts,
+  publishAt: `${DATE}T20:00:00+09:00`,
+  draftTitle: `4/30 夜前半 note告知 Connectors (クロスポスト・Auto-RT推奨ON)`,
+  target: 'cross',
+  crossPostToThreads: true,
+});
+console.log(`  → draft_id: ${night1.id}`);
+posts.push({
+  slot: 'night1',
+  type: 'cta_note',
+  hook_type: '体言止めスタート・告知',
+  publish_at: `${DATE}T20:00:00+09:00`,
+  text: night1Text,
+  reply: NOTE_URL,
+  quote_post_url: null,
+  image_source: thumbMediaId ? thumbPath : null,
+  media_ids: thumbMediaId ? [thumbMediaId] : [],
+  cross_posted_to: ['x', 'threads'],
+  source_cta: 'x/pending_cta/note_20260429_claude-creative-connectors.json',
+  notion_xneta_id: null,
+  auto_rt_recommended: true,
+  draft_id: night1.id,
+  private_url: night1.share_url,
+});
+
+// ④ 夜後半22:00 — 問いかけ代替 単価二極化（クロスポスト）
+console.log('▶ night2 ドラフト作成中...');
+const night2Text = `クリエイティブ副業の単価、これから二極化する。
+
+Claude が動かせるようになった範囲（バナー量産・スライドリサイズ）は崩壊側。
+判断と指示が要る範囲（ブランドガイド込み・複合納品）は上昇側。
+
+わたしは後者に振る。手作業の側で消耗するより、判断料で稼ぐ側に座っとく。`;
+
+const night2 = await createDraft({
+  posts: [{ text: night2Text }],
+  publishAt: `${DATE}T22:00:00+09:00`,
+  draftTitle: `4/30 夜後半 問いかけ代替 単価二極化 (クロスポスト)`,
+  target: 'cross',
+  crossPostToThreads: true,
+});
+console.log(`  → draft_id: ${night2.id}`);
+posts.push({
+  slot: 'night2',
+  type: 'daily',
+  hook_type: 'テーゼ先出し・X1型問いかけ代替',
+  publish_at: `${DATE}T22:00:00+09:00`,
+  text: night2Text,
+  reply: null,
+  quote_post_url: null,
+  image_source: null,
+  media_ids: [],
+  cross_posted_to: ['x', 'threads'],
+  source_cta: null,
+  notion_xneta_id: null,
+  auto_rt_recommended: false,
+  draft_id: night2.id,
+  private_url: night2.share_url,
+});
+
+// scheduled JSON 上書き
+const scheduledData = {
   date: DATE,
   created_at: new Date().toISOString(),
-  note_url: 'https://note.com/moyuchi_aistu/n/n51272e7fff1a',
+  note_url: NOTE_URL,
   brain_url: null,
-  posts: results,
+  posts,
   buzz_promo_replies: [],
-  quote_rts: [],
-  media_registry: mediaRegistry,
+  quote_rts: [
+    {
+      slot: 'noon',
+      source_url: QUOTE_PUSH_URL,
+      source_account: 'ClaudeDevs',
+      draft_id: noon.id,
+    }
+  ],
+  media_registry: thumbMediaId ? { [thumbPath]: thumbMediaId } : {},
   notes: [
-    'セルフ引用RT (翌朝07:00補足) は告知投稿後にURL確定するため、次回 /x-run で別途予約',
+    '旧版（4/29朝自動生成）のドラフト 8897829-8897832 を削除して再構築',
+    'メインは Connectors 記事 (nc32f948903a4) 告知に差し替え',
+    '昼は @ClaudeDevs Push Notifications 引用RT（X限定）',
     'バズ宣伝リプ 0本（フォロワー段階1〜100人・直近7日 likes 5以上の該当ツイートなし）',
-    '引用RT 0本（source-run 系統D/E スキップで X 公式新鮮URL未取得）',
-    'pending_cta note_20260429_ai-fukugyo-marubuke.json は送信成功後に done/ 移動',
+    'Threads-only スキップ（TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID 確認未取・運用負荷考慮）',
+    'セルフ引用RT (5/1 朝07:00補足) は告知投稿後にURL確定するため次回 /x-run で別途予約',
   ],
 };
 
 mkdirSync('x/scheduled', { recursive: true });
-writeFileSync(
-  `x/scheduled/${DATE.replace(/-/g, '')}.json`,
-  JSON.stringify(logData, null, 2)
-);
+writeFileSync(`x/scheduled/${DATE}.json`, JSON.stringify(scheduledData, null, 2));
 
-// pending_cta done/ 移動
-const ctaSrc = 'x/pending_cta/note_20260429_ai-fukugyo-marubuke.json';
-const ctaDst = 'x/pending_cta/done/note_20260429_ai-fukugyo-marubuke.json.posted';
+// pending_cta 移動
+const ctaSrc = 'x/pending_cta/note_20260429_claude-creative-connectors.json';
+const ctaDst = 'x/pending_cta/done/note_20260429_claude-creative-connectors.json.posted';
 if (existsSync(ctaSrc)) {
   mkdirSync('x/pending_cta/done', { recursive: true });
   renameSync(ctaSrc, ctaDst);
-  console.log(`▶ pending_cta 移動完了: ${ctaSrc} → ${ctaDst}`);
+  console.log(`▶ pending_cta 移動: ${path.basename(ctaSrc)} → done/`);
 }
 
-console.log(`\n✅ 全${results.length}件予約完了`);
-console.log(`記録: x/scheduled/${DATE.replace(/-/g, '')}.json`);
-console.log(`\n内訳:`);
-const xCount = results.length;
-const threadsCount = results.filter(r => r.cross_posted_to.includes('threads')).length;
-console.log(`  X: ${xCount} / Threads: ${threadsCount}`);
-results.forEach((r) =>
-  console.log(`  - ${r.slot} [${r.type}] ${r.cross_posted_to.join('+')} draft_id=${r.draft_id}${r.auto_rt_recommended ? ' 🔥AUTO-RT推奨' : ''}`)
-);
+console.log('\n✅ 全4件再予約完了');
+console.log(`記録: x/scheduled/${DATE}.json`);
+console.log('\n内訳:');
+console.log(`  X: 4 / Threads: 3 (引用RTは X 限定)`);
+posts.forEach(p => {
+  const flag = p.auto_rt_recommended ? ' 🔥AUTO-RT推奨' : '';
+  console.log(`  - ${p.slot} [${p.type}] ${p.cross_posted_to.join('+')} draft_id=${p.draft_id}${flag}`);
+});

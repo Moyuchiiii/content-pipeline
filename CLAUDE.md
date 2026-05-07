@@ -159,7 +159,9 @@ content-pipeline を使う日は**必ず `/source-run plan` を起点として�
 - `/x-run` : 毎日実行で翌日の X 予約投稿を生成→承認→Typefully送信する自動パイプライン。日常 1〜4 本（朝/昼/夜前半/夜後半の目安・スキップ可）+ **Xネタ帳から引用RT候補取得** + 告知差し替え（pending_cta）+ バズ宣伝リプ
 - `/brain-run` : noteで作った記事を Brain 向けに拡張リライト（ルートA/B）または **Brainネタ帳から先行企画ネタ取得**（ルートC・`from-idea`）。販売ドラフト生成。投稿は手動
 - `/content-engine` : 1ネタ→複数フォーマット展開。note草稿からXスレッド・単発ツイート・カードテキストを一括生成
-- `/collect-stats` : X Analytics・noteダッシュボードをブラウザ操作でデータ収集。x-performance.md / note-performance.md / Notion を自動更新
+- `/collect-stats` : X Analytics・noteダッシュボードをブラウザ操作でデータ収集。x-performance.md / note-performance.md / Notion を自動更新。`/collect-stats judgment` で **5/14 メイン商品セール終了判定モード**（A/A+C/C ルート自動判定・2026-05-07 追加）
+- `/hub-update` : note ハブページ（「わたしについて + 全記事一覧 + メイン商品/Brain CTA」）生成。月1回 or 新記事5本毎に更新。X→note→Brain 内部循環の起点（2026-05-07 新設）
+- `/note-run practice` : ¥500 練習記事専用モード（2026-05-07 追加・〜100フォロワー段階向け業界ベスト解）
 - `/content` : ~~全自動パイプライン~~（非推奨: コンテキスト枯渇で品質低下のため）
 
 ## Notion連携

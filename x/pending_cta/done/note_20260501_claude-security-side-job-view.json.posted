@@ -1,0 +1,18 @@
+{
+  "type": "note",
+  "created_at": "2026-05-01T12:30:00+09:00",
+  "source": "today/note/draft_20260501_claude-security-side-job-view.html",
+  "title": "Claude Security 5/1 public beta｜エンプラ専用の防御ツール、個人副業者は年額80万円を遠目に眺める話",
+  "url": "https://note.com/moyuchi_aistu/n/n314d7d21e49b",
+  "atomic_ideas": [
+    "Claude Security が4/30(米国時間) public beta 開始。@claudeai 公式 21時間で371万imp/1.8万like/2.4kRT のメガバズ。Opus 4.7 がコードベース全体スキャンして脆弱性検出→検証→パッチ提案。でも個人 Pro $20 には来ない、Enterprise 専用",
+    "@zento_ai の558impツッコミ『年額80万エンプラプランに従量課金で諭吉100万飛ぶ』。Claude Pro $20 派の副業者として、シンプルに別の世界の話だった",
+    "Anthropic 公式は『Team / Max coming soon』。Pro プラン($20)への展開は明示なし。Pro 派の副業者は『AIに自分でセキュリティレビューさせる』運用で当面しのぐ",
+    "AIが書いた納品物にAIで再点検する流れがエンプラから始まった。CW法人案件にもいずれ降りてくる。納品前に Claude に『OWASP Top 10 観点でレビューして』を投げる癖を今からつける"
+  ],
+  "image_path": null,
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

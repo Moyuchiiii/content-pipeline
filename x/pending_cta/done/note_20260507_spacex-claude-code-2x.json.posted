@@ -1,0 +1,17 @@
+{
+  "type": "note",
+  "created_at": "2026-05-07T08:00:00+09:00",
+  "source": "today/note/draft_20260507_spacex-claude-code-2x.html",
+  "title": "SpaceX提携でClaude Codeのレートが2倍になった日｜Pro月3000円のわたしが変わったこと",
+  "url": "https://note.com/moyuchi_aistu/n/ne6b1e71946c7",
+  "atomic_ideas": [
+    "Anthropic-SpaceX計算インフラ提携で Claude Code 5時間制限が2倍に。Pro/Max/Team/seat-based Enterprise 全部対象。Pro 月20ドル据え置きで実質容量2倍。値上げじゃなく増量",
+    "Pro/Max のピークアワー制限も撤廃。日本時間の夜帯で絞られていたレートが解消。副業大学生にとって22-25時のがっつり作業が普通に回るようになった",
+    "「定額終わる」って警戒する声(zephel01等)もあるが、わたしはむしろ Anthropic の供給側余裕に注目。Amazon 5GW・Google 5GW・Microsoft+NVIDIA $30B Azure・Fluidstack $50B・SpaceX 300MW 22万GPU 全部公表済み"
+  ],
+  "image_path": "today/note/{サムネ手動アップロード後}",
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

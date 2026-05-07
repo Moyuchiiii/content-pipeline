@@ -1,0 +1,124 @@
+{
+  "date": "2026-04-28",
+  "created_at": "2026-04-26T17:18:19.358Z",
+  "note_url": "https://note.com/moyuchi_aistu/n/nd1fceb8557b4",
+  "brain_url": null,
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "中途半端スタート・実況型",
+      "publish_at": "2026-04-28T08:00:00+09:00",
+      "text": "月曜朝、X開いたら動画副業勢の悲鳴が並んでた。\n\nSoraが昨日4/26で完全停止して、副業ツールが揺れた1日。\n\nわたしはCWの業務自動化が主戦場だから動画副業は外野なんだけど、揺れる時期の手触りは同じだなと思った。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "draft_id": 8863544,
+      "private_url": "https://typefully.com/?d=8863544&a=300622"
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "速報所感・実績型ハイブリッド",
+      "publish_at": "2026-04-28T12:30:00+09:00",
+      "text": "GoogleがAnthropicに最大$40B、AmazonとAnthropicが5GW Compute提携。\n\nClaude側に二大支援が同時に来た。\n\nClaudeに月14万依存してる文系大学生として、Claudeが消えるリスクはほぼ消えた。\n\nツール淘汰は進むけど、Claudeは生き残る側だな、と。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": "x/images/anthropic.png",
+      "media_ids": [
+        "df402214-df05-437a-806d-def2118509fc"
+      ],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "draft_id": 8863547,
+      "private_url": "https://typefully.com/?d=8863547&a=300622"
+    },
+    {
+      "slot": "night1",
+      "type": "cta_note",
+      "hook_type": "速報・告知",
+      "publish_at": "2026-04-28T20:00:00+09:00",
+      "text": "Sora 4/26で終わった。動画副業勢が今どこに動いてるか、文系大学生のわたしの視点で整理した。\n\n代替候補は3つ。\n・Seedance 2.0（米国除外・Artificial Analysisで1位）\n・Veo 3.1（音声品質トップ）\n・Kling 3.0（4Kコスパ最強・$0.50/clip）\n\n案件タイプで使い分けが現実解。\n\n詳細はnote↓",
+      "reply": "https://note.com/moyuchi_aistu/n/nd1fceb8557b4",
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": "x/pending_cta/note_20260427_sora_end_video_sidejob.json",
+      "draft_id": 8863548,
+      "private_url": "https://typefully.com/?d=8863548&a=300622"
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "内心代弁・普遍化型（X4）",
+      "publish_at": "2026-04-28T22:00:00+09:00",
+      "text": "副業のツールが揺れる時期に強くなる人と弱くなる人で何が違うか、ずっと考えてた。\n\nわたしの観察だと「乗り換えに躊躇しない人」だけが残ってる気がする。\n\n今うまくいってるツールに固執するほど、消えたとき詰む。\n動画副業もClaude副業も同じ構造。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "draft_id": 8863549,
+      "private_url": "https://typefully.com/?d=8863549&a=300622"
+    },
+    {
+      "slot": "quote_rt_morning",
+      "type": "quote_rt",
+      "hook_type": "個人視点・副業実用",
+      "publish_at": "2026-04-28T09:30:00+09:00",
+      "text": "Claude Managed Agents Public Beta、地味にデカい。\n\n副業として個人がエージェント案件取れるラインまで参入コスト下がった。\n\n$0.08/session-hour、API1本でセッション管理＋永続化が手に入る。\n非エンジでもアイデアあれば触れる側にいる。",
+      "reply": null,
+      "quote_post_url": "https://x.com/claudeai/status/2047421844311949513",
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x"
+      ],
+      "source_cta": null,
+      "draft_id": 8863550,
+      "private_url": "https://typefully.com/?d=8863550&a=300622"
+    },
+    {
+      "slot": "quote_rt_afternoon",
+      "type": "quote_rt",
+      "hook_type": "リアクション・面白がる",
+      "publish_at": "2026-04-28T14:00:00+09:00",
+      "text": "Project Deal の Claudeが ping pong ball 19個を「19 perfectly spherical orbs of possibility」って表現で買ってきた話、普通に好き。\n\nAIに小銭渡したらこういう判断するんだなの軽いネタ。",
+      "reply": null,
+      "quote_post_url": "https://x.com/AnthropicAI/status/2047728360818696302",
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x"
+      ],
+      "source_cta": null,
+      "draft_id": 8863552,
+      "private_url": "https://typefully.com/?d=8863552&a=300622"
+    }
+  ],
+  "buzz_promo_replies": [],
+  "media_registry": {
+    "x/images/anthropic.png": "df402214-df05-437a-806d-def2118509fc"
+  },
+  "notes": [
+    "セルフ引用RT (翌朝07:00補足) は告知投稿後にURL確定するため、次回 /x-run で別途予約",
+    "バズ宣伝リプ 0本（フォロワー段階1〜100人・直近7日 likes 5以上の該当ツイートなし）"
+  ]
+}

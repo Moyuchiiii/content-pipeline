@@ -1,0 +1,19 @@
+{
+  "type": "note",
+  "created_at": "2026-05-02T19:00:00+09:00",
+  "source": "today/note/draft_20260502_aisi-gpt55-mythos-cyber.html",
+  "title": "Mythos 68.6%、GPT-5.5 71.4%｜英政府の数字をClaude派副業者が読み解いた話",
+  "url": "https://note.com/moyuchi_aistu/n/n4767a10fdd98",
+  "atomic_ideas": [
+    "英政府AISIが2026-04-30公開した評価で、GPT-5.5(71.4%)がClaude Mythos Preview(68.6%)を超えた。ただし誤差バーを入れると順位重なる範囲。",
+    "「The Last Ones」32-step企業ネットワーク攻撃シミュレーションを、GPT-5.5は2/10、Mythos Previewは3/10で完走。人間専門家想定20時間。",
+    "GPT-5.5は rust_vm リバースエンジニアリング課題を10分22秒・$1.73(約240円)で解いた。人間想定12時間。72倍速。",
+    "Mythos Preview は一般公開されない。Project Glasswing 業界コンソーシアム参加企業のみ防御目的で利用可能。Pro/Max契約では触れない。",
+    "副業のわたしの Pro 契約には直接関係ない世界の話。CW案件で求められる能力（データ入力・Excel・WebUI・応募文）は別軸。"
+  ],
+  "image_path": null,
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

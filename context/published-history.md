@@ -10,6 +10,14 @@
 
 ## 📝 note 投稿済み（直近30日・新しい順）
 
+### 2026-05 公開分
+
+| 公開日 | タイトル | URL | タイプ | 価格 | 主張・キーフレーズ |
+|---|---|---|---|---|---|
+| 2026-05-07 | SpaceX提携でClaude Codeのレートが2倍になった日｜Pro月3000円のわたしが変わったこと | https://note.com/moyuchi_aistu/n/ne6b1e71946c7 | 速報 | ¥0 | Anthropic-SpaceX 5/6米国時間 計算インフラ提携 / Claude Code 5h rate limit 2x for Pro/Max/Team/seat-based Enterprise / Peak hours制限解除 for Pro/Max / Opus API rate limit「considerably」引き上げ / SpaceX Colossus 1: 300+ MW・220,000+ NVIDIA GPU・1ヶ月以内 / Anthropic他インフラ契約 Amazon 5GW・Google 5GW・Microsoft+NVIDIA $30B Azure・Fluidstack $50B / 中盤+末尾CTAメイン商品 / Pro月20ドル副業派視点で「増量」中立解釈 / zephel01「$6→$13」警戒派引用 / 先輩フレーム3アクション「3つだけ置いていく」/ Phase6スコア96/100 / plan.json primary_topic採用第三号 / 公式anthropic.com/news/higher-limits-spacex WebFetch検証済 |
+| 2026-05-02 | Mythos 68.6%、GPT-5.5 71.4%｜英政府の数字をClaude派副業者が読み解いた話 | https://note.com/moyuchi_aistu/n/n4767a10fdd98 | 速報 | ¥0 | 英国AISI 2026-04-30公開公式評価・GPT-5.5 71.4%(±8.0%) > Claude Mythos Preview 68.6%(±8.7%) > GPT-5.4 52.4% > Opus 4.7 48.6% / 「The Last Ones」32-step企業ネットワーク攻撃シミュレーション GPT-5.5 2/10完走・Mythos Preview 3/10完走（人間専門家想定20時間）/ rust_vm リバースエンジニアリング課題 GPT-5.5 10分22秒・$1.73で解決（人間12時間想定・72倍速）/ Universal jailbreak 6時間 expert red-teaming で発見 / Mythos Preview 一般公開予定なし・Project Glasswing 業界コンソーシアムのみ・Amazon Bedrock Gated Research Preview / 副業 Pro 契約は別世界・5/1 Claude Security記事と同じ構造 / 中盤+末尾CTAメイン商品 / 「Claude派 vs OpenAI派」二項対立に揺れない / Phase6スコア 92/100 / plan.json primary_topic採用第二号 / AISI公式 https://www.aisi.gov.uk/blog/our-evaluation-of-openais-gpt-5-5-cyber-capabilities WebFetch検証済 |
+| 2026-05-01 | Claude Security 5/1 public beta｜エンプラ専用の防御ツール、個人副業者は年額80万円を遠目に眺める話 | https://note.com/moyuchi_aistu/n/n314d7d21e49b | 速報 | ¥0 | Anthropic Claude Security 4/30米国時間 public beta（claude.com公式 + ITmedia 2605/01 検証済）/ Enterprise 公開・Team/Max coming soon・Pro 明示なし / Opus 4.7 ベース / vulnerability scan + multi-stage validation + patch generation + scheduled scans + CSV/Markdown export + webhook / @claudeai 21h前 371万imp/1.8万like/2.4kRT 超メガバズ / @AnthropicAI 1M会話分析 103万imp / @zento_ai 558imp『年額80万＋従量課金で諭吉100万飛ぶ』ツッコミ引用 / Anthropic 6本目セキュリティ製品ラインの俯瞰整理 / 副業Pro $20派は『AIに自分でセキュリティレビューさせる』運用継続 / 中盤+末尾CTA双方メイン商品 / Phase6スコア 93/100 |
+
 ### 2026-04 公開分
 
 | 公開日 | タイトル | URL | タイプ | 価格 | 主張・キーフレーズ |

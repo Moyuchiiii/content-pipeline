@@ -1,0 +1,70 @@
+{
+  "date": "2026-04-24",
+  "created_at": "2026-04-23T18:45:00+09:00",
+  "note_url": "https://note.com/moyuchi_aistu/n/n8b80ca3a70e2",
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "型D 数字先行ファクト",
+      "publish_at": "2026-04-24T08:00:00+09:00",
+      "text": "納品9件で★5が8件、平均★4.9。\n\nCWで★4ついた時に作った「納品前の4チェック」が、そのまま継続依頼に繋がってた。\n\n・隠れ要件3つ先回り\n・発注者目線でClaudeレビュー\n・おまけ改善1つ\n・動作確認1分動画\n\n応募してないのに、仕事が勝手に2件来た。\n\n手順はnote↓",
+      "reply": "記事はこちら↓\nhttps://note.com/moyuchi_aistu/n/n8b80ca3a70e2",
+      "media_ids": [],
+      "draft_id": 8828746,
+      "private_url": "https://typefully.com/?d=8828746&a=300622"
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "型A 体言止めテーゼ",
+      "publish_at": "2026-04-24T12:30:00+09:00",
+      "text": "AI副業で稼ぐ人と稼げない人の差は「AIが使えるかどうか」じゃない気がしてる。\n\n「どの案件で稼ぐかを先に決めてるか」で分かれてる。\n\n→ ツール先行は永遠に始まらない\n→ 案件先行は2週間で動く\n\n自分も2ヶ月前はツール側から入って詰んでた。\n\n詳細はnote↓",
+      "reply": "記事はこちら↓\nhttps://note.com/moyuchi_aistu/n/n8b80ca3a70e2",
+      "media_ids": ["86cb0c02-8856-475b-9580-57dc65992117"],
+      "image_source": "x/images/claude.png",
+      "draft_id": 8828747,
+      "private_url": "https://typefully.com/?d=8828747&a=300622"
+    },
+    {
+      "slot": "night1",
+      "type": "cta_note",
+      "hook_type": "型C 実録ブラケット",
+      "source_cta": "x/pending_cta/done/note_20260423_hoshi5_hyoka.json.posted",
+      "publish_at": "2026-04-24T20:00:00+09:00",
+      "text": "【実録】\n副業2ヶ月目、★4を1回もらって応募が通らなくなった。\n\n納品前に4つのチェックを固定化したら、納品9件で★5が8件になった。\n\n応募も営業もしてないのに、\n同じクライアントから2件続けて依頼が来た。\n\n¥18,000 + ¥45,000。\n\nCW★5を取り続ける納品前ルーチン、記事にまとめた↓",
+      "reply": "記事はこちら↓\nhttps://note.com/moyuchi_aistu/n/n8b80ca3a70e2",
+      "media_ids": ["7e3bcebb-40c8-45af-9284-cb0b09467159"],
+      "image_source": "x/images/20260424_note_hoshi5.png",
+      "draft_id": 8828748,
+      "private_url": "https://typefully.com/?d=8828748&a=300622"
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "型X4 内心代弁",
+      "publish_at": "2026-04-24T22:00:00+09:00",
+      "text": "CWで3週間応募して0件受注の時期、\n「文系にAI副業は無理なのかも」って諦めかけた。\n\n実際は違った。\n応募文の書き方を変えただけで、翌週に1件受注した。\n\n文系でも、エンジニアじゃなくても、\n動き出しの一歩目で詰まってるだけのことが多い。\n\n「無理」と「やり方がわからない」は別物だった。",
+      "media_ids": [],
+      "draft_id": 8828749,
+      "private_url": "https://typefully.com/?d=8828749&a=300622"
+    },
+    {
+      "slot": "next_morning",
+      "type": "cta_follow_up",
+      "hook_type": "告知補足・別角度",
+      "publish_at": "2026-04-25T07:00:00+09:00",
+      "text": "昨日書いたnote記事、\n「CWで★5を取り続けたら継続依頼が勝手に来た話」\n\n一番伝えたかったのは\n\n★5評価は「納品物の品質」じゃなくて\n「納品の前の4ステップ」で決まるということ。\n\n期待通りじゃ★5は取れない。\n期待を少しでも超えるで初めて取れる。\n\n続き↓",
+      "reply": "記事はこちら↓\nhttps://note.com/moyuchi_aistu/n/n8b80ca3a70e2",
+      "media_ids": [],
+      "draft_id": 8828750,
+      "private_url": "https://typefully.com/?d=8828750&a=300622"
+    }
+  ],
+  "quote_rts": [],
+  "buzz_promo_replies": [],
+  "media_registry": {
+    "claude_logo": "86cb0c02-8856-475b-9580-57dc65992117",
+    "note_thumb_hoshi5": "7e3bcebb-40c8-45af-9284-cb0b09467159"
+  }
+}

@@ -1,0 +1,138 @@
+<h2>Day3 Before/After 実測値の内訳と再現手順</h2>
+
+<p>Day3 のゴールは、「自分の案件のどこの時間が Claude Design で削れるか、工程単位で特定できる状態」。</p>
+
+<p>所要時間 25 分。</p>
+
+<h3>提案資料案件 — 3 時間 → 15 分</h3>
+
+<p>自分が実際に受けた「AI 副業コンサルのピッチデック作成」案件の記録。</p>
+
+<blockquote>
+<b>Before（Claude Design 前）</b><br>
+要件ヒアリング 30 分 / PowerPoint で構成組み立て 60 分 / デザイン調整 60 分 / 修正対応 30 分 / 合計 3 時間
+</blockquote>
+
+<blockquote>
+<b>After（Claude Design 後）</b><br>
+要件ヒアリング 5 分（事前テンプレ化） / プロンプト投入 3 分 / プレビュー確認 2 分 / 修正指示 3 分 / Canva 微調整 2 分 / 合計 15 分
+</blockquote>
+
+<p><strong>1/12 の時間に圧縮された。</strong></p>
+
+<p>消えた時間は、ほぼ「手作業でレイアウトを組む時間」。Claude Design が代わりにやってくれてる。</p>
+
+<h3>LP 叩き台 — 6 時間 → 45 分</h3>
+
+<p>LP 制作の「方向性確認用の叩き台」を作る工程。</p>
+
+<blockquote>
+<b>Before</b><br>
+ワイヤー設計 90 分 / デザインカンプ 180 分 / HTML 実装 90 分 / 合計 6 時間
+</blockquote>
+
+<blockquote>
+<b>After</b><br>
+プロンプト投入 5 分 / プレビュー確認 5 分 / 日本語 CSS 追記 5 分 / 修正指示 10 分 / HTML ダウンロード 2 分 / クライアント確認送付 3 分 / 修正反映 15 分 / 合計 45 分
+</blockquote>
+
+<p><strong>約 1/8 に圧縮。</strong></p>
+
+<p>叩き台フェーズなので、本制作は別。でも、クライアント確認の「方向性 OK / NG」を先に取る工程が爆速になるので、本制作での作り直しがほぼ発生しなくなる。</p>
+
+<h3>営業資料 — 1 時間 → 8 分</h3>
+
+<p>CW 応募時の添付用・業種別自己紹介スライド 1 本の作業記録。</p>
+
+<blockquote>
+<b>Before</b><br>
+Canva でテンプレ選び 10 分 / 文章差し込み 30 分 / 写真・アイコン配置 15 分 / PDF 出力 5 分 / 合計 1 時間
+</blockquote>
+
+<blockquote>
+<b>After</b><br>
+プロンプト 13 を業種にカスタマイズ 3 分 / 生成 30 秒 / 微調整指示 2 分 / PDF ダウンロード 30 秒 / Canva で最後だけブランド調整 2 分 / 合計 8 分
+</blockquote>
+
+<p><strong>約 1/7 に圧縮。</strong></p>
+
+<p>これの効果が大きいのは、「業種別に 5 種作って応募時に使い分ける」運用ができること。5 種作っても 40 分で終わる。</p>
+
+<h3>どこの時間が削れてるか、1 行で</h3>
+
+<p><strong>共通してるのは、「手でレイアウトを組む時間」が全部ゼロになっていること。</strong></p>
+
+<p>逆に削れないのは、要件ヒアリング・修正指示のブレインワーク・最後の Canva 仕上げ。このあたりは人間の判断が要る工程なので、時間は短縮できない。</p>
+
+<p>だから、Claude Design に向いてる案件は「レイアウトを組む工程が時間の大半を占める案件」。提案資料・LP 叩き台・営業資料がまさにそう。</p>
+
+<h2>Day4 日本語 LP の崩れを 6 行 CSS で直す</h2>
+
+<p>Day4 のゴールは、「日本語 LP を Claude Design で作ったときに起きる 5 パターンの崩れを、プロンプト末尾に 6 行を足すだけで全部直せる状態」。</p>
+
+<p>所要時間 20 分。</p>
+
+<h3>なぜ崩れるのか</h3>
+
+<p>Claude Design の生成結果は、デフォルトで英語向けの改行ルールが入ってる。具体的には CSS の以下が有効になってる。</p>
+
+<p>・ word-break: auto-phrase（英語の単語単位で折り返す）</p>
+<p>・ text-wrap: pretty（英語のタイポグラフィ最適化）</p>
+
+<p>これが日本語だと全部逆効果になる。</p>
+
+<p>結果として、日本語 LP では以下の 5 パターンの崩れが起きる。</p>
+
+<p>・ 1 文字だけ次の行に追い出される（ぶら下がり）</p>
+<p>・ 英数字が途中で改行される（例: Claude Co↵de）</p>
+<p>・ ボタンの文字が折り返して見切れる</p>
+<p>・ バッジが他要素と重なる</p>
+<p>・ 句読点が行頭に来る（禁則処理違反）</p>
+
+<p><strong>でも、CSS を 6 行足すだけで全部直る。</strong></p>
+
+<h3>コピペで使える 6 行 CSS</h3>
+
+<pre><code>* {
+  word-break: keep-all;
+  line-break: strict;
+  text-wrap: wrap;
+  overflow-wrap: anywhere;
+}
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif; }
+@supports (word-break: auto-phrase) { * { word-break: auto-phrase; } }</code></pre>
+
+<p>この 6 行が何をしてるかを、1 行ずつ簡単に。</p>
+
+<p>・ word-break: keep-all — 単語の途中で改行しない</p>
+<p>・ line-break: strict — 日本語の禁則処理を厳格に適用</p>
+<p>・ text-wrap: wrap — 英語最適化の text-wrap: pretty を上書き</p>
+<p>・ overflow-wrap: anywhere — どうしても入らない英単語は強制折り返し</p>
+<p>・ font-family — 日本語に最適なゴシック指定</p>
+<p>・ @supports — 対応ブラウザだけ auto-phrase に戻す（@supports はブラウザ互換のための条件分岐）</p>
+
+<h3>プロンプトへの差し込み方</h3>
+
+<p>Claude Design のプロンプト末尾に、以下の 1 文を追加する。</p>
+
+<pre><code>日本語 LP なので、以下の CSS を &lt;style&gt; タグ内に必ず入れて。
+（上記 6 行をここに貼る）</code></pre>
+
+<p>これだけで、初回の生成から崩れない状態で出てくる。</p>
+
+<p>すでに生成済みの LP を直したい場合は、「この LP のスタイルシートに、以下の CSS を先頭に追加して」とチャットで指示すれば上書きされる。</p>
+
+<h3>再生成してみる</h3>
+
+<p>Day2 のプロンプト 8（SaaS LP）に、この 6 行を末尾に追加して送ってみてほしい。</p>
+
+<p>生成された LP を Export で .zip ダウンロードして、HTML をブラウザで開く。</p>
+
+<p>崩れゼロで表示されているはず。</p>
+
+<p>LP 制作案件を非エンジニア副業で受けるときの最大のボトルネックが、この日本語崩れだった。</p>
+
+<p><strong>それが 6 行で解決する。</strong></p>
+
+<p>Day4 はこれで終わり。</p>
+

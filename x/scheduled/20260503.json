@@ -1,0 +1,99 @@
+{
+  "date": "2026-05-03",
+  "created_at": "2026-05-02T18:40:00+09:00",
+  "x_run_executed_at": "2026-05-02T18:40:00+09:00",
+  "plan_source": "today/plan.json (date: 2026-05-02)",
+  "posts": [
+    {
+      "type": "daily",
+      "slot": "morning",
+      "publish_at": "2026-05-03T07:00:00+09:00",
+      "hook_type": "リアクション型",
+      "topic_id_notion": "3548795a-75fd-81c6-81e8-dcb4efcaef4c",
+      "title": "Gemini Notebooks モバイル対応",
+      "text": "Notebooks in Gemini、モバイルで動くようになってた。\n\n副業の調査案件、電車のスマホでソース突っ込んでおけるの普通に便利。\n帰ったら Claude で執筆だけやればいいから、夜の作業時間が30分くらい縮まりそう。\n\n「調査だけGemini、執筆はClaude」の使い分け、しばらく試してみる。",
+      "media_ids": ["79ca9fa5-b8cf-43a1-bc79-a9c555e235a9"],
+      "image_path": "x/images/gemini.png",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 8934982,
+      "private_url": "https://typefully.com/?d=8934982&a=300622",
+      "auto_rt_recommended": false
+    },
+    {
+      "type": "daily",
+      "slot": "noon",
+      "publish_at": "2026-05-03T12:30:00+09:00",
+      "hook_type": "速報所感型",
+      "topic_id_notion": "3548795a-75fd-81c4-b430-e046d0b86aad",
+      "title": "GPT-5.5 vs Claude Mythos AISI評価",
+      "text": "英政府AISI が GPT-5.5 と Claude Mythos のサイバー攻撃力を測ってた。\nGPT-5.5 71.4%、Mythos 68.6%。\n\n数字だけ見ると逆転に見えるけど、誤差バー入れたら順位重なる範囲。\nそもそも Mythos は一般公開されない。Pro 契約のわたしには関係ない世界だった。\n\n詳しくはnote↓",
+      "media_ids": ["45a4db50-7a45-4939-bbfd-4ee1edc21d3b"],
+      "image_path": "x/images/claude.png",
+      "reply_url": "https://note.com/moyuchi_aistu/n/n4767a10fdd98",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 8934983,
+      "private_url": "https://typefully.com/?d=8934983&a=300622",
+      "auto_rt_recommended": false
+    },
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "publish_at": "2026-05-03T20:00:00+09:00",
+      "source_cta": "x/pending_cta/done/note_20260502_aisi-gpt55-mythos.json.posted",
+      "title": "AISI記事告知（pending_cta から採用）",
+      "note_url": "https://note.com/moyuchi_aistu/n/n4767a10fdd98",
+      "text": "AIサイバー攻撃力で OpenAI が Anthropic を抜いた話、X に流れてきた。\n\n英政府AISI が公開した数字を読み解いたら\n副業 Pro 契約のわたしには「関係ない世界」だった理由が3つ見えた。\n\nGPT-5.5 vs Mythos、Claude派副業者として書きました。\n\n詳細はnote↓",
+      "reply_url": "https://note.com/moyuchi_aistu/n/n4767a10fdd98",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 8934984,
+      "private_url": "https://typefully.com/?d=8934984&a=300622",
+      "auto_rt_recommended": true,
+      "auto_rt_note": "noteメイン商品告知のため Auto-RT ON を Typefully UI で設定推奨（6h+25h+7d 3段階）"
+    },
+    {
+      "type": "daily",
+      "slot": "night2",
+      "publish_at": "2026-05-03T23:00:00+09:00",
+      "hook_type": "リアクション型",
+      "topic_id_notion": "3548795a-75fd-8120-b77e-c8111a6b3900",
+      "title": "Code with Claude conference 来週開催",
+      "text": "Code with Claude、来週開催だってさ。\nClaude公式の開発者カンファレンス、Live配信登録できるみたい。\n\n文系大学生のわたしは正直 Claude Code そんなに深く触ってないけど\n新機能発表は副業に直撃するからチェックする予定。\n\nエンジニアじゃなくても見て損はない気がする。",
+      "media_ids": ["7e2486f9-4826-49f5-8c61-b088e16b1308"],
+      "image_path": "x/images/claude_code.png",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 8934985,
+      "private_url": "https://typefully.com/?d=8934985&a=300622",
+      "auto_rt_recommended": false
+    },
+    {
+      "type": "quote_rt",
+      "slot": "morning_quote_rt",
+      "publish_at": "2026-05-03T09:30:00+09:00",
+      "hook_type": "共感型・1行テーゼ",
+      "source_account": "AnthropicAI",
+      "source_url": "https://x.com/AnthropicAI/status/2049927618397614466",
+      "source_summary": "Anthropic 1M会話分析・個人ガイダンス傾向 171万imp/3,175RT",
+      "topic_id_notion": "3548795a-75fd-8157-9971-ff456d0ebae8",
+      "text": "これすごい腹落ちした。\n\nわたしも就活相談を2週間悩んだあと Claude に渡したら5分で答えが出てきた経験あるから\n「Claudeを相談相手に使う」って Anthropic 公式が研究するくらい一般的なんだなって。\n\n副業の悩みも普通に Claude に聞いてる文系大学生として、こういう研究は嬉しい。",
+      "cross_posted_to": ["x"],
+      "draft_id": 8934986,
+      "private_url": "https://typefully.com/?d=8934986&a=301793",
+      "auto_rt_recommended": false
+    }
+  ],
+  "skipped": {
+    "buzz_promo_replies": {
+      "reason": "過去7日のバズツイートなし（Phase 2.7 detectBuzz 結果ゼロ）",
+      "next_check_after": "2026-05-03"
+    },
+    "self_quote_rt_next_morning": {
+      "reason": "night1 (5/3 20:00) 投稿後の tweet_id 確定が必要・自動予約は別フロー",
+      "manual_action": "5/3 21:00頃に night1 投稿URL確認 → 翌朝07:00の補足コメント引用RTを別途予約",
+      "draft_text_ready": "「昨日書いた AISI の話、補足。「Mythos 一般公開されない」って書いたけど Project Glasswing っていう業界コンソーシアムに参加してる企業だけ 防御目的で使えるらしい。Amazon Bedrock も Gated Research Preview 限定。副業者がアクセスできる日は当面来ないってことだった。」"
+    },
+    "threads_only": {
+      "reason": "Phase 2.8 自動判定: Threadsネタ帳に長文体験談ネタ未投入・運用初期で過剰投稿避ける",
+      "next_check_trigger": "/source-run でThreadsネタ帳に「長文体験談」or「連続投稿」ネタ投入後"
+    }
+  }
+}

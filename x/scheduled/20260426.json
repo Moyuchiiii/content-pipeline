@@ -1,0 +1,71 @@
+{
+  "date": "2026-04-26",
+  "created_at": "2026-04-25T17:35:15.397Z",
+  "note_url": null,
+  "brain_url": "https://brain-market.com/u/moyuchi/a/b1QTM2QjMgoTZsNWa0JXY",
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "中途半端スタート・等身大",
+      "publish_at": "2026-04-26T08:00:00+09:00",
+      "text": "日曜の朝、Brain の最終チェックしてる。\n\n明日朝9時に出すつもり。画像差し込んだり、レビュー特典の Notion 整えたり、地味な作業の方が時間かかった。\n\n文章を書くより周辺を整える方が大変なやつだった。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8855122,
+      "private_url": "https://typefully.com/?d=8855122&a=300622"
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "数字先行・体験談",
+      "publish_at": "2026-04-26T12:30:00+09:00",
+      "text": "クラウドワークス始めてから、応募文を Claude Code に書かせるようになって通過率が体感5倍くらいに上がった。\n\n最初は自分で1から書いてて、毎回30分かけて1件出して、ぜんぶスルーされてた。\n\n「自分で書く」が一番非効率だったやつ。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8855123,
+      "private_url": "https://typefully.com/?d=8855123&a=300622"
+    },
+    {
+      "slot": "night1",
+      "type": "daily",
+      "hook_type": "体言止めスタート・Brain ティーザー",
+      "publish_at": "2026-04-26T20:00:00+09:00",
+      "text": "明日朝9時、Brain で初めての商品を出します。\n\nClaude Code × クラウドワークス受注実録、3ジャンル分の作業ログ。\n\n応募0件で止まってた頃から、データ入力・Excel・Webアプリで案件取れるまでの記録を全部書いた。\n\n先着50部・¥100スタート（48時間限定）\n\n明日朝、改めて告知します。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": "x/images/samune.png",
+      "media_ids": [
+        "72bcaf5c-a80d-40c2-bfad-62c94e051aa9"
+      ],
+      "draft_id": 8855124,
+      "private_url": "https://typefully.com/?d=8855124&a=300622"
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "内心代弁・X4",
+      "publish_at": "2026-04-26T22:00:00+09:00",
+      "text": "副業始める前、AI とかわたしには関係ないと思ってた時期がある。\n\n文系だし、エンジニアの世界の話だと思ってた。\n\nその思い込みが崩れたのは「使ったら稼げた」一点だけだった。\n\n明日、Brain で初めての商品を出す。なんか変な気持ち。",
+      "reply": null,
+      "source_url": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "draft_id": 8855125,
+      "private_url": "https://typefully.com/?d=8855125&a=300622"
+    }
+  ],
+  "quote_rts": [],
+  "buzz_promo_replies": [],
+  "media_registry": {
+    "samune": "72bcaf5c-a80d-40c2-bfad-62c94e051aa9"
+  }
+}

@@ -63,7 +63,7 @@ TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID=...
 - `/x-run threads-only` モード追加
 - Threadsネタ帳から取得 → 500字フル活用の長文体験談生成
 - Threads専用 Social Set に予約送信
-- [WebSearch済] 参考: ここなさん月153万円事例（Threads主軸）
+- 参考事例: [WebSearch済 2026-04-28 5クエリ] Threads副業の平均月収約15万円・上位10%は100万円超（freelife-marke.com）。「ここなさん月153万円」は2026-04-28再検証で**確認できず**、近似事例として「おきるママ」（8桁売上・2ヶ月で40万、note.com/okirumama）が確認できた
 
 ### Phase 4: X専用モード新設（1時間）
 

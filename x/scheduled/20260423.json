@@ -1,0 +1,250 @@
+{
+  "date": "2026-04-23",
+  "created_at": "2026-04-22T20:41:34.316Z",
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "数字型",
+      "publish_at": "2026-04-23T08:00:00+09:00",
+      "text": "note記事を書くペース、今週だけで3本書けた。\n\n以前の1本に3時間かかってた作業が、今回は35分。\n構成60分→10分、本文90分→20分、仕上げ30分→5分で全工程短縮。\n\nClaude Codeに構成の叩き台を出させて\n文章の芯だけ自分で書く型に落としたのが効いた。\n\n文系大学生でも「書けない日」が消える、の実感がやっと来た。",
+      "draft": {
+        "id": 8824180,
+        "social_set_id": 300622,
+        "draft_id": 8824180,
+        "status": "scheduled",
+        "created_at": "2026-04-22T20:41:28.872Z",
+        "updated_at": "2026-04-22T20:41:28.871Z",
+        "scheduled_date": "2026-04-24T08:00:00+09:00",
+        "published_at": null,
+        "draft_title": "20260424_morning_before_after",
+        "tags": [],
+        "preview": "note記事を書くペース、今週だけで3本書けた。\n\n以前の1本に3時間かかってた作業が、今回は35分。\n構成60分→10分、本文90分→20分、仕上げ30分→5分で全工程短縮。\n\nClaude Codeに構成の叩き台を出させて\n文章の芯だけ自分で書く型に落としたのが効いた。\n\n文系大学生でも「書けない日」が消える、の実感がやっと来た。",
+        "share_url": null,
+        "private_url": "https://typefully.com/?d=8824180&a=300622",
+        "platforms": {
+          "x": {
+            "enabled": true,
+            "posts": [
+              {
+                "text": "note記事を書くペース、今週だけで3本書けた。\n\n以前の1本に3時間かかってた作業が、今回は35分。\n構成60分→10分、本文90分→20分、仕上げ30分→5分で全工程短縮。\n\nClaude Codeに構成の叩き台を出させて\n文章の芯だけ自分で書く型に落としたのが効いた。\n\n文系大学生でも「書けない日」が消える、の実感がやっと来た。",
+                "media_ids": [],
+                "quote_post_url": null
+              }
+            ],
+            "settings": null
+          },
+          "linkedin": {
+            "enabled": false
+          },
+          "mastodon": {
+            "enabled": false
+          },
+          "threads": {
+            "enabled": false
+          },
+          "bluesky": {
+            "enabled": false
+          }
+        },
+        "x_published_url": null,
+        "linkedin_published_url": null,
+        "mastodon_published_url": null,
+        "threads_published_url": null,
+        "bluesky_published_url": null,
+        "x_post_published_at": null,
+        "linkedin_post_published_at": null,
+        "mastodon_post_published_at": null,
+        "threads_post_published_at": null,
+        "bluesky_post_published_at": null,
+        "scratchpad_text": null
+      }
+    },
+    {
+      "slot": "noon",
+      "type": "daily",
+      "hook_type": "速報ブラケット型",
+      "publish_at": "2026-04-23T12:30:00+09:00",
+      "text": "【朗報？】\n\nClaude CodeをProプラン($20)から外すA/Bテストが話題。\nAnthropic中の人曰く「対象は2%のみ」で大半のユーザーには現状影響なし。\n\n副業でClaude Code毎日使ってる自分の見方を並べると、\n・本番適用されたら月$20→$100で差80ドル\n・ただ副業続けてれば回収可能な範囲\n・有料化前に実績作っとくのが一番正解\n\n詳細↓",
+      "reply": "元情報はこちら↓\nhttps://x.com/TheAmolAvasare/status/2046724659039932830",
+      "media_ids": [
+        "9b868ca3-b3df-4bd3-bbb0-5744afa63d96"
+      ],
+      "draft": {
+        "id": 8824181,
+        "social_set_id": 300622,
+        "draft_id": 8824181,
+        "status": "scheduled",
+        "created_at": "2026-04-22T20:41:33.558Z",
+        "updated_at": "2026-04-22T20:41:33.557Z",
+        "scheduled_date": "2026-04-24T12:30:00+09:00",
+        "published_at": null,
+        "draft_title": "20260424_noon_claude_code_ab_test",
+        "tags": [],
+        "preview": "【朗報？】\n\nClaude CodeをProプラン($20)から外すA/Bテストが話題。\nAnthropic中の人曰く「対象は2%のみ」で大半のユーザーには現状影響なし。\n\n副業でClaude Code毎日使ってる自分の見方を並べると、\n・本番適用されたら月$20→$100で差80ドル\n・ただ副業続けてれば回収可能な範囲\n・有料化前に実績作っとくのが一番正解",
+        "share_url": null,
+        "private_url": "https://typefully.com/?d=8824181&a=300622",
+        "platforms": {
+          "x": {
+            "enabled": true,
+            "posts": [
+              {
+                "text": "【朗報？】\n\nClaude CodeをProプラン($20)から外すA/Bテストが話題。\nAnthropic中の人曰く「対象は2%のみ」で大半のユーザーには現状影響なし。\n\n副業でClaude Code毎日使ってる自分の見方を並べると、\n・本番適用されたら月$20→$100で差80ドル\n・ただ副業続けてれば回収可能な範囲\n・有料化前に実績作っとくのが一番正解\n\n詳細↓",
+                "media_ids": [
+                  "9b868ca3-b3df-4bd3-bbb0-5744afa63d96"
+                ],
+                "quote_post_url": null
+              },
+              {
+                "text": "元情報はこちら↓\nhttps://x.com/TheAmolAvasare/status/2046724659039932830",
+                "media_ids": [],
+                "quote_post_url": null
+              }
+            ],
+            "settings": null
+          },
+          "linkedin": {
+            "enabled": false
+          },
+          "mastodon": {
+            "enabled": false
+          },
+          "threads": {
+            "enabled": false
+          },
+          "bluesky": {
+            "enabled": false
+          }
+        },
+        "x_published_url": null,
+        "linkedin_published_url": null,
+        "mastodon_published_url": null,
+        "threads_published_url": null,
+        "bluesky_published_url": null,
+        "x_post_published_at": null,
+        "linkedin_post_published_at": null,
+        "mastodon_post_published_at": null,
+        "threads_post_published_at": null,
+        "bluesky_post_published_at": null,
+        "scratchpad_text": null
+      }
+    },
+    {
+      "slot": "night1",
+      "type": "daily",
+      "hook_type": "リスト予告型",
+      "publish_at": "2026-04-23T20:00:00+09:00",
+      "text": "今週使って一番よかったの、Claude Designだった。\n\n提案資料の叩き台が15分で出てくる。\n\n・プロンプトから1枚物のスライドを直接生成\n・PPTXとCanva両方で書き出せる\n・Figmaなしで「それっぽい見た目」に仕上がる\n\nCW提案資料作りが副業ボトルネックだった自分には地味に効いた。\n文系でもデザイン起点で動ける時代が来てる。\n\n副業の裏側↓",
+      "draft": {
+        "id": 8824182,
+        "social_set_id": 300622,
+        "draft_id": 8824182,
+        "status": "scheduled",
+        "created_at": "2026-04-22T20:41:33.834Z",
+        "updated_at": "2026-04-22T20:41:33.833Z",
+        "scheduled_date": "2026-04-24T20:00:00+09:00",
+        "published_at": null,
+        "draft_title": "20260424_night1_friday_tool_claude_design",
+        "tags": [],
+        "preview": "今週使って一番よかったの、Claude Designだった。\n\n提案資料の叩き台が15分で出てくる。\n\n・プロンプトから1枚物のスライドを直接生成\n・PPTXとCanva両方で書き出せる\n・Figmaなしで「それっぽい見た目」に仕上がる\n\nCW提案資料作りが副業ボトルネックだった自分には地味に効いた。\n文系でもデザイン起点で動ける時代が来てる。\n\n副業の裏側",
+        "share_url": null,
+        "private_url": "https://typefully.com/?d=8824182&a=300622",
+        "platforms": {
+          "x": {
+            "enabled": true,
+            "posts": [
+              {
+                "text": "今週使って一番よかったの、Claude Designだった。\n\n提案資料の叩き台が15分で出てくる。\n\n・プロンプトから1枚物のスライドを直接生成\n・PPTXとCanva両方で書き出せる\n・Figmaなしで「それっぽい見た目」に仕上がる\n\nCW提案資料作りが副業ボトルネックだった自分には地味に効いた。\n文系でもデザイン起点で動ける時代が来てる。\n\n副業の裏側↓",
+                "media_ids": [],
+                "quote_post_url": null
+              }
+            ],
+            "settings": null
+          },
+          "linkedin": {
+            "enabled": false
+          },
+          "mastodon": {
+            "enabled": false
+          },
+          "threads": {
+            "enabled": false
+          },
+          "bluesky": {
+            "enabled": false
+          }
+        },
+        "x_published_url": null,
+        "linkedin_published_url": null,
+        "mastodon_published_url": null,
+        "threads_published_url": null,
+        "bluesky_published_url": null,
+        "x_post_published_at": null,
+        "linkedin_post_published_at": null,
+        "mastodon_post_published_at": null,
+        "threads_post_published_at": null,
+        "bluesky_post_published_at": null,
+        "scratchpad_text": null
+      }
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "問いかけ代替X4型",
+      "publish_at": "2026-04-23T22:00:00+09:00",
+      "text": "「文系だからAI副業は無理」と思ってた時期が長かった。\n\n始める前は「エンジニア専用のツール」という印象がずっと抜けなかった。\n実際に触ってみたら、コード書く場面がほぼなかった。\n\n止めてたのは技術力じゃなくて「自分には関係ない」という思い込みだった、という結論で落ち着いた。",
+      "draft": {
+        "id": 8824183,
+        "social_set_id": 300622,
+        "draft_id": 8824183,
+        "status": "scheduled",
+        "created_at": "2026-04-22T20:41:34.198Z",
+        "updated_at": "2026-04-22T20:41:34.196Z",
+        "scheduled_date": "2026-04-24T22:00:00+09:00",
+        "published_at": null,
+        "draft_title": "20260424_night2_question_alt",
+        "tags": [],
+        "preview": "「文系だからAI副業は無理」と思ってた時期が長かった。\n\n始める前は「エンジニア専用のツール」という印象がずっと抜けなかった。\n実際に触ってみたら、コード書く場面がほぼなかった。\n\n止めてたのは技術力じゃなくて「自分には関係ない」という思い込みだった、という結論で落ち着いた。",
+        "share_url": null,
+        "private_url": "https://typefully.com/?d=8824183&a=300622",
+        "platforms": {
+          "x": {
+            "enabled": true,
+            "posts": [
+              {
+                "text": "「文系だからAI副業は無理」と思ってた時期が長かった。\n\n始める前は「エンジニア専用のツール」という印象がずっと抜けなかった。\n実際に触ってみたら、コード書く場面がほぼなかった。\n\n止めてたのは技術力じゃなくて「自分には関係ない」という思い込みだった、という結論で落ち着いた。",
+                "media_ids": [],
+                "quote_post_url": null
+              }
+            ],
+            "settings": null
+          },
+          "linkedin": {
+            "enabled": false
+          },
+          "mastodon": {
+            "enabled": false
+          },
+          "threads": {
+            "enabled": false
+          },
+          "bluesky": {
+            "enabled": false
+          }
+        },
+        "x_published_url": null,
+        "linkedin_published_url": null,
+        "mastodon_published_url": null,
+        "threads_published_url": null,
+        "bluesky_published_url": null,
+        "x_post_published_at": null,
+        "linkedin_post_published_at": null,
+        "mastodon_post_published_at": null,
+        "threads_post_published_at": null,
+        "bluesky_post_published_at": null,
+        "scratchpad_text": null
+      }
+    }
+  ],
+  "rescheduled_at": "2026-04-22T20:45:03.503Z"
+}

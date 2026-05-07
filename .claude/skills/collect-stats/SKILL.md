@@ -291,3 +291,97 @@ Notion更新: {N}件
 | Analyticsページにアクセスできない | スクリーンショットで確認、読み取れた分だけ記録 |
 | データが0件 | 「データが見つかりませんでした。ページ構造が変わった可能性があります」と報告してスクリーンショットを撮る |
 | JS実行エラー | `get_page_text` のテキストから手動パースに切り替え |
+
+---
+
+## FF比 (フォロー/フォロワー比率) 収集（2026-04-28 追加・[Read済 Book.md P448-451]）
+
+### 収集対象
+
+X UI のプロフィールページ右上に表示される「フォロー中」「フォロワー」の数値を取得し、FF比（フォロー数 ÷ フォロワー数）を計算。
+
+### 収集タイミング
+
+毎週月曜の collect-stats 実行時に取得。`context/x-performance.md` の「FF比トラッキング」セクションに記録。
+
+### Chrome MCP 取得ロジック
+
+```javascript
+// プロフィールページから取得
+const followingEl = document.querySelector('a[href$="/following"] span');
+const followersEl = document.querySelector('a[href$="/verified_followers"] span, a[href$="/followers"] span');
+const following = parseInt(followingEl.textContent.replace(/,/g, ''), 10);
+const followers = parseInt(followersEl.textContent.replace(/,/g, ''), 10);
+const ffRatio = following / Math.max(followers, 1);
+({ following, followers, ffRatio: ffRatio.toFixed(2) })
+```
+
+### 警告閾値（[WebSearch済] 2026-04-28）
+
+| FF比 | 状態 | アクション |
+|---|---|---|
+| 0.6以下 | ✅ 理想（アカウントスコア高） | 維持 |
+| 0.6〜1.0 | ⚠️ 警告（自分から積極フォロー控える） | フォロー数増加停止 |
+| 1.0以上 | ❌ 危険（投稿伸びにくい） | 不要なフォローを整理 |
+
+500フォロワー超えたら自分からのフォロー停止・オーガニック獲得に切替。
+
+---
+
+## モード C: 5/14 判定支援モード（2026-05-07 追加）
+
+`/collect-stats judgment` で起動。メイン商品セール終了時（2026-05-14）の A/B/C ルート判定を支援する。
+
+### 起動
+
+```
+/collect-stats judgment
+```
+
+### 収集対象
+
+通常モード A・B 全部 + 以下の判定スコア計算:
+
+| 指標 | 取得元 | 用途 |
+|---|---|---|
+| メイン商品 PV | note ダッシュボード | A/B/C 判定 |
+| メイン商品 スキ | note ダッシュボード | A/B/C 判定 |
+| メイン商品 累計販売数 | note 売上画面 | **A/B/C 判定の最重要指標** |
+| Brain 3本それぞれの販売数 | Brain 管理画面 | アフィリ判定 |
+| X フォロワー数 | X プロフィール | フォロワー段階判定 |
+| note 直近30日 PV合計 | note ダッシュボード | 内部循環判定 |
+
+### 判定ロジック
+
+[エージェント調査済 sasaki-search 2026-05-07 SNSマーケ業界調査] の業界ベスト解に基づく自動判定:
+
+| 5/14 時点の数字 | 推奨ルート | 中身 |
+|---|---|---|
+| メイン販売 5部以上 + フォロワー 100人以上 | **A単独** | ¥2,000 定価復帰のみ |
+| メイン販売 1-4部 OR フォロワー 50-100人 | **A+C 並行**（業界ベスト） | ¥2,000 定価復帰 + ¥500 練習記事週1本 |
+| メイン販売 0部 + フォロワー <50人 | **C単独**（リスタート） | メイン商品休止 + ¥500 練習記事のみ + 6/1 再ローンチ |
+
+### 出力
+
+`search/2026-05-14/judgment-report.md` に以下を保存:
+- 各指標の数字と前週比
+- 推奨ルートと根拠
+- 実行コマンド（次に打つべき /source-run / /note-run の引数）
+- 反証ケース（青山華子 [WebSearch済 note.com/aoyamahanako88] 13フォロワー初販売事例との比較）
+
+### Discord 通知
+
+判定結果を以下フォーマットで通知:
+
+```bash
+printf '{"embeds":[{"title":"🎯 5/14 判定結果（自動）","color":3447003,"fields":[{"name":"推奨ルート","value":"{A | A+C | C}","inline":true},{"name":"メイン販売","value":"{N部}","inline":true},{"name":"フォロワー","value":"{N人}","inline":true},{"name":"次アクション","value":"{コマンド or 推奨手順}","inline":false}],"footer":{"text":"5/14 判定モード"}}]}' | curl -H "Content-Type: application/json" -X POST -d @- "{LEAD_WEBHOOK}"
+```
+
+### 実行頻度
+
+- 通常モードは月1〜2回（任意）
+- 判定モード（モード C）は **5/13 朝・5/14 朝・5/15 朝の3回** 確実に実行
+- それ以降は月初に1回（A/B/C ルートの月次見直し）
+
+詳細: `search/2026-05-07/sns-marketing-research.md`
+

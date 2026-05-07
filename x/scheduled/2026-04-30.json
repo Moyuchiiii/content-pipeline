@@ -1,0 +1,105 @@
+{
+  "date": "2026-04-30",
+  "created_at": "2026-04-29T08:56:38.470Z",
+  "note_url": "https://note.com/moyuchi_aistu/n/nc32f948903a4",
+  "brain_url": null,
+  "posts": [
+    {
+      "slot": "morning",
+      "type": "daily",
+      "hook_type": "中途半端スタート・短文実況",
+      "publish_at": "2026-04-30T08:00:00+09:00",
+      "text": "朝、Connectors の記事公開した翌日。\n\nnote 投稿したらコメント来るかなって張り付いてしまうの、まだ抜けない。\nAdobe コネクタ、4ヶ月後の自分が当たり前に使ってると思う。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": null,
+      "auto_rt_recommended": false,
+      "draft_id": 8897927,
+      "private_url": null
+    },
+    {
+      "slot": "noon",
+      "type": "quote_rt",
+      "hook_type": "体言止めスタート・型A",
+      "publish_at": "2026-04-30T12:30:00+09:00",
+      "text": "これが地味に効くやつ。\n\nClaude に長時間タスク投げて、ターミナル張り付き続ける時間が\n副業4ヶ月目でもまだ消えてなかった。\n\nPush 通知が来るなら、寝てる間に走らせた仕事を朝確認して、\n出かけながら修正指示を投げる、が普通になる。\n\nベースのフローが変わる側。",
+      "reply": null,
+      "quote_post_url": "https://x.com/ClaudeDevs/status/2049154855143649315",
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": "3518795a-75fd-81e7-8ce5-de406907f5b6",
+      "auto_rt_recommended": false,
+      "draft_id": 8897928,
+      "private_url": null
+    },
+    {
+      "slot": "night1",
+      "type": "cta_note",
+      "hook_type": "体言止めスタート・告知",
+      "publish_at": "2026-04-30T20:00:00+09:00",
+      "text": "Adobe・Canva・Blender が、全部 Claude から動かせるようになった。\n\n副業のクリエイティブ系案件のフローが\n今日から少しずつ書き換わる側だと思う。\n\n「9連携で何が変わって、何は変わらないか」を\n文系大学生の副業視点で全部整理した。\n\n詳細はnote↓",
+      "reply": "https://note.com/moyuchi_aistu/n/nc32f948903a4",
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": "x/pending_cta/note_20260429_claude-creative-connectors.json",
+      "notion_xneta_id": null,
+      "auto_rt_recommended": true,
+      "draft_id": 8897929,
+      "private_url": null
+    },
+    {
+      "slot": "night2",
+      "type": "daily",
+      "hook_type": "テーゼ先出し・X1型問いかけ代替",
+      "publish_at": "2026-04-30T22:00:00+09:00",
+      "text": "クリエイティブ副業の単価、これから二極化する。\n\nClaude が動かせるようになった範囲（バナー量産・スライドリサイズ）は崩壊側。\n判断と指示が要る範囲（ブランドガイド込み・複合納品）は上昇側。\n\nわたしは後者に振る。手作業の側で消耗するより、判断料で稼ぐ側に座っとく。",
+      "reply": null,
+      "quote_post_url": null,
+      "image_source": null,
+      "media_ids": [],
+      "cross_posted_to": [
+        "x",
+        "threads"
+      ],
+      "source_cta": null,
+      "notion_xneta_id": null,
+      "auto_rt_recommended": false,
+      "draft_id": 8897930,
+      "private_url": null
+    }
+  ],
+  "buzz_promo_replies": [],
+  "quote_rts": [
+    {
+      "slot": "noon",
+      "source_url": "https://x.com/ClaudeDevs/status/2049154855143649315",
+      "source_account": "ClaudeDevs",
+      "draft_id": 8897928
+    }
+  ],
+  "media_registry": {},
+  "notes": [
+    "旧版（4/29朝自動生成）のドラフト 8897829-8897832 を削除して再構築",
+    "メインは Connectors 記事 (nc32f948903a4) 告知に差し替え",
+    "昼は @ClaudeDevs Push Notifications 引用RT（X限定）",
+    "バズ宣伝リプ 0本（フォロワー段階1〜100人・直近7日 likes 5以上の該当ツイートなし）",
+    "Threads-only スキップ（TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID 確認未取・運用負荷考慮）",
+    "セルフ引用RT (5/1 朝07:00補足) は告知投稿後にURL確定するため次回 /x-run で別途予約"
+  ]
+}

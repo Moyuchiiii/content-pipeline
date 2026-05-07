@@ -1,0 +1,47 @@
+{
+  "date": "2026-05-07",
+  "created_at": "2026-05-07T12:45:00+09:00",
+  "plan_source": "today/plan.json (date=2026-05-07)",
+  "posts": [
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "source_cta": "x/pending_cta/done/note_20260507_spacex-claude-code-2x.json.posted",
+      "publish_at": "2026-05-07T20:00:00+09:00",
+      "text": "note書いた。\n\n5/6にAnthropicがSpaceXと組んで、Claude Codeの5時間制限を2倍にした日の話。\n\nPro月20ドル据え置きで、実質Maxの一歩前みたいな枠が手に入った感覚。\n副業大学生として何が変わったかを記録した。\n\n詳細はnote↓",
+      "reply_post": "https://note.com/moyuchi_aistu/n/ne6b1e71946c7",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 8999765,
+      "private_url": "https://typefully.com/?d=8999765&a=300622",
+      "social_set": "cross"
+    },
+    {
+      "type": "quote_rt",
+      "slot": "night2",
+      "source_account": "singo405",
+      "source_url": "https://x.com/singo405/status/2051994059691143224",
+      "topic_id": "3598795a-75fd-8109-8b4e-ecd5cea2a1b2",
+      "publish_at": "2026-05-07T23:00:00+09:00",
+      "text": "え、これは…\n\niOS 27 で Apple Intelligence Extensions が入って、Siri/Writing Tools/Image Playground から Claude や Gemini を呼べる仕様らしい。\n\nApple端末でClaudeが選べないストレス、地味に大きかった。\nChatGPT一強だったApple AIの壁が崩れる兆し。",
+      "cross_posted_to": ["x"],
+      "draft_id": 8999766,
+      "private_url": "https://typefully.com/?d=8999766&a=301793",
+      "social_set": "x-only"
+    },
+    {
+      "type": "quote_rt",
+      "slot": "noon_late",
+      "source_account": "ChatGPTapp",
+      "source_url": "https://x.com/ChatGPTapp/status/2051776032127238266",
+      "topic_id": "3598795a-75fd-8197-9ac9-ecd70ef9aa63",
+      "publish_at": "2026-05-07T18:00:00+09:00",
+      "publish_at_original": "2026-05-07T12:30:00+09:00",
+      "rescheduled_reason": "初回12:30予約は実行時(12:45)に過去判定で失敗・現在時刻16:45時点で18:00に再予約",
+      "text": "これ、副業の使い分けがゴッソリ塗り替わる週になった気がする。\n\nClaudeが先週MS365（Excel/Word/PPT/Outlook）対応した直後に、ChatGPTもExcel/Sheets直接編集対応か。\n\n・Claude: Office全部\n・ChatGPT: スプレッドシート系\n・Gemini: Docs/Slides/Drive\n\nClaude派副業者として、ジャンル別に再整理してる。",
+      "cross_posted_to": ["x"],
+      "draft_id": 8999809,
+      "private_url": "https://typefully.com/?d=8999809&a=301793",
+      "social_set": "x-only"
+    }
+  ]
+}
