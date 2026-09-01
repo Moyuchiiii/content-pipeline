@@ -1,0 +1,18 @@
+{
+  "type": "note",
+  "created_at": "2026-09-02T00:00:00+09:00",
+  "source": "note/drafts/sokuho/draft_2026-09-02_fable51-pro-not-included.md",
+  "title": "Claude Fable 5.1が出た。Pro月3000円のわたしには、実は関係なかった話",
+  "url": null,
+  "atomic_ideas": [
+    "Claude Fable 5.1 / Mythos 5.1が9/1発表。だけどPro月3,000円プランの使用枠には含まれず、使用量クレジット課金の対象だった",
+    "Max/Team Premiumのみ週次枠50%まで無料標準搭載。Proは完全に対象外",
+    "Fable5がクレジット制に移行した7月、Proユーザーに配られた$100無料クレジットも、Fable5.1には一切ない",
+    "実際はOpus5が標準推奨モデルで、普段使いは今まで通り。新モデルが使えなくても心配しなくていい"
+  ],
+  "image_path": null,
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

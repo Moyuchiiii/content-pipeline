@@ -7,9 +7,15 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 61
-次回 workflow-audit: 65回目（5の倍数・あと4本）
+note-run 実行回数: 62
+次回 workflow-audit: 65回目（5の倍数・あと3本）
 ```
+
+---
+
+## 📋 運用方針変更ログ
+
+- **2026-09-02**: 実録記事の下限文字数を2,000字→4,000字に引き上げ（4,000〜6,000字レンジに変更）、note-run/SKILL.md Phase2のPDCAフィードバック加算に「記事タイプ候補=実録 → +3点」を追加。速報記事の文字数(800〜1,500字)・扱いは変更なし。理由: 2026-05-01〜06-14の新規記事7本が全件速報になった偏りをユーザーが「速報ばっかり」と問題視。note-performance.md実測でも実録のスキ転換率(30〜84.6%)が速報(17〜27%)の2〜3倍あり、実録優先へ転換。詳細は note-run/SKILL.md Phase2・Phase4、note-strategy.md「記事タイプ優先順位」参照。
 
 ---
 
@@ -68,6 +74,11 @@ note-run 実行回数: 61
 ---
 
 ## セッション記録（直近5件）
+
+### 2026-09-02（fable51-pro-not-included）
+- ドラフト: draft_2026-09-02_fable51-pro-not-included.html（速報・無料・score91）
+- スコア: Phase2=N/A（plan.json primary_topic採用・スコアリングスキップ）/ 品質=91/100
+- PDCA学習: **80日間の運用空白から再開した初回記事**。前回source-run/note-run実行は2026-06-14で止まっており、published-history.md/note-performance.md/x-performance.md/content-memory.mdも同時期で更新停止していたことをsource-run側で発見。note.com実機確認（[実機確認済]）で直近5本の投稿が全部「速報」型と判明し、2026-09-01新設の記事タイプ分散ハードフロア（5本中5本速報→実録限定）に理論上抵触したが、「稼働継続中の偏り」ではなく「80日間完全停止直前の5本」という文脈の違いをユーザーに確認の上、例外的に速報のまま採用（ユーザー選択: 「Fable 5.1速報で押し切る」）。競合調査中に重要な事実誤認を発見・訂正: 当初「Pro/Max契約者に直接ベネフィット」という前提でnoteネタ帳に投入していたが、Anthropic公式2ソース（anthropic.com/news, platform.claude.com/docs）+ support.claude.com本日更新ページの直接WebFetchで、実際はFable5.1がPro/Team Standardプランでは使用量クレジット課金の対象（プラン内使用枠に含まれない）と判明。Fable5移行時（7/19）にProユーザーへ配られた$100無料クレジットのような特典もFable5.1には無し。この訂正を機に記事の軸を「恩恵を受けてる」→「実は関係なかった」という正直な等身大フレームに転換。Opus5が標準推奨モデルという新情報も本文に反映（ただしOpus5自体がFable5.1と同時発表という誤読を避けるよう表現調整）。grep検証: メイン商品URL=2回（中盤+末尾、初稿でプレースホルダー文言のまま埋め込み忘れる事故があり修正）・段落中間太字=0件・コロン=0件・括弧多用=0件・AI定型フレーズ=0件・全29段落中150字超=0件。あわせて読みたい3本（6/15サブスク変更記事・6/14 Fable5停止記事・5/7 SpaceX提携記事、いずれもnote.com実機からhref直接取得）。pending_cta JSON保存（target_fit=high・priority=high・atomic_ideas 4本）。**次回への申し送り**: 次のnote-run/source-runでは実録・ノウハウを意識的に優先すること。today/note/・today/brain/の残骸ファイル整理も要継続確認。
 
 ### 2026-05-15（anthropic-subscription-renewal-pro20-impact）
 - ドラフト: draft_2026-05-15_anthropic-subscription-renewal-pro20-impact.html（速報・無料・score29）
