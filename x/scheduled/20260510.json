@@ -1,0 +1,82 @@
+{
+  "date": "2026-05-10",
+  "created_at": "2026-05-09T02:00:00+09:00",
+  "posts": [
+    {
+      "type": "daily",
+      "slot": "morning",
+      "publish_at": "2026-05-10T07:00:00+09:00",
+      "hook_type": "実況型・日常",
+      "text": "土曜の朝、コーヒー飲みながら今週の振り返り。\nnote 1本（金融プロ用Claudeエージェント10種の話）と Brain ネタ仕込み。\n副業4ヶ月目、月14万キープが見えてきた。\n\n派手さじゃなくて続けてるかどうかだなって最近思う。",
+      "media_ids": [],
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9020900,
+      "auto_rt": false
+    },
+    {
+      "type": "daily",
+      "slot": "noon",
+      "publish_at": "2026-05-10T12:30:00+09:00",
+      "hook_type": "テーゼ先出し型・速報所感",
+      "text": "中堅企業に Claude が入る波、もう来てる。\n\nAnthropicが今週 Goldman Sachs と Blackstone と組んで企業向けAI会社を作った。\nターゲットは地方銀行・地域メーカー・地域医療。\n\n副業者目線では、CWに「Claude導入支援」案件が3〜6ヶ月で来る伏線。\nプロフィールに「Claude Pro利用可能」1行入れておく価値ある。",
+      "image_used": "x/images/anthropic.png",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9020902,
+      "auto_rt": false,
+      "source_notion_id": "35a8795a-75fd-8104-bbc4-d2d53b1bb597",
+      "source_url": "https://www.cnbc.com/2026/05/04/anthropic-goldman-blackstone-ai-venture.html",
+      "source_official": "https://www.anthropic.com/news/enterprise-ai-services-company"
+    },
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "source_cta": "x/pending_cta/done/note_20260508_finance-agents-10.json.posted",
+      "publish_at": "2026-05-10T20:00:00+09:00",
+      "hook_type": "数字先行型・告知",
+      "text": "Anthropicが金融プロ用のClaudeエージェント10種を出した。\n驚いたのが、Pro $20プラン全部に入ったこと。\n\n中身は「調べて・まとめて・チェックする」作業ばかり。\n副業の中小企業案件にそのまま転用できる。\n\n文系大学生のわたしが3つ触ってみた話、note記事にまとめた。\n詳細はnote↓",
+      "image_used": "x/images/claude.png",
+      "reply_text": "https://note.com/moyuchi_aistu/n/nef19453190e5",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9020903,
+      "auto_rt": true,
+      "auto_rt_reason": "note告知・拡散価値高（6h/25h/7d 3段RT発火推奨）",
+      "note_url": "https://note.com/moyuchi_aistu/n/nef19453190e5",
+      "note_title": "金融プロ向けClaudeエージェント10個が出た日、Pro月3千円のわたしが副業案件にどう転用するか考えた"
+    },
+    {
+      "type": "daily",
+      "slot": "night2",
+      "publish_at": "2026-05-10T23:00:00+09:00",
+      "hook_type": "人物発言先出し型・速報所感",
+      "text": "「狭い時間窓で、世界中のソフトの脆弱性10万件超を治す必要がある」\n\nAnthropic CEO Dario Amodeiの警告。例のMythosが見つけたやつの続報。\n\n副業でClaude Pro使ってるわたし的には、Anthropicが「攻める側」じゃなく「治す側」に立ってるのが地味に安心要素。",
+      "image_used": "x/images/anthropic.png",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9020904,
+      "auto_rt": false,
+      "source_notion_id": "35a8795a-75fd-81e9-9c9f-f2bc69ad0093",
+      "source_url": "https://www.cnbc.com/2026/05/05/anthropic-ceo-cyber-moment-of-danger-mythos-vulnerabilities.html"
+    },
+    {
+      "type": "cta_self_quote",
+      "slot": "next_morning",
+      "publish_at": "2026-05-11T07:00:00+09:00",
+      "hook_type": "実況型・補足",
+      "text": "Excel・PowerPoint・Word に Claude が直接入った話、書ききれてなかった。\n\n副業のCW案件で「Excelデータ→Wordレポート」月2件やってる。今までDesktopで往復してた作業が、アプリ内で完結する。\n\n4/29のAdobe・Canva・Blender続きの本命がこれかも。",
+      "cross_posted_to": ["x"],
+      "draft_id": 9020905,
+      "auto_rt": false,
+      "note": "X限定（target=x-only）。5/10 night1 告知の翌朝補足コメント。quote_post_url は告知投稿後に手動で付ける場合は別途編集"
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "cross_post_count": 4,
+    "x_only_count": 1,
+    "auto_rt_recommended": 1,
+    "plan_json_used": "today/plan.json (date=2026-05-08, slid to 2026-05-10)",
+    "primary_change_log": [
+      "plan.json primary topic 切替2回: xAI/Anthropic→Code w/Claude→最終 Goldman/Blackstone+5/5 finance-agents",
+      "Anthropic公式3記事 [WebFetch済 anthropic.com/news] で全件裏取り済み"
+    ]
+  }
+}

@@ -34,7 +34,7 @@ AI（Claude Code）を活用した note & X 運用パイプライン。
 | Instagram | `@hyui__cc` | **2つ**（Threads と同期） |
 | note | （URLは旧ハンドル維持）`note.com/moyuchi_aistu` | - |
 
-Typefully Social Set ID `300622` に X+Threads 両方が紐付け済み。`/x-run` 実行時は同じ Social Set から両方に同時投稿（クロスポスト）。
+Typefully Social Set ID `300622` に X+Threads 両方が紐付け済み。`/x-run` 実行時は同じ Social Set から両方に同時投稿（クロスポスト）。**2026-06-09 改修: サブスク節約のため 1 Social Set に統一**。X 用と Threads 用で別文章を作る運用（旧 Threads-only 長文体験談・Phase 2.8）は完全廃止。引用RT は quote_post_url・バズ宣伝リプは reply_to_url の Typefully API 仕様で X 側機能のみ発火（Threads には quote_post_url 投稿はテキストとして流れる・reply_to_url 投稿は流れない）。詳細は `.claude/skills/x-run/SKILL.md` 冒頭の「クロスポスト方針」表参照。
 
 ## X ツイートタイプ
 

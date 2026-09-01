@@ -1,0 +1,19 @@
+{
+  "type": "note",
+  "created_at": "2026-05-08T23:50:00+09:00",
+  "source": "today/note/draft_2026-05-08_finance-agents-10.html",
+  "title": "金融プロ向けClaudeエージェント10個が出た日、Pro月3千円のわたしが副業案件にどう転用するか考えた",
+  "url": null,
+  "atomic_ideas": [
+    "5/5 Anthropic 金融機関向け Claude エージェント10種公開・Pitch builder/Earnings reviewer/KYC screener等。Pro $20 プラン全部に入った",
+    "Excel・PowerPoint・Word に Claude プラグインが直接入った（Outlook近日中）。アプリ間移動なし、アプリ内完結",
+    "10種は本来Goldman Sachs/Morgan Stanleyの中の人が触る業務専用テンプレ。中身はどれも『調べて・まとめて・チェックする』作業で、副業の中小企業案件にそのまま転用できる",
+    "5/4にAnthropicがGoldman Sachs等と中堅企業向けAIサービス会社設立。中堅・中小企業がClaudeを導入する波が3〜6ヶ月以内に来る",
+    "副業者は『業界別テンプレが出るたびに、自分の案件にどう転用できるか3分で判断する』習慣を持てば月1〜2万の単価を着実に上げられる"
+  ],
+  "image_path": null,
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

@@ -1,0 +1,30 @@
+{
+  "type": "note",
+  "created_at": "2026-06-09T17:00:00+09:00",
+  "source": "today/note/draft_2026-06-09_siri-claude-wwdc26-fukugyo.html",
+  "title": "iPhoneのSiriにClaude繋がる時代来た。Claude依存してる文系副業大学生として、何が変わるか整理した",
+  "url": "https://note.com/moyuchi_aistu/n/n52000aab2acc",
+  "atomic_ideas": [
+    "Apple Foundation Models が Gemini ベースに刷新されたけど、iOS 27 で Claude も Siri に繋がる予定。Claude派副業者にとってはむしろ追い風",
+    "Apple-Google $1B/年のマルチイヤー契約。Apple 公式 AI は Gemini だけど、第三者 AI は自由に選べる設計が公式化された",
+    "iOS 27 の正式リリースは秋以降・英語先行・iPhone 17 系限定機能あり。今すぐ動く未来は来ない。早くて秋、本格は来年",
+    "Apple Intelligence が秋に来る前に PC 側の Claude 環境を整える方が現実的。Cowork 倍増(7/5まで)・Opus 4.8・6/15料金プラン分離を踏まえて",
+    "Pro $20 + Cowork + Opus 4.8 の組み合わせがいまの副業 AI セット最上位だと思ってる"
+  ],
+  "image_path": "(サムネは別途 Gemini で生成・delivery md のプロンプト参照)",
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high",
+  "facts_verified": [
+    "Apple WWDC26 (2026-06-09) [WebSearch済]",
+    "Apple Foundation Models = Gemini ベース [WebSearch済]",
+    "Apple-Google マルチイヤー契約 約$1B/年 [WebSearch済]",
+    "新 Siri AI 独立アプリ化 [WebSearch済]",
+    "iOS 27 / macOS 27 Golden Gate [WebSearch済]",
+    "iOS 27 で Claude/Gemini 統合可能 [WebSearch済]",
+    "Claude Opus 4.8 リリース 5/28 [WebSearch済]",
+    "Cowork doubled 6/6〜7/5 [実機確認済 @claudeai]",
+    "Claude 6/15 料金プラン分離 [WebFetch済]"
+  ]
+}

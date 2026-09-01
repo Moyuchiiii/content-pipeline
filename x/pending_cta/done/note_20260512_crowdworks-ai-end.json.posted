@@ -1,0 +1,19 @@
+{
+  "type": "note",
+  "created_at": "2026-05-12T21:30:00+09:00",
+  "source": "note/drafts/sokuho/draft_2026-05-12_crowdworks-ai-end.html",
+  "title": "クラウドワークスAI 6/30 終了。月14万のわたしが、1回も触ってなかった理由",
+  "url": null,
+  "atomic_ideas": [
+    "クラウドワークスAIが2026年6月30日でサービス終了。公式LP明記。背景に親会社CW 営業利益-84.4%・純利益-95.6%の決算",
+    "月14万まで来たわたしは、CWの自社AI機能を1回も使ったことがない。手元のClaude Code（Pro）で完結していた",
+    "0.5円ライターは消えた。クライアントがChatGPTで自分で書く時代。人間は『AIを使って何を作るか決める側』に動かないと来年危ない",
+    "CWは『案件を取る場所』、AIは『手元の道具』。役割を分けてる人が結局生き残る構造",
+    "副業者向け3アクション: CW自社AIは触らなくていい / 文字を写すだけの案件をメインにしない / AIに何を頼んだか1案件ずつメモする"
+  ],
+  "image_path": "today/note/thumb_2026-05-12_crowdworks-ai-end.png",
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

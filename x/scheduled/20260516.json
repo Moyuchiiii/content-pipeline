@@ -1,0 +1,81 @@
+{
+  "date": "2026-05-16",
+  "created_at": "2026-05-15T12:21:50+09:00",
+  "posts": [
+    {
+      "type": "quote_rt",
+      "slot": "morning",
+      "publish_at": "2026-05-16T07:00:00+09:00",
+      "source_account": "ClaudeDevs",
+      "source_url": "https://x.com/ClaudeDevs/status/2054639777685934564",
+      "topic_id": "3618795a-75fd-8198-b9c2-c017e0e9754f",
+      "hook_type": "体言止め・型A（数字型）",
+      "text": "Pro $20 派、これ地味に効くやつ。\n\nClaude Code の weekly limit、7/13 まで +50% で動いてくれる。\n副業で毎日使ってる側からすると、week 後半に枠尽きる感覚がしばらく忘れられそう。\n\nちょっと先回しにしてた案件、今週積めるかも。",
+      "cross_posted_to": ["x"],
+      "draft_id": 9105604,
+      "private_url": "https://typefully.com/?d=9105604&a=301793",
+      "social_set_id": 301793
+    },
+    {
+      "type": "daily",
+      "slot": "noon",
+      "publish_at": "2026-05-16T12:30:00+09:00",
+      "topic_id": "3618795a-75fd-8105-8fa3-da301f737eaf",
+      "hook_type": "固有名詞先行・型D（対比型）",
+      "text": "Anthropic、6/15 からサブスク仕様変わる。\n\nざっくり整理:\n・Agent SDK / claude -p / GitHub Actions が月次クレジット別枠化\n・Pro $20 / Max5x $100 / Max20x $200 が新たに付与\n・ターミナルで claude 打って使う interactive は対象外（従来通り）\n\nPro $20 で Claude Code 普通に使ってる副業派は、ほぼ何も変わらない。\n\n詳細は note に書いた↓",
+      "media_ids": ["611cb232-002d-4421-a6e0-0360598b7ea2"],
+      "image_path": "x/images/anthropic.png",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9105605,
+      "private_url": "https://typefully.com/?d=9105605&a=300622",
+      "social_set_id": 300622
+    },
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "publish_at": "2026-05-16T20:00:00+09:00",
+      "source_cta": "x/pending_cta/done/note_20260515_anthropic-subscription-renewal-pro20-impact.json.posted",
+      "note_url": "https://note.com/moyuchi_aistu/n/n5ad530655339",
+      "notion_record_id": "3618795a-75fd-81e4-b968-d89e8206f68a",
+      "hook_type": "中途半端スタート・型E（結果先出し）",
+      "posts_count": 2,
+      "text": "今日、note 1本書いた。\n\n「Anthropic 6/15 でサブスク仕様変わるって聞いて焦ったけど、Pro $20 で Claude Code interactive 使ってる副業派は、ほぼ何も変わらない」を整理した。\n\nAgent SDK 使ってる人だけ別枠 $20 になる話。\n\n公式ヘルプ + 3社報道で確認した内容を、Pro $20 派のわたしの視点で書いた↓",
+      "reply_text": "https://note.com/moyuchi_aistu/n/n5ad530655339",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9105606,
+      "private_url": "https://typefully.com/?d=9105606&a=300622",
+      "social_set_id": 300622
+    },
+    {
+      "type": "quote_rt",
+      "slot": "night2",
+      "publish_at": "2026-05-16T23:00:00+09:00",
+      "source_account": "GoogleDeepMind",
+      "source_url": "https://x.com/GoogleDeepMind/status/2054246119635300451",
+      "topic_id": "3618795a-75fd-81cd-ae86-c3736739ddd1",
+      "hook_type": "感嘆スタート・型B（驚き発見型）",
+      "text": "これ来たんだ、、\n\nマウスポインタ50年振りに再発明。\nGemini が画面のどこに何があるか理解して、声でも指差しでも動かせる。\n\nわたしの副業でも、AI に「ここクリックして」って言える日が普通に来るんだろうな。",
+      "cross_posted_to": ["x"],
+      "draft_id": 9105607,
+      "private_url": "https://typefully.com/?d=9105607&a=301793",
+      "social_set_id": 301793
+    }
+  ],
+  "skipped": [
+    {
+      "type": "buzz_promo_reply",
+      "reason": "フォロワー16人段階の閾値（いいね5以上）をクリアする自分ツイートなし"
+    },
+    {
+      "type": "threads_only_auto",
+      "reason": "Threadsネタ帳に「長文体験談/連続投稿」未使用ネタなし・no_threads_only_idea_type"
+    }
+  ],
+  "plan_json_source": "today/plan.json (2026-05-15)",
+  "execution_summary": {
+    "success": 4,
+    "errors": 0,
+    "cross_post": 2,
+    "x_only": 2
+  }
+}

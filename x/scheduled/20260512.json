@@ -1,0 +1,50 @@
+{
+  "date": "2026-05-12",
+  "created_at": "2026-05-12T05:30:00+09:00",
+  "posts": [
+    {
+      "type": "daily",
+      "slot": "morning",
+      "publish_at": "2026-05-12T07:00:00+09:00",
+      "hook_type": "通常実況・所感型",
+      "text": "Anthropic が出した 2026年の Agentic Coding Trends レポート、朝コーヒー飲みながらザッと読んだ。\n\n副業者として持ち帰った3つだけ:\n\n・「タスク委譲」より「目的委譲」に振ってる人が速い\n・コード生成より「コードを読ませる」用途が伸びてる\n・ローカル + クラウドの使い分けが分岐点\n\n元PDFはリプに置いとく↓",
+      "media_ids": ["anthropic.png"],
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9057768,
+      "reply_url": "https://resources.anthropic.com/hubfs/2026%20Agentic%20Coding%20Trends%20Report.pdf",
+      "notion_neta_id": "35d8795a-75fd-814d-aac8-ddfa06fd6623"
+    },
+    {
+      "type": "daily",
+      "slot": "noon",
+      "publish_at": "2026-05-12T12:30:00+09:00",
+      "hook_type": "速報所感",
+      "text": "クラウドワークスAI、6月30日で終わるってお知らせ来てた。\n\n正直、わたしの本拠地はCWだけど、CW内のAIは1回も触ってなかった。月14万まで来たのもぜんぶ手元のClaude Code経由。\n\nCWは案件取る場所、AIは手元の道具、で役割分かれてる人は実害ゼロな気がする。\n\n詳しく書いたnote、夜出す。",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9057769,
+      "notion_neta_id": "35d8795a-75fd-81dc-aecc-d572bb5c8cc9"
+    },
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "source_cta": "x/pending_cta/done/note_20260512_crowdworks-ai-end.json.posted",
+      "publish_at": "2026-05-12T20:00:00+09:00",
+      "text": "クラウドワークスAIが6月30日で終わる。\n\nCWで月14万まで来た文系大学生のわたしが、ここの自社AIを1回も使わなかった理由を全部書いた。\n\n副業者にとっては「実害ゼロ」のニュースだけど、その裏で起きてる単価構造の変化はちゃんと読まないと来年効く。\n\n詳細はnote↓",
+      "reply_url": "https://note.com/moyuchi_aistu/n/ndf4991e8eed5",
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9057770,
+      "article_record_id": "35d8795a-75fd-81e1-8d18-c00e89c015b8"
+    },
+    {
+      "type": "quote_rt",
+      "slot": "night2",
+      "source_account": "haboshiastra",
+      "source_url": "https://x.com/haboshiastra/status/2053837872688705575",
+      "publish_at": "2026-05-12T22:00:00+09:00",
+      "text": "これClaude派副業者として地味に大事な話。\n\n「ダメだから禁止」じゃなくて「なぜダメか教える」で挙動が変わったやつ。副業でAIに作業任せるとき、ルール書くより目的書く方が効く理由がここにある気がしてる。\n\n人間に教えるのと同じだなって。",
+      "cross_posted_to": ["x"],
+      "draft_id": 9057771,
+      "notion_neta_id": "35d8795a-75fd-8136-a57e-cfde57bbb7c2"
+    }
+  ]
+}

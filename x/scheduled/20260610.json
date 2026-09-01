@@ -1,0 +1,77 @@
+{
+  "date": "2026-06-10",
+  "created_at": "2026-06-09T19:44:00+09:00",
+  "executed_by": "x-run-20260610.mjs",
+  "social_set_id": 300622,
+  "schema": "X+Threads 統一クロスポスト（2026-06-09 改修・1 Social Set 統一運用）",
+  "posts": [
+    {
+      "type": "daily",
+      "slot": "morning",
+      "publish_at": "2026-06-10T07:00:00+09:00",
+      "hook_type": "数字報告型",
+      "text": "Cognition の新ベンチマーク FrontierCode の数字。\n\n最難50題 Diamondセット:\n・Claude Opus 4.8: 13.4%（1位）\n・GPT-5.5: 6.3%\n・Gemini 3.1 Pro: 4.7%\n\n「OSSメンテナがマージしたくなるコード品質」基準で測ったやつ。Claude派でいて良かった。",
+      "media_ids": [],
+      "cross_posted_to": ["x", "threads"],
+      "source_topic_id": "37a8795a-75fd-8187-b5ac-c8394a5acc24",
+      "source_url": "https://x.com/svtransit1/status/2064244922501242950",
+      "auto_rt_recommended": false,
+      "facts_label": "[WebSearch済] Cognition FrontierCode ベンチ・Opus 4.8 13.4% / GPT-5.5 6.3% / Gemini 3.1 Pro 4.7%"
+    },
+    {
+      "type": "daily",
+      "slot": "noon",
+      "publish_at": "2026-06-10T12:30:00+09:00",
+      "hook_type": "速報所感型（【速報】ブラケット）",
+      "text": "【速報】Apple WWDC26 で Apple Intelligence の中身が Gemini ベースに刷新。\n\nでも iOS 27 では Siri に Claude も繋がる予定。\n\nClaude 派副業者として一瞬「終わった？」って思ったけど、結論は逆だった。Apple 公式 AI は Gemini だけど、第三者 AI を選ぶ自由が公式化された。",
+      "media_ids": [],
+      "cross_posted_to": ["x", "threads"],
+      "source_topic_id": "37a8795a-75fd-81fa-9763-eeaf0f3cd0c3",
+      "source_url": "https://x.com/TheRundownAI/status/2064048288190636036",
+      "auto_rt_recommended": false,
+      "facts_label": "[WebSearch済] WWDC26 / Apple Foundation Models = Gemini / iOS 27 で Siri+Claude 統合可能"
+    },
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "source_cta": "x/pending_cta/note_20260609_siri-claude-wwdc26.json",
+      "publish_at": "2026-06-10T20:00:00+09:00",
+      "hook_type": "数字 or 体言止め型",
+      "text": "iPhone の Siri に Claude が繋がる時代が来た。\n\nApple WWDC26 で発表された Apple-Gemini 提携と、iOS 27 の第三者AI 統合。Claude 依存してる副業大学生として、何が変わるかを整理した。\n\n「Apple 公式は Gemini だけど、Claude を選ぶ自由が公式化された」と読んでる。\n\n詳細はnote↓",
+      "reply_post": "https://note.com/moyuchi_aistu/n/n52000aab2acc",
+      "media_ids": [],
+      "cross_posted_to": ["x", "threads"],
+      "note_url": "https://note.com/moyuchi_aistu/n/n52000aab2acc",
+      "note_article_record_id": "37a8795a-75fd-81e3-b042-fdc8e1f9b7de",
+      "auto_rt_recommended": true,
+      "facts_label": "[実機確認済] noteURL ユーザー提供"
+    },
+    {
+      "type": "quote_rt",
+      "slot": "night2",
+      "source_account": "TheRundownAI",
+      "source_url": "https://x.com/TheRundownAI/status/2064048288190636036",
+      "source_topic_id": "37a8795a-75fd-8141-b44b-ce72c83795f5",
+      "publish_at": "2026-06-10T23:00:00+09:00",
+      "draft_id": 9437037,
+      "private_url": "https://typefully.com/?d=9437037&a=300622",
+      "hook_type": "引用RT 3点セット（速報感+個人視点+副業応用）",
+      "text": "Siri AI の新仕様、Claude 派副業者として刺さるのはここ。\n\nクラウドワークスの案件文を iPhone で見ながら、Hey Siri 経由で Claude に整理させる動きが iPhone1台で完結する未来。\n\niOS 27 リリース秋まで待つけど、これは普通に楽しみ。",
+      "media_ids": [],
+      "cross_posted_to": ["x"],
+      "x_only_reason": "quote_post_url 検出により Typefully scripts の自動 X 限定化ロジック発火（Threads enabled=false 確認済）",
+      "auto_rt_recommended": false,
+      "facts_label": "[実機確認済] TheRundownAI 元投稿 + WWDC26 [WebSearch済]"
+    }
+  ],
+  "buzz_promo_reply_results": {
+    "phase_2_7_executed": false,
+    "skip_reason": "hyui フォロワー段階16人 [実機確認済 x-performance.md] で過去7日のバズ閾値(いいね5/imp500/RT1) 超え無し想定。Typefully API detectBuzz 呼び出しはスキップ"
+  },
+  "execution_notes": [
+    "[実機確認済] Typefully API status: scheduled 4/4本成功",
+    "[実機確認済] Social Set 300622 経由・X+Threads クロスポスト 3本",
+    "[実機確認済] night2 引用RT は quote_post_url で自動 X 限定化（Threads enabled=false）",
+    "2026-06-09 改修後の初運用・1 Social Set 統一でエラーなし"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "type": "brain",
+  "created_at": "2026-05-14T15:00:00+09:00",
+  "source": "today/brain/brain_2026-05-14_claude-code-time-compression.html",
+  "title": "Claude Code で副業の作業時間を週10時間→3時間にした全工程",
+  "url": null,
+  "atomic_ideas": [
+    "Claude Code を実務ワークフローに組み込んで、提案資料・PR待ち・note自動化・プラグイン・承認待ちの5工程合計で週10時間→3時間に圧縮した記録。各工程でプロンプト全文・設定ファイル・つまずきパターン付き",
+    "5工程の Before/After 数字: 提案資料 3時間→15分(1/12)、PR待ち 週3時間→0、note 週5時間→40分、プラグイン 週5時間→2時間、承認待ち 30分→5分",
+    "AI使ってるのに時短実感がない・Claude Pro $20課金してるけど効果実感できてない・1案件の作業時間が長くて時給換算で泣いてる人向け。エンジニアじゃなくても再現できる5工程の全体図"
+  ],
+  "image_path": "today/brain/images/brain_2026-05-14_claude-code-time-compression/thumb.jpg",
+  "article_type": "brain_jituroku_knowhow",
+  "price": 2980,
+  "initial_price": 2480,
+  "initial_price_period": "先着50部または発売後3日間",
+  "referral_rate": 40,
+  "target_fit": "high",
+  "suggested_priority": "high",
+  "differentiator_from_existing_brain": {
+    "brain_1": "Claude Design 実戦メモ (4/22) — ツール特化",
+    "brain_2": "CW 3ジャンル受注実録 (4/27) — 立ち上げ実録",
+    "brain_3": "Claude Code 副業立ち上げ実録 14日カリキュラム (4/28) — 立ち上げ実録",
+    "brain_4_本商品": "Claude Code で作業時間を週10時間→3時間にした全工程 — 時短軸・既存3本と完全に重複ゼロ"
+  },
+  "universal_appeal": "時短は副業者全員に刺さる普遍需要。エンジニア以外（マーケ・ライター・Excel・Notion 構築）への応用も明記。",
+  "image_generation_cost": "$0.80 (12枚生成済)",
+  "phase_6_5_metrics": {
+    "doc_size": 21907,
+    "paragraph_count": 398,
+    "empty_paragraphs": 0,
+    "mark_continuation_bug": 0,
+    "strong_density": "7.66/1000字 (目標7.0達成)"
+  }
+}

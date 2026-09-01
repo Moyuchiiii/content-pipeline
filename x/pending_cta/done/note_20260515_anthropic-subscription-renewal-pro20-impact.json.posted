@@ -1,0 +1,17 @@
+{
+  "type": "note",
+  "created_at": "2026-05-15T15:30:00+09:00",
+  "source": "today/note/draft_2026-05-15_anthropic-subscription-renewal-pro20-impact.html",
+  "title": "Anthropic 6/15からサブスク変わる。Pro $20の副業派、何が変わって何が変わらないか",
+  "url": "https://note.com/moyuchi_aistu/n/n5ad530655339",
+  "atomic_ideas": [
+    "Anthropic が 6/15 からサブスク仕様変更。Pro $20 で Claude Code interactive 使ってる副業派は実質ゼロ影響。変わるのは Agent SDK / claude -p / GitHub Actions / OpenClaw 等を使ってる人のみ",
+    "公式月次クレジット: Pro $20 / Max5x $100 / Max20x $200。インタラクティブ Claude Code は対象外で従来通り。さらに weekly limits +50% が 7/13 まで暫定",
+    "副業初心者なら Agent SDK は後回しでOK。まずは interactive Claude Code を毎日触って案件1件取るのが先。月14万までのフローも全部 interactive のみだった"
+  ],
+  "image_path": "today/note/thumb_2026-05-15_anthropic-subscription-renewal-pro20-impact.png",
+  "article_type": "sokuho",
+  "price": "free",
+  "target_fit": "high",
+  "suggested_priority": "high"
+}

@@ -16,22 +16,29 @@ hyui の X / Threads 投稿を Typefully 経由で毎日自動予約するパイ
 ## コンセプト
 
 - **毎日実行**: 1日1回 `/x-run` を叩くと、翌日分の投稿（日常 **1〜4本**・スキップ可 + 引用RT 0〜3本 + 告知差し替え + バズ宣伝リプ）をTypefullyに予約
-- **マルチプラットフォーム（2026-04-27 追加）**: 同じ本文を X と Threads の両方に同時投稿（クロスポスト）。Typefully の Social Set #300622 に X+Threads 両方紐付け済み
+- **マルチプラットフォーム（2026-04-27 追加・2026-06-09 統一改修）**: 同じ本文を X と Threads の両方に同時投稿（クロスポスト）。Typefully の Social Set #300622 に X+Threads 両方紐付け済み。**2026-06-09 サブスク節約のため、X 用と Threads 用で別文章を作る運用を完全廃止。すべて1本のドラフトでクロスポストする**
 - **人間らしさ優先**: hyui は個人アカウント（文系大学生）なので、メディア型の型強制はしない。日常ツイートはネタがない日はスキップしてOK（詳細 Phase 3 冒頭）
 - **Typefully経由**: X純正予約は使わない。Typefully API v2 で schedule_at 指定
 - **引用RTはAI全般公式アカウントのみ**: Claude / OpenAI / Google / Meta 等の公式（日本語インフルエンサーは対象外）
 - **画像戦略は段階運用**: Phase 1は画像なしで送信、Phase 2から自動添付（後述）
 
-### クロスポスト方針（X / Threads 振り分け）
+### クロスポスト方針（2026-06-09 改修・1 Social Set 統一運用）
 
-| 投稿タイプ | X | Threads | 理由 |
+[WebSearch済 Typefully公式 pricing 2026] Social Set 数で料金が変わる（Free=1 Social Set/15投稿月・Creator $19/月=10 Social Sets・Team $39/月=50 Social Sets）。3 Social Set 構成は Creator 以上必須でサブスク料金がかさむため、**1 Social Set（X+Threads クロスポスト）に統一**して節約運用に切替。
+
+| 投稿タイプ | X | Threads | 備考 |
 |---|---|---|---|
-| 日常ツイート 1〜4本 | ✅ | ✅ | 同本文をクロスポスト |
-| note/Brain 告知 | ✅ | ✅ | 同本文・同画像をクロスポスト |
-| スレッド連投（水/日） | ✅ | ✅ | Threads もスレッド対応 |
-| 告知のセルフ引用RT | ✅ | ❌ | Threads 引用RT文化薄め・X 限定 |
-| 引用RT（@claudeai 等） | ✅ | ❌ | quote_post_url は X 専用運用 |
-| バズ宣伝リプ | ✅ | ❌ | reply_to_url は X 専用 |
+| 日常ツイート 1〜4本 | ✅ | ✅ | 同本文クロスポスト |
+| note/Brain 告知 | ✅ | ✅ | 同本文・同画像クロスポスト |
+| スレッド連投（水/日） | ✅ | ✅ | Threads もスレッド対応・同本文 |
+| 告知のセルフ引用RT | ✅ | ⚠️ | quote_post_url は X 専用機能。同 Social Set 内で X 側のみ引用挙動発火・Threads 側はリンク付きテキストとして投稿される |
+| 引用RT（@claudeai 等） | ✅ | ⚠️ | 同上・Threads 側はテキスト投稿 |
+| バズ宣伝リプ | ✅ | ❌ | reply_to_url は X 専用機能・Typefully API で X 限定挙動になる（Threads には流れない） |
+
+**廃止された運用（2026-06-09・サブスク節約改修）:**
+- ❌ Threads-only 長文体験談（500字）の自動生成（旧 Phase 2.8）
+- ❌ X 用と Threads 用で別文章を作る運用
+- ❌ TYPEFULLY_X_ONLY_SOCIAL_SET_ID / TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID の使用
 
 ---
 
@@ -61,46 +68,43 @@ hyui の X / Threads 投稿を Typefully 経由で毎日自動予約するパイ
 
 ただし現状の Typefully API では auto_retweet フラグの個別投稿制御は [要検証]。実装方針確定までは、ユーザーが Typefully UI で個別投稿に手動で Auto-RT スイッチON するのが運用ルール。スキルからは「この投稿は Auto-RT ONを推奨」というコメントをdraft内のメタ情報に記載しておく。
 
-### ① 環境変数チェック（2026-04-28 マルチプラットフォーム対応・3 ID）
+### ① 環境変数チェック（2026-06-09 改修・1 Social Set 統一）
 
 ```bash
 # projects/content-pipeline/.env から読み込む
-TYPEFULLY_API_KEY                    必須
-TYPEFULLY_SOCIAL_SET_ID              必須（クロスポスト用 X+Threads）
-TYPEFULLY_X_ONLY_SOCIAL_SET_ID       推奨（X専用・引用RT/バズリプ用）
-TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID 推奨（Threads専用・長文体験談用）
+TYPEFULLY_API_KEY        必須
+TYPEFULLY_SOCIAL_SET_ID  必須（クロスポスト用・X+Threads 同時投稿）
 ```
 
-3 種の Social Set 配信先用途:
-- **クロスポスト**: 日常実況・告知・スレッド連投 → X+Threads 両方
-- **X専用**: 引用RT（@claudeai 等）・バズ宣伝リプ → X のみ
-- **Threads専用**: 500字フル活用の長文体験談・連続投稿 → Threads のみ
+すべての投稿（日常実況・告知・スレッド連投・引用RT・バズリプ）を 1 Social Set 経由で送信する。引用RT は quote_post_url、バズリプは reply_to_url の機能差で X 側挙動を制御する。
 
 未設定なら:
 ```
 ⚠️ Typefully 環境変数が未設定です
-→ projects/content-pipeline/.env を開いて TYPEFULLY_API_KEY を記入してください
-→ 完了後 /x-run setup を実行して Social Set ID を取得します
+→ projects/content-pipeline/.env を開いて TYPEFULLY_API_KEY と TYPEFULLY_SOCIAL_SET_ID を記入してください
+→ /x-run setup で Social Set ID を取得できます
 ```
 
-専用 ID（X-only / Threads-only）が未設定の場合は警告のみ出して、クロスポスト Social Set にフォールバック。
+**廃止された環境変数（2026-06-09・サブスク節約改修）:**
+- ❌ `TYPEFULLY_X_ONLY_SOCIAL_SET_ID` — 引用RT・バズリプも統一 Social Set 経由に変更
+- ❌ `TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID` — Threads-only 長文運用廃止
 
 ### ② 起動ルート判定
 
 | 引数 | 処理 |
 |---|---|
-| （なし） | **daily-auto**（メイン）— 明日分の X+Threads クロスポスト + 引用RT + 告知 + バズリプ + **Threads-only 自動判定（Phase 2.8）** を一括予約 |
+| （なし） | **daily-auto**（メイン）— 明日分の X+Threads クロスポスト + 引用RT + 告知 + バズリプを一括予約 |
 | `setup` | Social Set ID 取得 → .env に書き込み |
-| `queue [target]` | 現在のTypefullyキューを表示（target: cross / x-only / threads-only） |
-| `threads-only` | **Threads単独投稿モード（手動・上書き用）** — daily-auto の自動判定でスキップされた日にユーザーが明示的に Threads 長文だけ追加したい場合に使う |
-| `skip-threads` | 当日の自動 Threads-only 判定をスキップ（疲れた日・ネタ薄い日用） |
+| `queue` | 現在のTypefullyキューを表示 |
 | `dry-run` | 生成はするが Typefully に送らない（テスト用） |
+
+**2026-06-09 廃止オプション**: `threads-only` / `skip-threads` は Threads-only 長文運用廃止に伴い削除。
 
 ---
 
-## モード: setup（初回・追加 Social Set 登録時）
+## モード: setup（初回・Social Set 登録）
 
-`scripts/typefully.mjs` のヘルパー関数 `getSocialSets()` を呼んで、hyui_cc に紐づく Social Set ID 一覧を取得する。
+`scripts/typefully.mjs` のヘルパー関数 `getSocialSets()` を呼んで、hyui_cc に紐づく Social Set ID を取得する。
 
 ```bash
 node scripts/typefully.mjs list-social-sets
@@ -108,23 +112,19 @@ node scripts/typefully.mjs list-social-sets
 
 出力例:
 ```
-Social Sets (3 found):
-1. ID: abc123... | @hyui_cc | クロスポスト用
-2. ID: def456... | @hyui_cc | X専用
-3. ID: ghi789... | @hyui__cc | Threads専用
+Social Sets (1 found):
+1. ID: abc123... | @hyui_cc + @hyui__cc | クロスポスト用（X+Threads）
 
-→ 用途別に対応する ID を .env に登録してください:
-   TYPEFULLY_SOCIAL_SET_ID            : クロスポスト用（X+Threads）
-   TYPEFULLY_X_ONLY_SOCIAL_SET_ID     : X専用（引用RT・バズリプ用）
-   TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID : Threads専用（長文体験談用）
+→ 以下を .env に登録してください:
+   TYPEFULLY_SOCIAL_SET_ID : クロスポスト用（X+Threads）
 
 現在の.env登録状況:
-  クロスポスト    : abc123...
-  X専用            : def456...
-  Threads専用      : ghi789...
+  TYPEFULLY_SOCIAL_SET_ID : abc123...
 ```
 
-ユーザーが Typefully UI で名付けた Social Set 名と照合して、.env に 3 ID を登録する。
+ユーザーが Typefully UI で X と Threads の両方を1つの Social Set に紐付けて作成。スキルからは Social Set ID 1つだけを参照する。
+
+**2026-06-09 改修前との差分**: 旧運用では 3 Social Set（クロスポスト・X 専用・Threads 専用）を管理していたが、Typefully サブスク節約のため 1 Social Set に統一。X 限定機能（quote_post_url / reply_to_url）は同一 Social Set 内で X 側だけが反応する Typefully API の仕様を利用する。
 
 ---
 
@@ -384,80 +384,13 @@ Typefully が `platforms.x.settings.reply_to_url` で指定ツイートへのリ
 
 バズなしの日は Phase 2.7 の出力ゼロ。無理やり宣伝しない。
 
-### Phase 2.8: Threads 単独投稿の自動判定（2026-04-29 追加・全自動運用）
+### Phase 2.8: 廃止（2026-06-09・Threads-only 長文運用終了）
 
-**目的**: ユーザーは `/x-run` だけ叩けば、その日に Threads 単独の長文体験談を入れるべきかをスキルが自動判定して予約する。`/x-run threads-only` を別途叩く必要なし。
+**廃止理由**: Typefully サブスク節約のため 1 Social Set に統一・X 用と Threads 用で別文章を作る運用そのものを終了。Threads には日常ツイート・告知・スレッドの本文がクロスポストで流れる（500字フル活用の長文体験談は廃止）。
 
-#### 発火条件（すべて満たすと自動生成）
+旧 Phase 2.8 のロジック（過去7日 Threads-only 投稿数カウント・Threadsネタ帳の長文体験談スキャン・21:00枠予約・shouldGenerateThreadsOnly 関数）はすべて呼ばない。
 
-1. ✅ **頻度条件**: `x/scheduled/` 過去7日のログを走査して `type: "threads_only"` のレコード数が **0〜1本** （週1〜2本ペース維持・3本以上ある日はスキップ）
-2. ✅ **ネタ条件**: Threadsネタ帳（`collection://6af7d0ce-64a0-4347-a5e3-325d27b440b8`）に `ネタタイプ: 長文体験談 OR 連続投稿` の未使用レコードがある、または直近24時間以内に note 公開がある（再パッケージ可）
-3. ✅ **環境条件**: `TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID` が設定済（未設定なら警告のみ・スキップ）
-
-#### スキップ条件（いずれか該当でスキップ）
-
-- ❌ 過去7日に Threads-only 投稿が **2本以上** ある（過剰投稿防止・読者疲労リスク）
-- ❌ Threadsネタ帳に未使用ネタなし、かつ直近24時間以内に note 公開なし（質を担保するため無理に作らない）
-- ❌ ユーザーが `/x-run skip-threads` で明示的にスキップ指定
-
-#### 判定ロジック実装例
-
-```javascript
-// scripts/typefully.mjs に追加予定の判定関数
-async function shouldGenerateThreadsOnly() {
-  // 1. 過去7日のThreads-only投稿数カウント
-  const recentThreadsOnly = await countRecentThreadsOnlyPosts({ days: 7 });
-  if (recentThreadsOnly >= 2) return { skip: true, reason: 'recent_2plus' };
-
-  // 2. ネタ availability チェック
-  const ideaAvailable = await checkThreadsNetaOrRecentNote();
-  if (!ideaAvailable) return { skip: true, reason: 'no_idea' };
-
-  // 3. 環境変数チェック
-  if (!process.env.TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID) {
-    return { skip: true, reason: 'env_not_configured' };
-  }
-
-  return { skip: false };
-}
-```
-
-#### Threads-only ON 判定時のフロー
-
-1. Threadsネタ帳から `長文体験談` または `連続投稿` の未使用ネタを優先度順に取得
-2. ネタなしなら `today/note/` の最新記事を Threads向けに「読み物として再パッケージ」（500字フル活用）
-3. **21:00枠** で予約（[実機確認済 x-profile.md] Threads ターゲット 25-34歳・読み物層が最もアクティブ）
-4. cross の night1 (20:00) や night2 (22:00) と1時間ずらす（タイムライン上の被り回避）
-5. `target: 'threads-only'` で `createDraft()` 呼び出し
-6. ネタ採用時は Notion ステータスを `採用済み` に更新
-
-#### Phase 5 ユーザー承認に組み込み
-
-ドラフトプレビューに「Threads単独」セクションを追加（発火時のみ表示）:
-
-```
-▼ Threads単独 1本（→ Threads 限定・Threads専用 Social Set経由）
-
-【夜 21:00】長文体験談（500字）
-配信: ❌ X / ✅ Threads
-──────────
-{本文}
-──────────
-画像: なし
-発火理由: 過去7日 Threads-only 投稿 0本・ネタ帳「長文体験談」あり
-```
-
-スキップ時は理由をログ出力（プレビュー非表示）:
-```
-ℹ️ Threads-only 自動判定: スキップ（reason: recent_2plus / no_idea / env_not_configured）
-```
-
-#### 実装方針（段階運用）
-
-- **Phase A（現状）**: SKILL.md にロジック明文化・リードが手動で判定して必要なら同セッション内で生成（Threads-only 用スクリプトを別途生成 or 既存 daily スクリプトに混ぜる）
-- **Phase B（将来）**: `scripts/typefully.mjs` に `shouldGenerateThreadsOnly()` ヘルパー関数追加・x-run-{date}.mjs 内で1関数呼ぶだけで判定〜生成〜予約完了
-
-現時点では Phase A 運用。次回以降の `/x-run` 起動時に、リードがこのフェーズを必ず実行する。
+`/x-run threads-only` / `/x-run skip-threads` オプションも廃止（Phase 0 起動ルート判定参照）。
 
 ### Phase 3: 日常ツイート生成（1〜4本・気分次第でスキップ可・2026-04-24 緩和）
 
@@ -717,40 +650,40 @@ await createDraft({
    X: @hyui_cc / Threads: @hyui__cc
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-▼ 日常ツイート 4本（→ X+Threads クロスポスト）
+▼ 日常ツイート 4本（→ X+Threads クロスポスト・統一 Social Set）
 
 【朝 08:00】Before/After型
-配信: ✅ X / ✅ Threads
+配信: ✅ X+Threads
 ──────────
 {本文}
 ──────────
 画像: x/images/YYYYMMDD_am.png（配置済み）
 
 【昼 12:30】驚き発見型
-配信: ✅ X / ✅ Threads
+配信: ✅ X+Threads
 ──────────
 {本文}
 ──────────
 画像: x/images/claude_code.png（話題: Claude Code新機能）
 
 【夜前半 20:00】実況型
-配信: ✅ X / ✅ Threads
+配信: ✅ X+Threads
 ──────────
 {本文}
 ──────────
 画像: なし
 
 【夜後半 22:00】問いかけ型
-配信: ✅ X / ✅ Threads
+配信: ✅ X+Threads
 ──────────
 {本文}
 ──────────
 画像: なし
 
-▼ 引用RT {N}本（上限なし・質フィルタのみ・X 限定）
+▼ 引用RT {N}本（上限なし・質フィルタのみ）
 
 【引用RT 1 / 予定 09:30】
-配信: ✅ X / ❌ Threads（引用RT は X 限定）
+配信: ✅ X+Threads（引用挙動は X 側のみ・Threads にはリンク付きテキストとして流れる）
 引用元: @claudeai の https://x.com/claudeai/status/...
 元ツイート要約: 「Claude Opus 4.7 リリース」
 ──────────
@@ -758,10 +691,10 @@ await createDraft({
 ──────────
 画像: なし
 
-▼ 宣伝リプ {M}本（Phase 2.7: 自分のバズ検知・X 限定）
+▼ 宣伝リプ {M}本（Phase 2.7: 自分のバズ検知）
 
 【宣伝リプ 1 / 予定 10:00】
-配信: ✅ X / ❌ Threads（reply_to_url は X 専用）
+配信: ✅ X のみ（reply_to_url 指定により Typefully で X 限定挙動・Threads には流れない）
 返信先: https://x.com/moyuchi_cc/status/{tweet_id}
 元ツイート: {バズッたツイートの要約} ❤️{likes} 🔁{retweets}
 ──────────
@@ -776,7 +709,7 @@ reply_to_url: 指定済み（Typefullyが指定ツイートへのリプとして
 
 ```
 【夜前半 20:00】🔥 note告知（pending_cta から採用）
-配信: ✅ X / ✅ Threads（告知本体はクロスポスト）
+配信: ✅ X+Threads（告知本体はクロスポスト）
 元記事: {記事タイトル}
 URL: {note URL}
 ──────────
@@ -785,7 +718,7 @@ URL: {note URL}
 画像: note サムネ ({image_path})
 
 【セルフ引用RT 翌朝07:00】補足コメント
-配信: ✅ X / ❌ Threads（quote_post_url は X 限定）
+配信: ✅ X+Threads（引用挙動は X 側のみ・Threads にはテキストとして流れる）
 ──────────
 {6時間後の引用RT文}
 ──────────
@@ -796,7 +729,7 @@ URL: {note URL}
 
 ```
 【夜前半 20:00】📚 スレッド投稿 {N}本（水曜ノウハウ）
-配信: ✅ X / ✅ Threads（スレッドもクロスポスト）
+配信: ✅ X+Threads（スレッドもクロスポスト）
 主題: {テーマ}
 ──────────
 1本目（フック）:
@@ -843,25 +776,22 @@ N本目（まとめ + note誘導）:
 - Typefully キューに入った時点で自動投稿される
 - 失敗時はエラーログを `x/logs/YYYYMMDD_error.log` に記録
 
-`scripts/typefully.mjs` の `createDraft()` を呼ぶ。**2026-04-28 改修: target 引数で配信先 Social Set を指定**:
+`scripts/typefully.mjs` の `createDraft()` を呼ぶ。**2026-06-09 改修: 全投稿を統一 Social Set (X+Threads クロスポスト) 経由で送信**:
 
 ```javascript
 import { createDraft } from './scripts/typefully.mjs';
 
-// 日常ツイート（クロスポスト Social Set・X+Threads 両方）
+// 日常ツイート（統一 Social Set・X+Threads クロスポスト）
 await createDraft({
   posts: [{ text: '本文', media_ids: [] }],
   publishAt: '2026-04-24T08:00:00+09:00',
-  target: 'cross',
-  crossPostToThreads: true,  // ✅ Threads にも流す
+  // target 引数は廃止（2026-06-09・全投稿が統一 Social Set 経由）
 });
 
 // 告知ツイート（クロスポスト・画像付き）
 await createDraft({
   posts: [{ text: '告知本文', media_ids: [thumbnailId] }],
   publishAt: '2026-04-24T20:00:00+09:00',
-  target: 'cross',
-  crossPostToThreads: true,  // ✅ note/Brain 告知も Threads クロスポスト
 });
 
 // スレッド連投（クロスポスト）
@@ -872,67 +802,44 @@ await createDraft({
     { text: '3本目（まとめ）' },
   ],
   publishAt: '2026-04-24T20:00:00+09:00',
-  target: 'cross',
-  crossPostToThreads: true,
 });
 
-// 引用RT（X専用 Social Set 経由・Threads スキップ）
+// 引用RT（quote_post_url 指定で X 側のみ引用挙動発火・Threads はリンク付きテキストとして投稿）
 await createDraft({
   posts: [{
     text: 'コメント本文',
     quote_post_url: 'https://x.com/claudeai/status/xxx',
   }],
   publishAt: '2026-04-24T09:30:00+09:00',
-  target: 'x-only',  // ✅ X専用 Social Set（フォールバック: クロスポスト）
 });
 
-// バズ宣伝リプ（X専用 Social Set 経由）
+// バズ宣伝リプ（reply_to_url 指定・Typefully API で X 限定挙動になる）
 await createDraft({
   posts: [{ text: '宣伝リプ本文' }],
   publishAt: '2026-04-24T10:00:00+09:00',
-  target: 'x-only',  // ✅ X専用 Social Set
   replyToUrl: 'https://x.com/hyui_cc/status/xxx',
 });
 
-// セルフ引用RT（告知の翌朝補足コメント・X専用）
+// セルフ引用RT（告知の翌朝補足コメント・quote_post_url で X 側のみ引用挙動発火）
 await createDraft({
   posts: [{
     text: '補足コメント',
     quote_post_url: 'https://x.com/hyui_cc/status/{自分の告知ツイートID}',
   }],
   publishAt: '2026-04-25T07:00:00+09:00',
-  target: 'x-only',
 });
 
-// Threads 単独・長文体験談（Threads専用 Social Set 経由）
-// /x-run threads-only モードから呼ばれる
-await createDraft({
-  posts: [{ text: '500字の長文体験談本文' }],
-  publishAt: '2026-04-24T21:00:00+09:00',
-  target: 'threads-only',  // ✅ Threads専用 Social Set
-});
-
-// Threads 連続投稿（Thread-to-Lead 型・5〜7本）
-await createDraft({
-  posts: [
-    { text: '1本目（フック）' },
-    { text: '2本目' },
-    { text: '3本目' },
-    { text: '4本目' },
-    { text: '5本目（CTA）' },
-  ],
-  publishAt: '2026-04-24T21:00:00+09:00',
-  target: 'threads-only',
-});
+// Threads 単独投稿（旧 Phase 2.8・2026-06-09 廃止）
+// 以下は呼び出さない・サブスク節約改修により Threads-only 長文運用は終了
+// await createDraft({ ..., target: 'threads-only' });  // ❌ 旧運用
 ```
 
-**target 引数の挙動**:
-- `target: 'cross'` → クロスポスト Social Set。`crossPostToThreads: true` で X+Threads 両方、false で X のみ
-- `target: 'x-only'` → X専用 Social Set。Threads 設定は無視・常に X 単独
-- `target: 'threads-only'` → Threads専用 Social Set。X 設定は無視・常に Threads 単独
-- 専用 ID（x-only / threads-only）が未設定なら警告してクロスポストにフォールバック
-
-**重要（自動 X 限定化）**: `target: 'cross'` でも posts のいずれかが `quote_post_url` を持つ場合や `replyToUrl` が指定されている場合は、`createDraft` 側で自動的に Threads を無効化する。X 限定運用の取り違えを防ぐ安全装置。
+**createDraft 引数の挙動（2026-06-09 改修）**:
+- すべての投稿が単一の `TYPEFULLY_SOCIAL_SET_ID` （X+Threads クロスポスト）経由で送信される
+- `target` 引数は廃止（過去の `cross` / `x-only` / `threads-only` は無効）
+- `quote_post_url` 指定の投稿 → Typefully API で X 側のみ引用挙動発火・Threads にはリンク付きテキストとして流れる
+- `replyToUrl` 指定の投稿 → Typefully API で X 限定挙動（Threads には流れない）
+- `crossPostToThreads` フラグも廃止（Social Set 設定で自動制御）
 
 ### Phase 6.5: 投稿後運用ルール（2026-05-07 追加・SNSマーケ業界調査反映）
 
@@ -1080,8 +987,6 @@ mv x/pending_cta/note_20260423_xxx.json x/pending_cta/done/note_20260423_xxx.jso
 - スレッド {T}本 → X+Threads
 - 引用RT {Q}本 → X 限定
 - バズ宣伝リプ {B}本 → X 限定
-- Threads単独 {TH}本 → Threads 限定（Phase 2.8 自動発火 / スキップ理由: {reason}）
-
 Typefullyで確認:
 https://typefully.com/queue
 
@@ -1090,160 +995,29 @@ https://typefully.com/queue
 
 Discord通知（リードWebhook）:
 ```bash
-printf '{"embeds":[{"title":"✅ X+Threads 予約投稿完了","color":5763719,"fields":[{"name":"投稿日","value":"{明日の日付}","inline":true},{"name":"本数","value":"{N}件","inline":true},{"name":"内訳","value":"日常{D}/告知{C}/スレッド{T} → X+Threads クロスポスト\\n引用RT{Q}/バズ宣伝リプ{B} → X 限定","inline":false}],"footer":{"text":"hyui (X: @hyui_cc / Threads: @hyui__cc)"}}]}' \
+printf '{"embeds":[{"title":"✅ X+Threads 予約投稿完了","color":5763719,"fields":[{"name":"投稿日","value":"{明日の日付}","inline":true},{"name":"本数","value":"{N}件","inline":true},{"name":"内訳","value":"日常{D}/告知{C}/スレッド{T}/引用RT{Q} → X+Threads クロスポスト\\nバズ宣伝リプ{B} → X 限定（reply_to_url 仕様）","inline":false}],"footer":{"text":"hyui (X: @hyui_cc / Threads: @hyui__cc)"}}]}' \
   | curl -H "Content-Type: application/json" -X POST -d @- "{LEAD_WEBHOOK}"
 ```
 
 ---
 
-## モード: threads-only（Threads単独投稿モード・2026-04-28 新設）
+## モード: threads-only / skip-threads（廃止・2026-06-09）
 
-500字フル活用の長文体験談・連続投稿（Thread-to-Lead 型）を **Threads 専用 Social Set** に予約する。daily-auto のクロスポストとは独立。
+**廃止**。Typefully サブスク節約のため X 用と Threads 用で別文章を作る運用そのものを終了。Threads には日常ツイート・告知・スレッドの本文がクロスポストで流れる。長文体験談（500字）は今後生成しない。
 
-### 起動例
+旧仕様（500字フル活用の Threads 専用 Social Set 経由予約・Phase TO-1〜TO-7・shouldGenerateThreadsOnly ロジック）はすべて呼ばない。`/x-run threads-only` / `/x-run skip-threads` を叩いても無視される。
 
-```bash
-/x-run threads-only          # 1本生成して予約
-/x-run threads-only thread   # 5〜7本の連続投稿
-/x-run threads-only dry-run  # 生成のみ（送信スキップ）
-```
-
-### Phase TO-1: 環境変数チェック
-
-```
-TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID  必須
-```
-
-未設定なら警告:
-```
-⚠️ TYPEFULLY_THREADS_ONLY_SOCIAL_SET_ID が未設定です
-→ /x-run setup で 3 ID を取得して .env に登録してください
-→ 一時的にクロスポスト Social Set にフォールバックします
-```
-
-### Phase TO-2: コンテキスト読み込み（最低限）
-
-- `context/persona-hyui.md` — Hyui 人格・先輩フレーム・公開済エピソード
-- `context/published-history.md` — 過去主張との重複チェック
-- `context/x-strategy.md` — Threads 仕様（500字・連続投稿）
-- `context/voice-samples.md` — 文体・先輩フレーム表現
-- `context/writing-rules.md` — 禁止フレーズ・先輩フレームルール
-- `context/x-anti-ai-patterns.md` — AI感NGパターン
-
-### Phase TO-3: ネタ取得
-
-#### Step 1: Threadsネタ帳から「Threads単独」候補取得
-
-`mcp__notion__notion-fetch` で Threadsネタ帳（`collection://6af7d0ce-64a0-4347-a5e3-325d27b440b8`）を参照:
-- ステータス=`未使用`
-- ネタタイプ=`長文体験談` または `連続投稿`
-
-#### Step 2: フォールバック
-
-ネタ帳に該当なしの場合、`persona-hyui.md` セクション 5 「公開済エピソード引き出し」から **未公開角度** を生成提案:
-- 副業の 1 日のリアルなタイムライン
-- クライアントとのやり取りで詰まった話
-- Claude プロンプト試行錯誤の裏側
-- 月14万到達後の「失ったもの」深掘り（既存記事で書ききれなかった話）
-
-### Phase TO-4: 本文生成
-
-#### 単発長文モード（500字）
-
-構成:
-1. **フック（80〜120字）**: 「先輩のお姉さん」感のある問いかけ or 体言止めの強い1文
-2. **本論（300字前後）**: 等身大ストーリー・失敗開示・数字・Before/After
-3. **締め（80〜120字）**: 「先輩から君へ」のアクション提示 or 共感誘発の余韻
-
-文体:
-- 一人称「わたし」統一
-- 「ちょっと先を歩いた先輩」感
-- 「これから始める君へ」の語りかけ
-
-#### 連続投稿モード（5〜7本・Thread-to-Lead 型）
-
-構成:
-- **1本目（150字程度・フック）**: 強いテーゼ・体言止め・数字先行
-- **2〜N-1本目（各200〜300字）**: ストーリー展開・各本で1メッセージ
-- **N本目（CTA）**: noteメイン商品 or 関連無料記事へ誘導
-  - URL は本文ではなくリプライに置く
-
-### Phase TO-5: ユーザー承認
-
-生成内容を表示してユーザー承認を待つ。**送信はユーザー承認後**（絶対厳守）。
-
-```
-━━━━━━━━━━━━━━━━━━━━━━━━━
-🧵 Threads 単独投稿（プレビュー）
-
-【予定 21:00】長文体験談（500字）
-配信: ❌ X / ✅ Threads
-──────────
-{本文}
-──────────
-
-この内容でTypefullyに予約投稿してOK？
- → "OK" or "送信して"  : そのまま送信
- → "修正: {指示}"       : 再生成
- → "キャンセル"         : 中止
-━━━━━━━━━━━━━━━━━━━━━━━━━
-```
-
-### Phase TO-6: Typefully送信
-
-```javascript
-await createDraft({
-  posts: threadsPosts,
-  publishAt: '2026-04-29T21:00:00+09:00',
-  target: 'threads-only',
-  draftTitle: 'Threads単独 - 長文体験談 - 2026-04-29',
-});
-```
-
-### Phase TO-7: 履歴保存
-
-`x/scheduled/threads-only_YYYYMMDD.json` に追記:
-
-```json
-{
-  "date": "2026-04-29",
-  "type": "threads-only",
-  "mode": "long-form" | "thread",
-  "publish_at": "2026-04-29T21:00:00+09:00",
-  "posts_count": 1,
-  "text": "...",
-  "draft_id": "...",
-  "social_set": "threads-only"
-}
-```
-
-### 推奨投稿時間（[実機確認済 x-profile.md] Threadsターゲット 25-34歳）
-
-- 平日 **21:00-22:30**（読み物層が最もアクティブ）
-- 週末 10:00-12:00 / 21:00-23:00
-
-### 投稿頻度
-
-**週 1〜2 本**（運用初期）。クロスポストとは別カウント。
-[WebSearch済] Meta公式推奨は週 2-5 回・hyui の長文体験談は質優先で週 1-2。
-
-### NG 事項
-
-- X からのコピペ流用（Threads は読み物寄りなので長文化必須）
-- ハッシュタグ 3 個以上（Threads は 1 個推奨）
-- URL 本文直埋め（リプライに分離）
+復活させる場合は Typefully プラン Creator（$19/月）以上にアップグレードして Social Set を追加し、本セクションを git 履歴から復元する運用に戻すこと。
 
 ---
 
 ## モード: queue（Typefullyキュー確認）
 
 ```bash
-/x-run queue              # クロスポスト Social Set のキュー
-/x-run queue x-only       # X専用 Social Set のキュー
-/x-run queue threads-only # Threads専用 Social Set のキュー
+/x-run queue   # 統一 Social Set のキュー
 ```
 
-`scripts/typefully.mjs` の `getQueue({ target })` を呼んで、現在予約中の投稿を時系列で表示。
+`scripts/typefully.mjs` の `getQueue()` を呼んで、現在予約中の投稿を時系列で表示。**2026-06-09 改修**: `target` 引数（cross / x-only / threads-only）は廃止。
 
 ---
 
@@ -1310,9 +1084,10 @@ Phase 1〜5 までは通常通り実行。Phase 6（Typefully送信）だけス�
 - [ ] 改行位置が自然（単語途中で切れていない）
 
 ### クロスポスト整合性チェック（2026-04-27 追加・必須）
-- [ ] 日常ツイート・告知本体・スレッド連投は `crossPostToThreads: true` を `createDraft` に渡している（X+Threads 両方に流れる）
-- [ ] 引用RT（quote_post_url あり）は `crossPostToThreads` 指定なし（自動 X 限定化される）
-- [ ] バズ宣伝リプ（replyToUrl あり）は `crossPostToThreads` 指定なし（自動 X 限定化される）
+- [ ] 全投稿が `TYPEFULLY_SOCIAL_SET_ID` 経由で送信される（2026-06-09 改修・統一 Social Set）
+- [ ] 引用RT は `quote_post_url` を指定（Typefully API で X 側のみ引用挙動発火・Threads はリンク付きテキスト）
+- [ ] バズ宣伝リプは `replyToUrl` を指定（Typefully API で X 限定挙動・Threads には流れない）
+- [ ] `target` / `crossPostToThreads` 引数は使わない（2026-06-09 廃止）
 - [ ] 告知のセルフ引用RT（翌朝07:00）は X 限定運用（quote_post_url を持つため自動スキップ）
 - [ ] `x/scheduled/YYYYMMDD.json` の各レコードに `cross_posted_to` 配列が含まれている（`["x"]` または `["x", "threads"]`）
 

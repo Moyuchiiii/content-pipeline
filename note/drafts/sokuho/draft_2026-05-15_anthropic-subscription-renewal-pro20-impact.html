@@ -1,0 +1,133 @@
+<hr>
+<p style="text-align: center;"><b>Anthropic がサブスク変えるって聞いて、あなたの副業に影響あるか焦っていませんか？</b></p>
+<hr>
+
+<p>5月14日に Anthropic がサブスクの仕様変更を発表した。</p>
+
+<p>「6月15日から Claude Pro が実質値上げ」みたいな見出しが流れてきて、わたしも一瞬ドキッとした。</p>
+
+<p>結論から書く。</p>
+
+<p><b>Pro $20 で Claude Code を毎日使ってる副業派は、ほぼ何も変わらない。</b></p>
+
+<p>でも、人によっては変わる。</p>
+
+<p>その境目を、わたしの副業フローに照らして整理しておく。</p>
+
+<h2>Anthropic 6/15刷新、何があったか</h2>
+
+<p>公式ヘルプセンターに掲載されてる内容をそのまま書く。</p>
+
+<blockquote>
+<b>変更の中身</b><br>
+6月15日から Agent SDK と claude -p（非インタラクティブモード）の利用が、月次クレジット別枠になる
+</blockquote>
+
+<p>月次クレジットの金額はプランごとに決まってる。</p>
+
+<blockquote>
+<b>付与額（プラン別）</b><br>
+Pro $20 / Max 5x $100 / Max 20x $200 / Team Standard $20 / Team Premium $100 / Enterprise $20〜$200
+</blockquote>
+
+<p>未使用分は翌月に繰り越されない。</p>
+
+<p>超過したら標準API料金で課金される（事前に extra usage を有効化した場合のみ）。</p>
+
+<p>これだけ聞くと「Pro $20 って今までと同じ料金なのに、Agent SDK使うと別枠で消費される＝実質値上げ」に見える。</p>
+
+<p>でも、ここに大事な区別がある。</p>
+
+<h2>わたし（Pro $20 派）が「変わらない」ところ</h2>
+
+<p>公式の対象外リストを見ると、こう書いてある。</p>
+
+<blockquote>
+<b>クレジット対象外（=従来のサブスク枠内のまま）</b><br>
+ターミナル/IDE で動かす Claude Code・Claude.ai のチャット（Web/Desktop/Mobile）・Claude Cowork
+</blockquote>
+
+<p>これ、わたしの副業フローまんま。</p>
+
+<p>普段やってるのは Claude Code をターミナルで起動して、案件のコード書かせて、納品物作って、終わり。</p>
+
+<p>これは「Interactive Claude Code」に分類される。</p>
+
+<p>つまり、わたしの $20 はそのまま $20 で、weekly limit も従来通り使える。</p>
+
+<p>6/15 以降も体感ゼロ。</p>
+
+<p>ちなみに先週、ClaudeDevs 公式から「Claude Code weekly limits +50%、7/13まで」が告知されてる。</p>
+
+<p>むしろ枠が増えるタイミングだったりする。</p>
+
+<h2>一部の人だけ変わる、Agent SDK 別枠の話</h2>
+
+<p>公式の対象リストを見ると、ここに該当する人は影響を受ける。</p>
+
+<blockquote>
+<b>クレジット対象（=月次別枠で消費）</b><br>
+Claude Agent SDK を Python / TypeScript であなたのプロジェクトに組み込んでる・claude -p コマンド（バックグラウンド処理）を使ってる・Claude Code GitHub Actions を回してる・OpenClaw や Conductor などサードパーティ製エージェントを使ってる
+</blockquote>
+
+<p>これらは「プログラムから Claude を呼ぶ」用途。</p>
+
+<p>副業初心者の段階だと、まず触らない領域。</p>
+
+<p>でも、慣れてきて「夜寝てる間に Claude にPR作らせる」「GitHub Actions で自動レビュー回す」みたいなことを始めると、ここに該当してくる。</p>
+
+<p>その時に $20 の月次クレジットで足りるかどうか、なんだよね。</p>
+
+<p>足りなければ、超過分は standard API rate で課金される。</p>
+
+<p>これは「プロンプトキャッシュ最適化されてない使い方だと、月数百ドル〜数千ドル飛んでた」という4月の事件への対応策でもある。</p>
+
+<p>4月上旬、Anthropic は OpenClaw 等のサードパーティ製エージェントを全面禁止してた。</p>
+
+<p>それが今回、$20 別枠 + 超過は API 課金、という仕組みで解禁された形。</p>
+
+<hr>
+<p>ちなみに、月14万まで来た副業フローはぜんぶ Claude Code interactive で完結してて、Agent SDK は1度も触ってない。「副業初心者は interactive で十分」の根拠みたいなのは、ここのメイン記事にまとめてある。</p>
+<p>▶ 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話（¥2,000 ／ 初月¥1,480・〜2026-05-14）</p>
+<p>https://note.com/moyuchi_aistu/n/na548ac967740</p>
+<hr>
+
+<h2>あなたのフローは、どっち側か3秒で確認できる</h2>
+
+<p>「自分が Agent SDK 使ってるかどうか、わかんないかも」と思ったら、3秒で確認できる。</p>
+
+<blockquote>
+<b>確認方法</b><br>
+ターミナルで claude を打って起動してる→ interactive（影響なし）・claude -p "プロンプト" の形で打ってる→ Agent SDK扱い（影響あり）・OpenClaw / Conductor / 自作スクリプトから Claude を呼んでる→ Agent SDK扱い（影響あり）
+</blockquote>
+
+<p>わたしの場合、ぜんぶ前者だった。</p>
+
+<p>CW案件のコード書くのも、note記事の下書き作るのも、claude を打って対話しながら進めるスタイル。</p>
+
+<p>そもそも、副業初心者が Agent SDK で自動化を組むのは、現場の流れ的にも早い。</p>
+
+<p>まずは Claude Code を手で触って、案件を1件取って、納品して、を繰り返すフェーズが先。</p>
+
+<p>自動化は、その繰り返しが面倒になってきた頃にやればいい。</p>
+
+<h2>同じ場所で焦ってる君へ、3つだけ置いていく</h2>
+
+<p>1. claude -p や GitHub Actions を使ってないなら、6/15 は何も変えなくていい。情報を眺めて終わり</p>
+
+<p>2. 「自分は Agent SDK 使ってるかも」と不安なら、ターミナルで打ってるコマンドを見直す。claude だけなら影響なし</p>
+
+<p>3. 副業初心者で焦ってるなら、Agent SDK は後回し。interactive Claude Code を毎日触る方が圧倒的に近道</p>
+
+<p>これだけで、わたしが昨日 X のタイムラインで「Pro $20 値上げ！？」を見て一瞬焦った時間は飛ばせる。</p>
+
+<hr>
+<p>稼ぐ前にツールの仕様で迷うのが一番もったいない。Claude Code を手で触って案件1件取る、までの流れはここに全部書いた。</p>
+<p>▶ 大学生がClaude Codeで副業2ヶ月やってみたら、月14万になった話（¥2,000 ／ 初月¥1,480・〜2026-05-14）</p>
+<p>https://note.com/moyuchi_aistu/n/na548ac967740</p>
+
+<h3>あわせて読みたい</h3>
+<ul>
+<li><a href="https://note.com/moyuchi_aistu/n/ne6b1e71946c7">SpaceX提携でClaude Codeのレートが2倍になった日｜Pro月3000円のわたしが変わったこと</a></li>
+<li><a href="https://note.com/moyuchi_aistu/n/n52c598f3a667">「Claude 賢くないな」を7週間自責してたら、自分のせいじゃなかった話</a></li>
+</ul>

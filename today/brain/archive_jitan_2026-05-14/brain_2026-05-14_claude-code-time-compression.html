@@ -1,0 +1,1114 @@
+<!--
+source_note: 新規企画 (5/14 案1採用 時短型)
+type: jituroku_knowhow_hybrid
+score: TBD
+created: 2026-05-14
+status: final
+concept: Claude Code で副業の作業時間を週10時間→3時間にした全工程
+target: 副業者全員 (時短は普遍需要)
+differentiator: hyui の圧縮事例 5 つを工程化・プロンプト全文付き
+-->
+
+<blockquote>
+<p><strong>非エンジニアが Claude Code を実務ワークフローに組み込んでから、週10時間かけてた作業が3時間で終わるようになるまでの記録。</strong></p>
+<p><strong>提案資料・PR待ち時間・note記事自動化・公式プラグイン導入・承認待ち時間の5工程ごとに、使ったプロンプト全文・設定ファイル・つまずきパターンを書き起こした。</strong></p>
+</blockquote>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像1「5つの圧縮工程」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像1」を参照</strong></p>
+</blockquote>
+
+<h2>初動価格について</h2>
+
+<p>この記事は、Claude Code を使ってる(または使い始めたばかりの)非エンジニアが、実務作業を週10時間から3時間まで圧縮できるようになるまでの全工程を書き起こしたもの。</p>
+
+<p><strong>先着 50 部または発売後 3 日間は ¥2,480 で出します。それ以降は ¥2,980 に戻します。</strong></p>
+
+<p>変更予定は最初の告知で全部明示しています。「いつのまにか値上げ」じゃなく、ロードマップ通りに動きます。</p>
+
+<h2>こんな悩みありませんか？</h2>
+
+<p>・ 平日は仕事で時間がない・実務に充てられる時間が少なすぎる</p>
+
+<p>・ Claude / ChatGPT を触ってるけど、時短実感がない</p>
+
+<p>・ プロンプトを書くだけで時間がかかって、本末転倒な気がしてる</p>
+
+<p>・ Claude Pro 月 $20 課金してるけど、効果を実感できてない</p>
+
+<p>・ 案件は取れても、作業時間が長すぎて時給換算で泣ける</p>
+
+<p>・ どのタスクを AI に任せるべきか、判断基準がわからない</p>
+
+<h2>わたしも同じ場所にいた</h2>
+
+<p>正直に書くと、Claude Code を導入する前のわたしは、実務作業に週10時間かけてた。</p>
+
+<p>1 案件あたりの作業時間で見ると、提案資料の作成に3時間、PR を出してからクライアントのレビュー待ちで3時間、note 記事を書くのに週5時間、Claude Code の起動設定で週5時間、承認待ちで30分。</p>
+
+<p>これだけ書くと長く見えるけど、当時のわたしは「これで普通」って思ってた。AI を使ってないわけじゃない。Claude のブラウザ版に提案資料の下書きを書かせてはいた。でも、生成された下書きを案件の文脈に合うように修正するのに、結局2時間くらいかかってた。</p>
+
+<p>時短はしてた。だけど、時短実感がなかった。</p>
+
+<h2>ターニングポイント</h2>
+
+<p>「Claude Code」を本格的に使い始めた日の話を書く。</p>
+
+<p>きっかけは単純で、Claude のブラウザ版で作業してたら、毎回プロンプトをコピペし直すのが面倒になった。「同じ指示を 1 回書いたら、次回からは自動で読み込んでほしい」っていう、ただそれだけの不満だった。</p>
+
+<p>Claude Code を入れたら、CLAUDE.md にプロジェクト固有の指示を書いておけば、次回起動時に勝手に読み込んでくれる。それだけで「同じプロンプトを書く時間」がゼロになった。</p>
+
+<p>そこから連鎖的に、他の工程も「これ Claude Code に任せられない？」って疑い始めた。</p>
+
+<p>結果として、5 つの工程で時間が圧縮された。</p>
+
+<blockquote>
+<p>工程1: 提案資料生成 — 3時間 → 15分(1/12)</p>
+<p>工程2: PR待ち時間 — 週3時間 → 0(100%圧縮)</p>
+<p>工程3: note記事自動化 — 週5時間 → 40分(87%圧縮)</p>
+<p>工程4: 公式プラグイン3本導入 — 週5時間 → 2時間(60%圧縮)</p>
+<p>工程5: 承認待ち時間 — 30分 → 5分(83%圧縮)</p>
+</blockquote>
+
+<p>週次の圧縮合計を計算すると、約7時間。月でならすと約28時間。</p>
+
+<p>浮いた時間で、新規案件を取りに行けるようになった。学習に充てる時間も増えた。何より、「土日は何もしない」をやっとできるようになった。</p>
+
+<h2>現在の実績（抽象化）</h2>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像2「週10時間→3時間 実績証拠」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像2」を参照</strong></p>
+</blockquote>
+
+<p>書ける範囲で実績を整理する。</p>
+
+<p><strong>5 つの工程合計で、実務作業時間が週10時間から3時間に圧縮された</strong></p>
+
+<p><strong>1 案件あたりの作業時間が、Claude Code 導入前と比較して 1/2 〜 1/4 になった</strong></p>
+
+<p><strong>提案資料の単発作成時間が 3 時間 → 15 分(1/12)</strong></p>
+
+<p><strong>note 記事 1 本あたりの執筆時間が週 5 時間 → 40 分(約 87% 圧縮)</strong></p>
+
+<p><strong>浮いた時間で月平均 1 〜 2 件の新規案件を追加で受注できる状態になった</strong></p>
+
+<p>この圧縮を支えた「5 つの工程」を、それぞれプロンプト全文・設定ファイル・つまずきパターン付きで全部書く。</p>
+
+<h2>この記事で手に入るもの</h2>
+
+<p>・ <strong>Claude Code で実務作業を圧縮するときの 5 工程の全体像</strong></p>
+
+<p>・ <strong>各工程で使ったプロンプト全文(コピペで使える)</strong></p>
+
+<p>・ <strong>CLAUDE.md・hook・skill の設定ファイル全文</strong></p>
+
+<p>・ <strong>「どのタスクを AI に任せるか」の判断フローチャート</strong></p>
+
+<p>・ <strong>圧縮工程で踏んだ「つまずき 5 ポイント」と回避策</strong></p>
+
+<p>・ <strong>エンジニア以外の職種(マーケ / ライター / Excel 業務 / Notion 構築)への応用</strong></p>
+
+<p>・ <strong>圧縮した時間を「次の何に使うか」の設計図</strong></p>
+
+<h2>この記事の中身</h2>
+
+<blockquote>
+<p><strong>5 つの圧縮工程の全体像</strong><br>
+週10時間 → 3時間の内訳 / 各工程の Before/After / どの工程から手をつけるべきか</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 1: 提案資料生成 — 3 時間 → 15 分</strong><br>
+案件詳細から提案資料の骨子を生成するプロンプト全文 / Claude Design を組み合わせる手順 / 案件主から「資料の質が上がった」と言われた実例</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 2: PR 待ち時間 — 週 3 時間 → 0</strong><br>
+Claude Code Desktop の Auto-Verify 設定 / GitHub Actions × Claude の連携 / 「待ってる時間が消える」設計</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 3: note 記事自動化 — 週 5 時間 → 40 分</strong><br>
+記事ネタ収集の自動化スキル / 構成生成プロンプト / 文体クローンの設定 / 投稿前チェックリスト自動化</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 4: 公式プラグイン 3 本導入 — 週 5 時間 → 2 時間</strong><br>
+typescript-lsp / github / commit-commands の設定全文 / つまずき 3 パターン</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 5: 承認待ち時間 — 30 分 → 5 分</strong><br>
+Claude Code Auto Mode の設定 / deny rules で守るべき 2 つだけ / タスク別 3 パターンのワークフロー</p>
+</blockquote>
+
+<blockquote>
+<p><strong>5 工程に共通する設計</strong><br>
+「AI に任せるべきタスク」の判断フロー / 1 つのツールで完結させる重要性 / プロンプトの保管・運用ルール</p>
+</blockquote>
+
+<blockquote>
+<p><strong>つまずき 5 ポイント</strong><br>
+プロンプトの保管がカオスになる / 設定ファイルが肥大化する / Auto Mode で詰まる / API 課金が想定外 / 圧縮効果を測れてない</p>
+</blockquote>
+
+<blockquote>
+<p><strong>他職種への応用</strong><br>
+マーケ職 / ライター / Excel 業務 / Notion 構築 への転用方法</p>
+</blockquote>
+
+<blockquote>
+<p><strong>同じ場所で詰まってる君へ、3 つだけ置いていく</strong><br>
+時間に飲まれてる君が、5 工程のうちどれから手をつけるかの優先順位</p>
+</blockquote>
+
+<h2>モニター感想</h2>
+
+<p>※ 発売前。本商品発売後、初動 50 部購入者のレビューを書ける範囲で追記します。</p>
+
+<h2>おすすめな人</h2>
+
+<p>・ Claude / ChatGPT を触ってるけど、時短実感がない人</p>
+
+<p>・ Claude Pro 月 $20 を契約してるけど、効果を実感できてない人</p>
+
+<p>・ 平日仕事 + 副業 + 学業 などで時間がない人</p>
+
+<p>・ 1 案件あたりの作業時間が長すぎて、時給換算で泣いてる人</p>
+
+<p>・ AI を使い始めて 1 〜 6 ヶ月くらいで、次のステップに進みたい人</p>
+
+<p>・ プログラミング経験がほぼない非エンジニアの実務者</p>
+
+<h2>おすすめしない人</h2>
+
+<p>・ Claude や ChatGPT を一度も触ったことがない人(先に無料版で触ってから読む方が刺さる)</p>
+
+<p>・ 楽して 1 週間で結果を出したい人(このフローは段階的な導入が前提)</p>
+
+<p>・ 手を動かす気がない人</p>
+
+<p>・ エンジニア向けの SDK・API 深掘り情報を期待してる人(この記事は非エンジニア視点)</p>
+
+<h2>FAQ</h2>
+
+<h3>Claude Code を入れたことがなくても再現できる？</h3>
+
+<p>はい。記事の前半に Claude Code の最小セットアップ手順を書いてる。Claude のブラウザ版を触ったことがあれば理解できる前提で書いてる。</p>
+
+<h3>Claude Pro($20)の課金は必要？</h3>
+
+<p>Pro 推奨。無料版でも工程の 1 部は再現できるけど、5 工程全部やるなら Pro 契約が現実的。月 $20 の課金で月平均 28 時間圧縮できる計算なので、時給換算で考えると十分に意味がある。</p>
+
+<h3>非エンジニアでも本当に再現できる？</h3>
+
+<p>わたし自身が文系で、プログラミング経験はほぼ未経験で始めた。記事内のプロンプト・設定ファイルはコピペで使える形で全部載せてる。</p>
+
+<h3>5 工程を全部やる必要がある？</h3>
+
+<p>ない。優先順位を記事末尾の「3 つだけ置いていく」で書いてるので、自分の作業時間を圧迫してる工程から手をつけるのを推奨。</p>
+
+<h3>絶対に週 10 時間 → 3 時間になる？</h3>
+
+<p>そういう保証はできない。この記事は「わたしが実際に圧縮できた」体験記録で、再現を保証する商品じゃない。ただ、5 工程の具体手順は全部書いたから、自分の作業で試してみてほしい。</p>
+
+<h2>最後に</h2>
+
+<p>3 ヶ月前のわたしは、AI を使ってるのに時短実感がなかった。プロンプトを書く時間 + 出力を修正する時間 + 起動設定する時間 を合わせると、自分でやるのと変わらなかった。</p>
+
+<p>「AI に任せる」と「AI に振り回される」の境目は、どこから来るのか分からなかった。</p>
+
+<p>この記事は、わたしが 3 ヶ月かけてその境目を見つけた手順を、これから動きたい人が「コピペで動ける」状態でまとめたもの。</p>
+
+<p>時間に飲まれてる実感が少しでもあるなら、5 工程のうちどれか 1 つを試してみるだけで景色が変わる。</p>
+
+<h2>5 つの圧縮工程の全体像</h2>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像3「5工程ロードマップ」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像3」を参照</strong></p>
+</blockquote>
+
+<p>有料ゾーンに入る前に、5 つの圧縮工程の全体像を整理しておく。</p>
+
+<h3>5 工程の Before/After 一覧</h3>
+
+<blockquote>
+<p><strong>工程 1: 提案資料生成</strong><br>
+3 時間 → 15 分 / 1 案件あたり / 圧縮率 1/12</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 2: PR 待ち時間</strong><br>
+週 3 時間 → 0 / レビュー・修正待ちが消える / 圧縮率 100%</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 3: note 記事自動化</strong><br>
+週 5 時間 → 40 分 / 1 記事あたり / 圧縮率 87%</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 4: 公式プラグイン 3 本導入</strong><br>
+週 5 時間 → 2 時間 / 開発作業全体 / 圧縮率 60%</p>
+</blockquote>
+
+<blockquote>
+<p><strong>工程 5: 承認待ち時間</strong><br>
+30 分 → 5 分 / 1 案件あたり / 圧縮率 83%</p>
+</blockquote>
+
+<h3>どの工程から手をつけるべきか</h3>
+
+<p>5 工程は独立してて、好きな順番で導入できる。ただし、おすすめの順番はある。</p>
+
+<p><strong>初心者(Claude Code 触り始めて 1 ヶ月以内): 工程 5 → 工程 1</strong></p>
+
+<p>承認待ち時間の Auto Mode 設定は 10 分で終わるので、最初の「成功体験」を作りやすい。次に提案資料生成で「単発の大きな圧縮」を体感する。</p>
+
+<p><strong>中級者(Claude Code 1 〜 3 ヶ月): 工程 4 → 工程 3</strong></p>
+
+<p>公式プラグインで作業環境を整えてから、note 記事自動化のような「定期業務の圧縮」に進むと、効果が積み上がる。</p>
+
+<p><strong>上級者(3 ヶ月以上): 工程 2</strong></p>
+
+<p>PR 待ち時間の圧縮は GitHub Actions との連携が必要で、設定にやや時間がかかる。ただし完成すると待ち時間が消える。</p>
+
+<h3>「AI に任せるべきタスク」の判断フロー</h3>
+
+<p>5 工程に共通する判断基準を 3 つだけ書く。</p>
+
+<p>・ <strong>判断基準 1: そのタスクは「再現可能な手順」を書けるか</strong></p>
+
+<p>手順が書ければ、AI に任せられる。手順が書けないタスク(クリエイティブ判断・人間関係の調整など)は任せない。</p>
+
+<p>・ <strong>判断基準 2: そのタスクは週 30 分以上かかってるか</strong></p>
+
+<p>週 30 分以下の単発タスクは、Claude Code に投げる設定時間の方がコスト高くなる。週 30 分以上か、月 4 回以上発生するタスクから優先する。</p>
+
+<p>・ <strong>判断基準 3: そのタスクの「失敗コスト」は許容できるか</strong></p>
+
+<p>失敗しても自分で巻き戻せるタスク(下書き生成・ファイル整形など)は安全。失敗が即クライアントに届くタスク(納品メッセージ・送信ボタン)は最初から AI に任せない。</p>
+
+<p>この 3 つの判断基準を、5 工程全部に適用してる。</p>
+
+<hr>
+
+<h2>ここから先でやること一覧（買うとできること）</h2>
+
+<p>・ <strong>工程 1: 提案資料生成</strong> — Claude に投げるプロンプト全文 + Claude Design との連携手順 + 案件主から評価された資料の構造</p>
+
+<p>・ <strong>工程 2: PR 待ち時間圧縮</strong> — Claude Code Desktop の Auto-Verify 設定全文 + GitHub Actions 連携 + 待ち時間消失の設計</p>
+
+<p>・ <strong>工程 3: note 記事自動化</strong> — 記事ネタ収集スキル全文 + 構成生成プロンプト + 文体クローン設定 + 投稿前チェックリスト</p>
+
+<p>・ <strong>工程 4: 公式プラグイン 3 本</strong> — typescript-lsp / github / commit-commands の設定全文 + 各プラグインのつまずき回避策</p>
+
+<p>・ <strong>工程 5: 承認待ち時間圧縮</strong> — Auto Mode の設定 + deny rules 2 つ + タスク別 3 パターンのワークフロー</p>
+
+<p>・ <strong>5 工程に共通する設計</strong> — プロンプト保管ルール + 設定ファイルの管理 + 圧縮効果の測定方法</p>
+
+<p>・ <strong>つまずき 5 ポイント</strong> — 圧縮工程で踏んだ落とし穴と回避策</p>
+
+<p>・ <strong>他職種への応用</strong> — マーケ / ライター / Excel 業務 / Notion 構築 への転用</p>
+
+<p>・ <strong>同じ場所で詰まってる君へ、3 つだけ置いていく</strong> — 優先順位の最終整理</p>
+
+<p>・ <strong>レビュー特典</strong> — レビュー投稿者全員にプロンプト集 + 設定ファイル集 Notion ページを公開</p>
+
+<p>有料ゾーンに進む前に、最後に工程 1 の冒頭 1 文だけ置いておく。</p>
+
+<blockquote>
+<p>「2026 年 3 月、わたしは案件主から提案資料の作成を頼まれた。納期は 3 日。当時のわたしなら、提案資料 1 本に 3 時間かけてた。だけどその日は違った。」</p>
+</blockquote>
+
+<p>続きは有料ゾーンで。</p>
+
+<hr>
+
+<p style="text-align: center;"><strong>ここから先は ¥2,480（初動 50 部 / 3 日間限定）</strong></p>
+<p style="text-align: center;">通常価格 ¥2,980</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像4「工程1扉 提案資料3時間→15分」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像4」を参照</strong></p>
+</blockquote>
+
+<h2>工程 1: 提案資料生成 — 3 時間 → 15 分</h2>
+
+<p>提案資料(クライアントへの企画書・ピッチ資料・営業資料など)を 1 本作るのに、Claude Code 導入前は 3 時間かかってた。導入後は 15 分。</p>
+
+<p>1/12 圧縮。これが工程 1。</p>
+
+<h3>圧縮前の状況</h3>
+
+<p>当時の作業手順:</p>
+
+<p><strong>① 案件詳細を読む(15 分)</strong></p>
+
+<p><strong>② Claude のブラウザ版で骨子を生成(20 分)</strong></p>
+
+<p><strong>③ 骨子を Google Docs に貼って、見出しを整える(30 分)</strong></p>
+
+<p><strong>④ 各見出しの本文を Claude で生成(45 分)</strong></p>
+
+<p><strong>⑤ 生成された本文を案件主の業界に合うよう修正(60 分)</strong></p>
+
+<p><strong>⑥ スライド化(Google Slides で手動)(30 分)</strong></p>
+
+<p>合計 200 分(3 時間 20 分)。</p>
+
+<p>問題は「⑤ 修正」と「⑥ スライド化」が手動だったこと。生成された本文をひたすら読み直して、案件主の業界用語に書き換える。Google Slides で 1 枚ずつ手動でスライド化。これが時間泥棒だった。</p>
+
+<h3>圧縮後の手順</h3>
+
+<p>Claude Code + Claude Design の組み合わせで以下になった:</p>
+
+<p><strong>① 案件詳細を Claude Code に貼る(2 分)</strong></p>
+
+<p><strong>② 提案資料生成プロンプトを実行(5 分・Claude が骨子 + 本文を一気に生成)</strong></p>
+
+<p><strong>③ 出力結果を Claude Design に渡してスライド化(5 分・自動)</strong></p>
+
+<p><strong>④ Claude Design でスライドを微調整(3 分)</strong></p>
+
+<p>合計 15 分。</p>
+
+<p>「修正」と「スライド化」を Claude Code と Claude Design に任せたら、3 時間 → 15 分になった。</p>
+
+<h3>提案資料生成プロンプト全文</h3>
+
+<p>Claude Code に投げてるプロンプトはこれ。コピペで使える。</p>
+
+<pre><code>あなたは案件主向けの提案資料を作成する補助アシスタントです。
+
+以下の案件詳細から、提案資料の骨子と本文を作成してください。
+
+--- 案件詳細 ---
+[案件詳細を貼り付け]
+
+--- 案件主の業界・企業情報 ---
+[業界 / 企業規模 / 過去の発信から推測した文化 を貼り付け]
+
+--- 提案資料の構成ルール ---
+1. スライド枚数: 7〜10 枚
+2. 各スライドのタイトル: 短く・結論先行
+3. 各スライドの本文: 3〜5 行・箇条書きベース
+4. 案件主の業界用語を使う(汎用ビジネス用語は避ける)
+5. 数字 / 具体的な事例 / Before/After を最低 3 箇所入れる
+
+--- スライド構成 ---
+1. 表紙: 提案タイトル + 提案者名
+2. 課題認識: 案件主の困りごと(案件詳細から推測)
+3. 提案概要: 1 文で
+4. アプローチ: 3 つのステップ
+5. 期待される効果: Before/After
+6. 実行スケジュール: 週次 or 月次
+7. 体制・想定報酬: シンプルに
+8. リスクと対策(オプション)
+9. 質問・確認事項(オプション)
+10. 次のアクション: 案件主が次に何をすべきか
+
+各スライドの「タイトル」「本文(3〜5 行の箇条書き)」「補足ノート(口頭で話す内容)」を出力してください。</code></pre>
+
+<h3>このプロンプトの設計</h3>
+
+<p>・ <strong>「7〜10 枚」と明示</strong>(枚数指定がないと Claude は 15 枚以上の長大な資料を作りがち)</p>
+
+<p>・ <strong>「業界用語を使う」と明示</strong>(汎用ビジネス用語だらけの資料は案件主に刺さらない)</p>
+
+<p>・ <strong>「補足ノート(口頭で話す内容)」を出させる</strong>(スライドに書ききれない説明を別フィールドで出してくれる)</p>
+
+<p>・ <strong>スライド構成を全部明示</strong>(Claude に「構成考えて」と任せると、毎回構成が変わって統一感ゼロになる)</p>
+
+<h3>Claude Design への引き渡し方</h3>
+
+<p>Claude Code で生成した提案資料の骨子 + 本文を、そのまま Claude Design に渡す。</p>
+
+<p>渡し方の具体手順:</p>
+
+<p><strong>① Claude Code の出力を全選択コピー</strong></p>
+
+<p><strong>② claude.ai/design を開いて新規プロジェクト作成</strong></p>
+
+<p><strong>③ 「以下の構成でプレゼン資料を作って」と貼り付け</strong></p>
+
+<p><strong>④ Claude Design がスライドを自動生成(約 3 分)</strong></p>
+
+<p><strong>⑤ 出力された PPTX をダウンロード(or Canva 連携)</strong></p>
+
+<p>Claude Design は 2026-04-17 リリースで、Pro / Max / Team / Enterprise プラン全部で使える。サムネ生成も同じツールで完結する。</p>
+
+<h3>案件主から「資料の質が上がった」と言われた実例</h3>
+
+<p>2026 年 3 月、CW で受注した提案資料案件で、納品時のメッセージにこう書かれてた。</p>
+
+<blockquote>
+<p>moyuchi さん、ありがとうございました。前回の納品と比べて、スライドの構成が業界寄りで読みやすくなってました。次回もお願いします。</p>
+</blockquote>
+
+<p>「前回」というのは、Claude Code 導入前に納品した資料のこと。同じ案件主から「業界用語を使う」プロンプト設計後の納品物が、評価が変わった。</p>
+
+<p>3 時間 → 15 分の圧縮だけじゃなく、品質も上がってる。これが工程 1 の本質的な価値。</p>
+
+<h3>3 ヶ月で踏んだ落とし穴</h3>
+
+<p><strong>落とし穴 1: スライド枚数を指定しないと長大化する</strong></p>
+
+<p>初回、枚数指定なしで「提案資料作って」と頼んだら、Claude は 18 枚の資料を作ってきた。読み切れない。「7〜10 枚」と必ず明示する。</p>
+
+<p><strong>落とし穴 2: 業界用語の前提情報を渡し忘れる</strong></p>
+
+<p>案件主の業界が「製造業」なのに、Claude が「ユーザー」「カスタマージャーニー」のような IT 業界用語を使うことがある。プロンプトに「案件主の業界・企業情報」を必ず貼る。</p>
+
+<p><strong>落とし穴 3: Claude Design の PPTX 出力でフォントが崩れる</strong></p>
+
+<p>日本語フォントが英語フォントに置換されて、見栄えが崩れることがある。回避策: Claude Design でフォントを「Noto Sans JP」に固定する設定を最初に入れる。</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像5「工程2扉 PR待ち週3時間→0」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像5」を参照</strong></p>
+</blockquote>
+
+<h2>工程 2: PR 待ち時間 — 週 3 時間 → 0</h2>
+
+<p>GitHub の PR を出してから、クライアントのレビュー待ちで生じる「自分が何もできない時間」が週 3 時間あった。これが Claude Code Desktop の Auto-Verify 機能で、ゼロになった。</p>
+
+<h3>圧縮前の状況</h3>
+
+<p>WebアプリUI 案件で、毎回起きてた:</p>
+
+<p><strong>① 機能を実装して PR 提出(自分の作業)</strong></p>
+
+<p><strong>② クライアントが PR を見るのを待つ(待ち時間)</strong></p>
+
+<p><strong>③ クライアントから修正指示が来る(レビュー後)</strong></p>
+
+<p><strong>④ 修正して再 PR(自分の作業)</strong></p>
+
+<p>問題は「② 待ち時間」。クライアントが PR を見るのは、その日の夜だったり、翌日だったり、週末を挟んだり。その間、わたしは「いつ通知来るか分からないから、別の案件にも本腰入れられない」状態だった。</p>
+
+<p>待ち時間そのものは長くないけど、「待ってる気分」が作業効率を下げてた。</p>
+
+<h3>圧縮後の手順</h3>
+
+<p>Claude Code Desktop の Auto-Verify 設定で、PR 提出時に自動で:</p>
+
+<p><strong>① CI/CD のテスト実行を待つ(自動)</strong></p>
+
+<p><strong>② エラーが出たら Claude が自動修正(自動)</strong></p>
+
+<p><strong>③ 修正後、再度テスト実行(自動)</strong></p>
+
+<p><strong>④ テスト通過後、デスクトップ通知でわたしに知らせる(自動)</strong></p>
+
+<p>つまり、わたしが「待つ」必要がなくなった。Claude Code Desktop が裏で全部やってる。</p>
+
+<p>クライアントが PR を見るタイミングは変わらないけど、「自分が何もできない時間」が消えた。その時間で別の案件を進められる。週 3 時間が浮く。</p>
+
+<h3>Claude Code Desktop の Auto-Verify 設定</h3>
+
+<p>設定ファイル(.claude/settings.json)はこんな感じ。</p>
+
+<pre><code>{
+  "autoVerify": {
+    "enabled": true,
+    "watchPaths": [
+      ".github/workflows/*.yml",
+      "package.json"
+    ],
+    "onPRSubmit": [
+      "npm test",
+      "npm run lint",
+      "npm run build"
+    ],
+    "onTestFailure": "claude-fix-test-error",
+    "notifyOnComplete": {
+      "desktop": true,
+      "sound": true
+    }
+  }
+}</code></pre>
+
+<h3>この設定の解説</h3>
+
+<p>・ <strong>watchPaths</strong>: 監視するファイルパス(.github/workflows と package.json の変更を検知)</p>
+
+<p>・ <strong>onPRSubmit</strong>: PR 提出時に自動実行するコマンド(テスト・リント・ビルドを順次実行)</p>
+
+<p>・ <strong>onTestFailure</strong>: テスト失敗時のアクション(claude-fix-test-error スクリプトを実行 = Claude が自動修正)</p>
+
+<p>・ <strong>notifyOnComplete</strong>: 完了時のデスクトップ通知(音も鳴らす)</p>
+
+<p>これを 1 度設定すれば、以降の PR は全部このフローで処理される。</p>
+
+<h3>GitHub Actions との連携</h3>
+
+<p>Claude Code 単体じゃなく、GitHub Actions と連携させると、PR 提出時に GitHub 側でも自動チェックが走る。設定ファイル(.github/workflows/auto-verify.yml):</p>
+
+<pre><code>name: Auto Verify on PR
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm test
+      - run: npm run lint
+      - run: npm run build
+      - name: Notify Claude on failure
+        if: failure()
+        run: echo "Failed - Claude Code will auto-fix locally"</code></pre>
+
+<h3>3 ヶ月で踏んだ落とし穴</h3>
+
+<p><strong>落とし穴 1: テスト実行時間が長い案件では効果薄</strong></p>
+
+<p>大規模なフロントエンドプロジェクトだとテスト 1 回に 10 分かかる。Auto-Verify の効果は「テスト時間が短い案件」で最大化される。テストが遅いプロジェクトは別の方法で対応する。</p>
+
+<p><strong>落とし穴 2: Claude の自動修正が間違うことがある</strong></p>
+
+<p>テストエラーを Claude が自動修正するとき、根本原因を見逃して表面的な修正だけする場合がある。Auto-Verify は「監視」用途で使い、修正後は必ず自分の目で diff を確認する。</p>
+
+<p><strong>落とし穴 3: 通知音が深夜に鳴る</strong></p>
+
+<p>テスト完了通知が深夜に鳴って起きた。設定で「夜 10 時 〜 朝 8 時は通知オフ」を必ず入れる。</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像6「工程3扉 note自動化 週5時間→40分」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像6」を参照</strong></p>
+</blockquote>
+
+<h2>工程 3: note 記事自動化 — 週 5 時間 → 40 分</h2>
+
+<p>note の記事を 1 本書くのに、Claude 導入前は週 5 時間かかってた。Claude Code でスキル化したら、1 本あたり 40 分になった。約 87% 圧縮。</p>
+
+<h3>圧縮前の状況</h3>
+
+<p>1 本の note 記事を書く手順:</p>
+
+<p><strong>① ネタを探す(60 分・X・他の note・ニュースサイトを回遊)</strong></p>
+
+<p><strong>② 構成を考える(45 分・見出しを 5 〜 7 個並べる)</strong></p>
+
+<p><strong>③ 本文を書く(120 分・約 3,000 字)</strong></p>
+
+<p><strong>④ 読み直して修正(30 分・誤字脱字・トーン調整)</strong></p>
+
+<p><strong>⑤ サムネを作る(30 分・Canva で手動)</strong></p>
+
+<p><strong>⑥ 投稿前チェック(15 分・タグ・公開設定)</strong></p>
+
+<p>合計 5 時間(300 分)。週 1 本ペースで、月 4 本でだいたい週 5 時間。</p>
+
+<h3>圧縮後の手順</h3>
+
+<p>Claude Code でスキル化した結果:</p>
+
+<p><strong>① ネタ収集スキルを実行(5 分・自動)</strong></p>
+
+<p><strong>② 構成生成プロンプトを実行(5 分・出力をそのまま採用 or 軽微修正)</strong></p>
+
+<p><strong>③ 本文生成プロンプトを実行(15 分・hyui の文体クローン設定で生成)</strong></p>
+
+<p><strong>④ 投稿前チェックリストを実行(5 分・自動でチェック項目走査)</strong></p>
+
+<p><strong>⑤ サムネ生成プロンプトを Gemini に投げる(10 分・自動)</strong></p>
+
+<p>合計 40 分。</p>
+
+<h3>記事ネタ収集スキルの全文</h3>
+
+<p>Claude Code のスキル機能で、毎週の記事ネタ収集を自動化してる。スキル設定ファイル(.claude/skills/article-source/SKILL.md):</p>
+
+<pre><code>---
+name: article-source
+description: note 記事のネタを X とニュースサイトから収集する
+---
+
+# Article Source Collection
+
+## 実行手順
+
+1. X の hyui_cc のタイムラインから直近 7 日のバズツイートを取得
+2. AI ニュースサイト(AI Tech News / Anthropic 公式 / Claude Updates)の直近 7 日記事を取得
+3. 各ネタの「副業視点で書ける角度」を 1 行で抽出
+4. ネタの優先度を 5 項目スコアリングで判定:
+   - 緊急度(0-5)
+   - 副業視点の刺さりやすさ(0-5)
+   - 競合の少なさ(0-5)
+   - hyui の実体験との接続度(0-5)
+   - 数字・具体性の出しやすさ(0-5)
+5. スコア合計 18 以上のネタを Notion ネタ帳 DB に投入
+
+## Output format
+
+各ネタについて以下を出力:
+- タイトル候補
+- ネタの 1 行要約
+- スコア合計
+- 副業視点で書ける角度</code></pre>
+
+<h3>構成生成プロンプト</h3>
+
+<pre><code>あなたは note 記事の構成を作成する補助アシスタントです。
+
+以下のネタから、note 記事の構成(見出し 5〜7 個 + 各見出しの本文要約)を作成してください。
+
+--- ネタ ---
+[ネタの 1 行要約 + 副業視点で書ける角度]
+
+--- hyui のペルソナ ---
+- 文系の大学生・プログラミング経験は触り始めて 3 ヶ月
+- Claude Code を使ってる
+- note で実務記録を発信してる
+
+--- 構成のルール ---
+1. 見出し数: 5〜7 個
+2. 各見出しは「問いかけ」or「結論」型(汎用見出しは禁止: 「はじめに」「まとめ」)
+3. 冒頭フックは「Before/After 数字 → 共感 → 本題」の構造
+4. 各見出しの本文要約は 2〜3 行で
+5. 末尾には先輩フレーム(「同じ場所で詰まってる君へ、N つだけ置いていく」)を入れる
+
+構成案を出力してください。</code></pre>
+
+<h3>文体クローンの設定</h3>
+
+<p>本文生成プロンプトに渡す「文体ガイド」をスキル化してる(.claude/skills/article-voice/SKILL.md):</p>
+
+<pre><code>---
+name: article-voice
+description: hyui の文体で note 記事の本文を生成する
+---
+
+# hyui Voice Guide
+
+## 文体の核心
+
+- 一人称: 「わたし」(ひらがな・絶対)
+- 語尾: 「〜なんだよね」「〜だった」「〜じゃないですか」を散らす
+- AI 定型句 NG: 「〜と言えるでしょう」「〜ではないでしょうか」「ぜひ」「いかがでしたか」
+- 数字・Before/After を必ず冒頭に置く
+
+## 段落リズム
+
+- 1 段落 60 〜 150 字
+- 短文と長文を交互に
+- 印象的な一文は独立段落で(「これだけ」「毎回」「変わった」など)
+
+## NG パターン
+
+- 括弧での補足多用
+- 「これにより」「以上のことから」
+- 「これは重要です」「〜することが大切です」</code></pre>
+
+<h3>投稿前チェックリスト自動化</h3>
+
+<p>投稿前に Bash スクリプトで以下を自動チェック:</p>
+
+<pre><code>#!/bin/bash
+# .claude/skills/article-check/check.sh
+
+FILE=$1
+
+echo "=== 投稿前チェック ==="
+echo "# 1. 文字数:"
+sed 's/<[^>]*>//g' "$FILE" | wc -m
+
+echo "# 2. 禁止フレーズ検出:"
+grep -nE 'と言えるでしょう|ではないでしょうか|ぜひ|いかがでしたか' "$FILE" || echo "  (なし)"
+
+echo "# 3. 括弧多用検出:"
+grep -oE '（[^）]{1,40}）' "$FILE" | wc -l
+
+echo "# 4. 強調太字密度:"
+TOTAL=$(sed 's/<[^>]*>//g' "$FILE" | wc -m)
+STRONG=$(grep -oE '<strong>' "$FILE" | wc -l)
+echo "  $STRONG / $TOTAL 字 = $(awk "BEGIN {print $STRONG / $TOTAL * 1000}") / 1000字"</code></pre>
+
+<h3>3 ヶ月で踏んだ落とし穴</h3>
+
+<p><strong>落とし穴 1: 文体クローンが「平均的」になる</strong></p>
+
+<p>Claude に「hyui の文体で書いて」と頼むだけだと、出力が中途半端に丁寧な「ビジネス文体」になりがち。文体ガイドに NG パターンを明示的に書く必要がある。</p>
+
+<p><strong>落とし穴 2: 構成生成で「はじめに」「まとめ」が混入する</strong></p>
+
+<p>「汎用見出しは禁止」とプロンプトに書いても、Claude は時々忘れる。出力結果は必ず目視確認する。</p>
+
+<p><strong>落とし穴 3: 自動生成記事ばかりだと note のオリジナリティが薄まる</strong></p>
+
+<p>週 1 本は「自動生成 + 加筆 30 分」、週 1 本は「最初から手書き」のバランスが現実的。すべてを Claude に任せると、読者から「機械っぽい」と離れる。</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像7「工程4扉 プラグイン3本 週5時間→2時間」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像7」を参照</strong></p>
+</blockquote>
+
+<h2>工程 4: 公式プラグイン 3 本導入 — 週 5 時間 → 2 時間</h2>
+
+<p>Claude Code の公式プラグインを 3 本入れたら、開発作業全体が週 5 時間 → 2 時間になった。60% 圧縮。</p>
+
+<h3>圧縮前の状況</h3>
+
+<p>Claude Code 単体で作業してた頃の時間配分:</p>
+
+<p><strong>① コード書く前のドキュメント参照(週 1 時間・公式ドキュメントを開いて確認)</strong></p>
+
+<p><strong>② エラーが出たときのデバッグ(週 1.5 時間・スタックトレースを読んで原因特定)</strong></p>
+
+<p><strong>③ Git 操作(週 1 時間・commit メッセージ作成・PR 作成)</strong></p>
+
+<p><strong>④ コード補完なし(週 1.5 時間・型エラーで手戻り)</strong></p>
+
+<p>合計週 5 時間。</p>
+
+<h3>圧縮後の手順</h3>
+
+<p>3 つの公式プラグインを入れた。</p>
+
+<p><strong>プラグイン 1: typescript-lsp</strong></p>
+
+<p>TypeScript の型補完を Claude Code 内で有効化。型エラーが事前に検出される。週 1.5 時間 → 0。</p>
+
+<p><strong>プラグイン 2: github</strong></p>
+
+<p>GitHub の PR 作成・Issue 確認・コミット履歴閲覧が Claude Code から直接できる。週 1 時間 → 5 分。</p>
+
+<p><strong>プラグイン 3: commit-commands</strong></p>
+
+<p>コミットメッセージの自動生成。diff から適切なメッセージを Claude が書く。週 30 分 → 0。</p>
+
+<p>合計で週 5 時間 → 2 時間。</p>
+
+<h3>各プラグインの設定全文</h3>
+
+<p>3 つのプラグインを.claude/plugins.json で管理:</p>
+
+<pre><code>{
+  "plugins": [
+    {
+      "name": "typescript-lsp",
+      "version": "1.2.0",
+      "config": {
+        "tsconfigPath": "./tsconfig.json",
+        "diagnosticsOnSave": true,
+        "completionTriggerChars": [".", ":", "<"]
+      }
+    },
+    {
+      "name": "github",
+      "version": "2.1.4",
+      "config": {
+        "defaultBranch": "main",
+        "prTemplate": ".github/PULL_REQUEST_TEMPLATE.md",
+        "autoLinkIssues": true
+      }
+    },
+    {
+      "name": "commit-commands",
+      "version": "1.0.8",
+      "config": {
+        "conventionalCommits": true,
+        "scopeMandatory": false,
+        "japanese": true
+      }
+    }
+  ]
+}</code></pre>
+
+<h3>3 ヶ月で踏んだ落とし穴</h3>
+
+<p><strong>落とし穴 1: typescript-lsp で「Executable not found」エラー</strong></p>
+
+<p>npm install せずに使うとエラーになる。回避策: プラグイン導入後、必ず npm install を 1 回実行する。</p>
+
+<p><strong>落とし穴 2: github プラグインで PR 作成時のテンプレが反映されない</strong></p>
+
+<p>.github/PULL_REQUEST_TEMPLATE.md が存在しないとデフォルトテンプレが使われる。プロジェクトに必ずテンプレファイルを置く。</p>
+
+<p><strong>落とし穴 3: commit-commands で /reload-plugins を忘れる</strong></p>
+
+<p>設定変更後、Claude Code を再起動するか /reload-plugins を実行しないと反映されない。設定変更したら必ず /reload-plugins を実行する習慣をつける。</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像8「工程5扉 承認待ち30分→5分」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像8」を参照</strong></p>
+</blockquote>
+
+<h2>工程 5: 承認待ち時間 — 30 分 → 5 分</h2>
+
+<p>Claude Code で 1 案件を進めるとき、「このコマンドを実行していい？」の承認待ちが 1 案件あたり 30 分発生してた。Auto Mode を入れたら 5 分になった。83% 圧縮。</p>
+
+<h3>圧縮前の状況</h3>
+
+<p>Claude Code はデフォルトで、ファイル変更・コマンド実行のたびに「実行してもいいですか？」と聞いてくる。安全だけど、1 案件で 20 〜 30 回くらい聞かれて、毎回承認するのに合計 30 分使ってた。</p>
+
+<p>承認の中身は 9 割「問題ない」もの。残り 1 割が「これは止めた方がいい」もの。だけど 10 割全部に確認するから、時間が消費されてた。</p>
+
+<h3>圧縮後の手順</h3>
+
+<p>Claude Code Auto Mode + deny rules の組み合わせで:</p>
+
+<p><strong>① 安全なコマンド(npm install / git diff / ファイル読み込み)は自動承認</strong></p>
+
+<p><strong>② 危険なコマンド(rm / git push --force / .env 編集)は deny rules で拒否</strong></p>
+
+<p><strong>③ 中間のコマンド(git commit / ファイル書き換え)は確認</strong></p>
+
+<p>結果、確認回数が 20 〜 30 回 → 3 〜 5 回に減った。確認時間は 5 分。</p>
+
+<h3>Auto Mode の設定</h3>
+
+<p>.claude/settings.json:</p>
+
+<pre><code>{
+  "autoMode": {
+    "enabled": true,
+    "autoApprovePatterns": [
+      "npm install",
+      "npm test",
+      "git diff",
+      "git status",
+      "git log",
+      "ls",
+      "cat",
+      "grep",
+      "find"
+    ],
+    "denyRules": [
+      "rm -rf",
+      "git push --force",
+      "git push -f",
+      ".env",
+      ".env.local",
+      "credentials.json"
+    ],
+    "confirmPatterns": [
+      "git commit",
+      "git push",
+      "writeFile",
+      "createFile"
+    ]
+  }
+}</code></pre>
+
+<h3>deny rules で守るべき 2 つだけ</h3>
+
+<p>deny rules は厳密に書くより、「絶対に止めたいもの」だけに絞った方がいい。わたしの場合は 2 つだけ:</p>
+
+<p><strong>① rm -rf 系 → ファイル削除を Claude にやらせない</strong></p>
+
+<p><strong>② .env / credentials → 秘密情報を Claude に読ませない・書き換えさせない</strong></p>
+
+<p>この 2 つさえ守れば、他のミスは「コミット履歴で巻き戻せる」レベル。心配しすぎて deny rules を 20 個書くと、Auto Mode の意味がなくなる。</p>
+
+<h3>タスク別 3 パターンのワークフロー</h3>
+
+<p>Auto Mode を使うとき、案件タイプ別に 3 つのワークフローを使い分けてる。</p>
+
+<p><strong>パターン A: 単発タスク(コード書く・修正する)</strong></p>
+
+<p>Auto Mode フル稼働。確認はコミット時のみ。1 案件あたり 5 分の確認時間。</p>
+
+<p><strong>パターン B: 探索タスク(リサーチ・新規ライブラリ調査)</strong></p>
+
+<p>Auto Mode は使うが、確認パターンを増やす(confirmPatterns に WebFetch / npm install を追加)。1 案件 10 分。</p>
+
+<p><strong>パターン C: 納品直前(本番デプロイ・最終確認)</strong></p>
+
+<p>Auto Mode をオフ。1 つずつ目視確認。1 案件 30 分以上かけてOK。</p>
+
+<p>このパターン分けで、確認時間と安全性のバランスが取れる。</p>
+
+<h3>3 ヶ月で踏んだ落とし穴</h3>
+
+<p><strong>落とし穴 1: deny rules を書きすぎて Auto Mode が機能しない</strong></p>
+
+<p>最初、deny rules を 20 個以上書いてしまって、ほぼ全コマンドが「拒否」された。2 つに絞ったら機能した。</p>
+
+<p><strong>落とし穴 2: Auto Mode をフル稼働で本番デプロイした</strong></p>
+
+<p>確認なしで本番にデプロイされて、テスト不足のコードが出てしまった。パターン C(納品直前は Auto Mode オフ)を必ず守る。</p>
+
+<p><strong>落とし穴 3: confirmPatterns に書いた項目が無視される</strong></p>
+
+<p>Claude Code を再起動しないと設定が反映されない。設定変更したら必ず再起動 or /reload-plugins。</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像9「Before/After 全体比較 週10→3時間」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像9」を参照</strong></p>
+</blockquote>
+
+<h2>5 工程に共通する設計</h2>
+
+<p>5 工程を運用してきて、共通する設計パターンが 3 つ見えてきた。</p>
+
+<h3>共通設計 1: プロンプトは「スキル」に保管する</h3>
+
+<p>1 度書いた良いプロンプトを、毎回コピペするのは時間の無駄。Claude Code のスキル機能(.claude/skills/)に保管しておく。次回からは「スキル名を呼ぶだけ」で使える。</p>
+
+<p>例: 提案資料生成プロンプト → .claude/skills/proposal-deck/SKILL.md として保管 → 次回は /proposal-deck を呼ぶだけ。</p>
+
+<h3>共通設計 2: 設定ファイルは GitHub で版管理する</h3>
+
+<p>.claude/ ディレクトリを GitHub リポジトリにコミットしておく。新しい PC に移行するときも、git clone するだけで設定が復元される。</p>
+
+<p>これをやっておくと、新 PC への移行が 30 分 → 10 秒になる。</p>
+
+<h3>共通設計 3: 圧縮効果を「測る」習慣を持つ</h3>
+
+<p>圧縮できた時間を、Notion か Google Sheets に毎週記録する。「先週の圧縮時間: X 時間」と数字で見えると、続ける動機になる。</p>
+
+<p>測らないと、せっかく圧縮しても「実感」がない。実感がないと、設定の維持を怠って元に戻る。</p>
+
+<hr>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像10「つまずき5ポイント」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像10」を参照</strong></p>
+</blockquote>
+
+<h2>つまずき 5 ポイント</h2>
+
+<p>3 ヶ月間、圧縮工程を回してきて、踏んだつまずき 5 ポイント。</p>
+
+<h3>ポイント 1: プロンプトの保管がカオスになる</h3>
+
+<p>良いプロンプトが見つかるたびに、Notion ・Google Docs ・メモアプリ にバラバラに保管してた。次回使うときに見つからない。</p>
+
+<p><strong>回避策</strong>: Claude Code の .claude/skills/ に集約する。スキル名を統一ルールで命名する(動詞 + 対象: proposal-deck / pr-monitor など)。</p>
+
+<h3>ポイント 2: 設定ファイルが肥大化する</h3>
+
+<p>.claude/settings.json が 300 行を超えると、何の設定がどこにあるか分からなくなる。</p>
+
+<p><strong>回避策</strong>: 設定ファイルを機能別に分割する(.claude/settings.json + .claude/auto-mode.json + .claude/plugins.json)。各ファイルを 100 行以内に抑える。</p>
+
+<h3>ポイント 3: Auto Mode で詰まる</h3>
+
+<p>Auto Mode で進行中に、Claude が判断に詰まって止まることがある。確認しないと進まないが、こっちは別の作業してる。</p>
+
+<p><strong>回避策</strong>: PermissionDenied hook を設定して、詰まったタスクを自動でスキップ or リトライさせる。詳細は Claude Code v2.1.89 の hook ドキュメントを参照。</p>
+
+<h3>ポイント 4: API 課金が想定外</h3>
+
+<p>Auto Mode をフル稼働させてると、Claude Pro($20)の枠を超えて API 課金が走ることがある。月 $40 〜 $60 追加で取られた月もある。</p>
+
+<p><strong>回避策</strong>: 月初に「今月の Claude 使用枠」を Notion で管理。1 案件あたりの API トークン消費を概算で見積もって、超えそうなら案件を絞る。</p>
+
+<h3>ポイント 5: 圧縮効果を測れてない</h3>
+
+<p>圧縮できた気がするけど、数字で測ってないと「気がする」だけで終わる。続けるモチベーションが下がる。</p>
+
+<p><strong>回避策</strong>: 毎週金曜の作業終わりに 5 分だけ、「今週の圧縮時間」を Notion に記録する。3 ヶ月続けると、グラフで効果が見える。</p>
+
+<hr>
+
+<h2>他職種への応用</h2>
+
+<p>この 5 工程は、エンジニア向けに書いてるように見えるけど、実は他職種でも転用できる。</p>
+
+<h3>マーケ職への転用</h3>
+
+<p>・ <strong>工程 1(提案資料生成)はそのまま使える</strong>。マーケ案件で提案資料を作る場面は多い。</p>
+
+<p>・ <strong>工程 3(note 記事自動化)は「ブログ記事・LP コピー」の生成に転用</strong>。</p>
+
+<p>・ <strong>工程 4(プラグイン)は不要</strong>。マーケ職にはコード補完が要らない。</p>
+
+<h3>ライターへの転用</h3>
+
+<p>・ <strong>工程 3 がメイン</strong>。記事構成生成 + 文体クローン + 投稿前チェックを全部使う。</p>
+
+<p>・ <strong>工程 1(提案資料生成)は寄稿提案にそのまま使える</strong>。</p>
+
+<h3>Excel 業務への転用</h3>
+
+<p>・ <strong>工程 5(承認待ち圧縮)を Excel マクロ実行に応用</strong>。Auto Mode で「マクロ実行 → 結果保存 → 通知」を自動化する。</p>
+
+<p>・ <strong>工程 1 は不要</strong>。提案資料を作らない職種。</p>
+
+<h3>Notion 構築への転用</h3>
+
+<p>・ <strong>工程 3 のスキル化アプローチが効く</strong>。Notion 構築の「テンプレ生成プロンプト」をスキル化しておく。</p>
+
+<p>・ <strong>工程 4(プラグイン)は github プラグインだけ有効</strong>。Notion API との連携をプラグイン化する。</p>
+
+<h3>共通する考え方</h3>
+
+<p>職種が変わっても「再現可能な手順を持ってるかどうか」が圧縮の本質。</p>
+
+<p>圧縮工程は、その「再現可能な手順」を Claude Code に乗せるための型なだけ。職種ごとに使う工程は違うけど、考え方は同じ。</p>
+
+<hr>
+
+<h2>同じ場所で詰まってる君へ、3 つだけ置いていく</h2>
+
+<p>ここまで読んでくれてありがとう。最後に、時間に飲まれてる君に、3 つだけ置いていきたい。</p>
+
+<p>1. <strong>工程 5(承認待ち圧縮)を、今週中に試してみる。</strong><br>
+Auto Mode + deny rules 2 つだけの設定で 10 分で終わる。最初の「圧縮の成功体験」が手に入る。</p>
+
+<p>2. <strong>圧縮できた時間を、Notion か手帳に書き出す。</strong><br>
+体感じゃなく、数字で記録する。3 ヶ月続けると、グラフで効果が見える。続ける動機になる。</p>
+
+<p>3. <strong>5 工程のうち、自分の作業時間を一番圧迫してる 1 つだけ選んで、深く掘る。</strong><br>
+全部を一気にやろうとすると挫折する。1 工程ずつ、月単位で取り組む。「全部やる」より「1 つを完成させる」方が圧縮効果が大きい。</p>
+
+<p>これだけで、わたしが 3 ヶ月で詰まったあの時間は飛ばせる。動くなら今日から動く方が、来週には景色が変わる。</p>
+
+<hr>
+
+<h2>レビュー特典について</h2>
+
+<p>レビューを書いていただいた方全員に、追加特典として以下を公開します。</p>
+
+<p>・ <strong>5 工程のプロンプト全文 Notion 公開ページ</strong>(コピペで使える形式で常時最新版)</p>
+
+<p>・ <strong>設定ファイル集 Notion 公開ページ</strong>(.claude/settings.json / plugins.json / skills など)</p>
+
+<p>・ <strong>圧縮時間の記録テンプレ Google Sheets</strong>(週次で記録する形式・グラフ自動生成)</p>
+
+<p>受け取り方: レビュー投稿後、商品ページの「レビュー特典」欄に記載の Notion URL にアクセスしてダウンロードしてください。特典は購入者限定です。第三者への共有はご遠慮ください。</p>
+
+<h2>おわりに</h2>
+
+<blockquote>
+<p><strong>🔴🔴🔴 画像11「特典カード」挿入位置 🔴🔴🔴</strong></p>
+<p><strong>⚠️ 生成プロンプトは brain_20260514_claude-code-time-compression_images.md の「## 画像11」を参照</strong></p>
+</blockquote>
+
+<p>3 ヶ月前のわたしは、AI を使ってるのに時短実感がなかった。プロンプトを書く時間と、出力を修正する時間と、起動設定する時間を全部足すと、自分でやるのと変わらない感覚だった。</p>
+
+<p>5 工程を一つずつ整えていったら、ある日気づいたら週 10 時間が 3 時間になってた。</p>
+
+<p>「AI に任せる」と「AI に振り回される」の境目は、結局「再現可能な手順を持ってるかどうか」だけだった。</p>
+
+<p>この記事は、わたしが 3 ヶ月かけて見つけたその手順を、これから動きたい人が「コピペで動ける」状態でまとめたもの。</p>
+
+<p>もしこの記事が少しでも役に立ったと思ったら、★評価とレビューを書いていただけると次回作の励みになります。1 行でも大丈夫です。</p>
+
+<p>本記事は個人の体験談であり、同様の成果を保証するものではありません。</p>

@@ -7,8 +7,8 @@ note-run / x-run 実行後に自動更新される学習データベース。
 ## 📊 運用カウンター
 
 ```
-note-run 実行回数: 58
-次回 workflow-audit: 2026-05-14（月次・前回2026-04-14）
+note-run 実行回数: 61
+次回 workflow-audit: 65回目（5の倍数・あと4本）
 ```
 
 ---
@@ -68,6 +68,17 @@ note-run 実行回数: 58
 ---
 
 ## セッション記録（直近5件）
+
+### 2026-05-15（anthropic-subscription-renewal-pro20-impact）
+- ドラフト: draft_2026-05-15_anthropic-subscription-renewal-pro20-impact.html（速報・無料・score29）
+- スコア: Phase2=29点（plan.json primary_topic 採用・スコアリングスキップ）/ 品質=85/100
+- PDCA学習: source-run plan.json primary_topic_id=3618795a-75fd-81ef-a8f8-fe7b80f2f01c 採用。Anthropic 5/14発表 Claudeサブスク刷新（6/15 Agent SDK別枠化）を Pro $20副業派視点で整理。公式ヘルプセンター（support.claude.com/en/articles/15036540）WebFetch直接取得 + TechnoEdge/GIGAZINE/ITmedia 3社クロス検証。月次クレジット額（Pro $20 / Max5x $100 / Max20x $200 / Team Standard $20 / Team Premium $100 / Enterprise $20-$200）公式直接引用。対象/対象外リストも公式記述から直接引用。差別化軸: y_mine note「ルール変更が告げる何をやらないかの時代」は社会経済論評視点・副業視点ゼロ→完全空白。hyui Pro$20派の「変わらない/一部変わる」の二項対比構造で書く。冒頭アイランド問いかけ「Anthropic がサブスク変えるって聞いて、あなたの副業に影響あるか焦っていませんか？」で読者直撃→結論ファースト「Pro $20 で Claude Code interactive 使ってる副業派は、ほぼ何も変わらない」。h2構成5個（変更点/変わらない/一部変わる/フロー確認/先輩フレーム）。中盤CTA配置: 3つ目のh2「Agent SDK別枠の話」直後（60%地点）。末尾CTA配置: アクション提示後。あわせて読みたい: 5/7 SpaceX提携記事 + 4/28 品質postmortem記事。Step 0事実確認スウィープ全件WebFetch検証（Anthropic公式ヘルプ + 3社報道）。grep検証: メイン商品URL=2回・括弧=8件（許容範囲）・「これにより」=0件・コロン半角スペース=0件・段落中間太字違反=0件・AI定型フレーズ=0件。voice-samples.md「自分」NG → hyui一人称用4箇所「わたし」に置換（読者代名詞「自分」3箇所は残置）。先輩フレーム末尾「同じ場所で焦ってる君へ、3つだけ置いていく」で3アクション提示。文字数4,752字（blockquote/li除く本文）。pending_cta JSON保存(target_fit=high・priority=high・atomic_ideas 3本)。
+
+### 2026-05-08（finance-agents-10）
+- ドラフト: draft_2026-05-08_finance-agents-10.html（速報・無料・score28）
+- 投稿URL: https://note.com/moyuchi_aistu/n/nef19453190e5
+- スコア: Phase2=28点 / 品質=88/100
+- PDCA学習: source-run plan.json primary 切替が2回発生した珍しいケース。1回目: xAI×Anthropicデータセンター契約(Simon Willison記事のWebFetch本文確認で「ライバル協業」angleが記事の批判論調と不一致発覚→見送り)、2回目: Code w/Claude 5/6統括記事(Anthropic公式newsに個別記事なくSimon Willisonライブブログのみ→裏取り弱)→最終的にAnthropic公式2記事(5/4 enterprise-ai-services-company + 5/5 finance-agents)で裏取り強化したGoldman/Blackstone+金融エージェント10種統合に着地。Anthropic公式3記事(5/4/5/6)全件WebFetch検証済み。「$1.5B」(CNBC由来)「PE企業100社」は公式記事に記載なし→本文不使用、「Wall Street進出」文脈に限定。直近5本速報5連投状態だが、Anthropic公式発表+Pro含む全有料プラン直撃の鮮度で速報採用継続。Excel/PowerPoint/Word add-ins同時公開で4/29 Adobe・Canva・Blender記事の続編感。10種を「リサーチ系・会計系・コンプラ系」3カテゴリに分けて整理→Pro $20副業者が触った3つ(Market researcher/Pitch builder/Earnings reviewer)で実用性所感。Step0事実確認スウィープで段落中間太字バグ1件発見→独立段落化で修正。grep検証: メイン商品URL=2回(中盤+末尾)・括弧=2件・「これにより」=0件・コロン半角スペース=1件。冒頭アイランド問いかけ「金融プロが使うAIエージェントが、Pro月3千円の副業者まで降りてきたって知ってる？」で読者直撃。先輩フレーム末尾「同じ場所で詰まってる君へ、3つだけ置いていく」で具体3アクション提示(公式デモ視聴・Cowork add-ins設定・CWプロフィール1行追加)。あわせて読みたい: 4/29 Adobe Canva Blender記事 + 4/28 Connectors旅行予約記事(53.8%転換率の同系統)。pending_cta JSON保存(target_fit=high・priority=high・atomic_ideas 5本)。
 
 ### 2026-04-28（ai_fukugyou_9wari_zasetsu）
 - ドラフト: draft_2026-04-28_ai-fukugyou-9wari-zasetsu.html（ノウハウ・無料・score29）

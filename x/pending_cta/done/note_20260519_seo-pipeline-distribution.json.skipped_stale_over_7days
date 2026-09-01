@@ -1,0 +1,20 @@
+{
+  "type": "note",
+  "created_at": "2026-05-19T20:00:00+09:00",
+  "source": "today/note/draft_2026-05-19_seo-pipeline-distribution.html",
+  "title": "SEO比較記事の手書きが2時間→15分になった話。Claude Codeで組んだ7エージェント並列パイプライン、コード一式 ¥4,980 で配布する",
+  "url": null,
+  "atomic_ideas": [
+    "SEO比較記事ライターの時給は約750円（3,000円÷4時間）。文字単価1〜3円のジャンル",
+    "Claude Codeのsubagentsで7体のAIが並列で動くパイプラインを組んだ。15-30分でWordPress直貼りHTMLが完成",
+    "ライターとして1本3,000円で書くより、ライターが使う道具を¥4,980で売る方が構造的に強い",
+    "Brain 4本目と同じZIPを別訴求でnote配布。Brain=技術書寄り、note=カジュアル路線で棲み分け"
+  ],
+  "image_path": null,
+  "article_type": "knowhow",
+  "price": "4980",
+  "target_fit": "high",
+  "suggested_priority": "high",
+  "post_scheduled_at": "2026-05-22T21:00:00+09:00",
+  "brain_companion": "brain_2026-05-22_seo-article-tool"
+}

@@ -1,0 +1,85 @@
+{
+  "date": "2026-06-15",
+  "created_at": "2026-06-14T21:30:00+09:00",
+  "created_by": "/x-run daily-auto",
+  "plan_source": "today/plan.json (2026-06-14)",
+  "posts": [
+    {
+      "type": "daily",
+      "subtype": "speedy_remark",
+      "slot": "morning",
+      "publish_at": "2026-06-15T07:00:00+09:00",
+      "hook_type": "体言止め・数字先行",
+      "text": "今日から Claude Agent SDK の課金枠が分離する。\n\nこれまで Pro $20 の中に同居してた「対話」と「自動化(Agent SDK / claude -p)」が、別クレジット枠に。\n\nPro契約者は月$20分のクレジット\nMax 5x は月$100\nMax 20x は月$200\n\n副業フローで Agent SDK 使ってる時間がどれくらいか、今日からちゃんと測って Pro $20 で足りるか見ていきたい。",
+      "media": ["x/images/claude_code.png"],
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9501138,
+      "source_topic_id": "37f8795a-75fd-81c4-8f49-f1f1957d1fe4",
+      "auto_rt": false,
+      "char_count": 218
+    },
+    {
+      "type": "quote_rt",
+      "slot": "noon",
+      "publish_at": "2026-06-15T12:30:00+09:00",
+      "hook_type": "中途半端スタート(2日前)",
+      "text": "2日前(6/13)に Fable 5 / Mythos 5 が米政府の輸出規制で停止した話。\n\n外国人ユーザー対象だけど、運用上 Anthropic は全顧客を disable。\n\nPro / Max 派の副業者は Opus 4.8 が自動デフォルトになるだけで、いつもの作業はそのまま走らせられる。\n\n他社AIに乗り換えるコストの方が高いから、静観が正解だと思う。",
+      "quote_post_url": "https://x.com/AnthropicAI/status/2065597531644743999",
+      "source_account": "AnthropicAI",
+      "media": [],
+      "cross_posted_to": ["x"],
+      "draft_id": 9501139,
+      "source_topic_id": "37f8795a-75fd-8120-89fc-f7f4f01d1129",
+      "auto_rt": false,
+      "char_count": 191
+    },
+    {
+      "type": "cta_note",
+      "slot": "night1",
+      "publish_at": "2026-06-15T20:00:00+09:00",
+      "hook_type": "体言止め・状況描写",
+      "source_cta": "x/pending_cta/done/note_20260614_fable5-stop.json.posted",
+      "source_article_url": "https://note.com/moyuchi_aistu/n/n16c5877181fa",
+      "text": "朝起きて Claude を開いたら、いつもの Fable 5 が消えてた。\n\n米政府の輸出規制で 6/13 から全停止。慌てて X 開いたら AnthropicAI のメガバズが流れてきて、副業どうしようと一瞬焦った。\n\nでも結論は「Opus 4.8 にフォールバックで実害ほぼゼロ」だった。整理した記事↓",
+      "reply_text": "https://note.com/moyuchi_aistu/n/n16c5877181fa",
+      "media": [],
+      "cross_posted_to": ["x", "threads"],
+      "draft_id": 9501140,
+      "auto_rt": true,
+      "auto_rt_recommendation": "Typefully UI で 3段階RT (6h・25h・7d10:30) を手動ON推奨",
+      "char_count": 198
+    },
+    {
+      "type": "quote_rt",
+      "slot": "night2",
+      "publish_at": "2026-06-15T23:00:00+09:00",
+      "hook_type": "感嘆スタート",
+      "text": "これ完全に他人事じゃないんだよね、、、\n\nわたしも CW の応募メッセージ書く時、Claude Code に「1件ずつ承認→送信」運用させてる。\n\n承認画面しっかり読まずに Tab連打しちゃうと事故るやつ。\n\nちゃんと内容ごと読む癖、つけ直そうって思った。",
+      "quote_post_url": "https://x.com/sabaaji0113/status/2065973723291930901",
+      "source_account": "sabaaji0113",
+      "source_buzz_metrics": "24万バズ相当",
+      "media": [],
+      "cross_posted_to": ["x"],
+      "draft_id": 9501141,
+      "source_topic_id": "37f8795a-75fd-81f7-8cf1-de6aeb469e34",
+      "auto_rt": false,
+      "char_count": 135
+    }
+  ],
+  "buzz_promo_replies": [],
+  "stale_pending_cleanup": [
+    "note_20260519_seo-pipeline-distribution.json (26日経過)",
+    "note_20260603_claude-sdk-credit-pro-fukugyo.json (11日経過)"
+  ],
+  "quality_gate_passed": {
+    "char_count_280": true,
+    "first_person_watashi": true,
+    "ng_phrases_zero": true,
+    "external_url_in_reply_only": true,
+    "hook_diversity_4types": true,
+    "ending_diversity_4types": true,
+    "hashtag_count_zero": true,
+    "machine_persona_insertion_zero": true,
+    "buzz_detect_skipped": "現在フォロワー段階 50人未満想定・閾値達成投稿なし想定"
+  }
+}
