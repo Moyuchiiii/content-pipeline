@@ -1,39 +1,37 @@
 {
   "schema_version": 1,
-  "date": "2026-06-14",
-  "generated_at": "2026-06-14T20:30:00+09:00",
+  "date": "2026-09-02",
+  "generated_at": "2026-09-02T00:00:00+09:00",
   "generated_by": "source-run",
   "regenerated_count": 0,
-  "previous_plan_backed_up_to": "(6/9 plan は上書き・git 履歴で復元可・actual に 6/9 実行結果は published-history.md に記録済み)",
+  "previous_plan_backed_up_to": "today/plan-backup-20260614-preserved.json (前回 source-run は 2026-06-14 実行・80日ぶりの再実行のため保全)",
+
+  "data_freshness_warning": "published-history.md / note-performance.md / x-performance.md は最終更新が 2026-04-29〜06-14 で止まっており、今日まで約80〜125日のギャップがある。note-run の記事タイプ分散ハードフロア（直近5件の記事タイプ確認）は信頼できるデータが無いため機械適用できない。note-run 実行時に note.com ダッシュボードで直近投稿実績を直接確認することを強く推奨。",
 
   "note": {
     "execute": true,
     "primary_topic": {
-      "notion_page_id": "37f8795a-75fd-81fe-8920-f74cf269e06d",
-      "title": "Claude Fable 5 / Mythos 5 米政府が輸出規制で全停止｜Claude依存してる文系副業大学生として、何が変わるか整理した",
+      "notion_page_id": "3ce8795a-75fd-812d-a5ec-ca448e805c22",
+      "title": "Claude Fable 5.1 / Mythos 5.1 リリース｜Pro/Max契約の副業者は今日から何が変わるか",
       "type": "速報",
       "priority": "高",
-      "reason": "6/13 発表 @AnthropicAI 8,296万閲覧メガバズ・@ClaudeDevs 公式アナウンス連携・24時間以内の速報・hyui のフラッグシップ『Claude依存してる副業者として何変わる』シリーズの本命。Pro/Max 契約者は Opus 4.8 自動フォールバックで副業実害ほぼゼロ・影響は一部の外国人ユーザーのみ、という安心解説角度。煽らない中立解釈で書ける。"
+      "reason": "2026-09-01 発表・24時間以内の最速報。@claudeai 2.9万いいね・日本トレンドワード5位のメガニュース。Fable5→5.1は価格据え置き+API cache75%安+週次制限リセットという直接ベネフィットがあり、hyui本文パターン(速報+副業者への実利益)に完全一致。ただし published-history.md が古く記事タイプ分散ハードフロア(2026-09-02付ルール)を機械適用できないため、note-run 実行時に直近投稿実績を実際に確認した上で、速報が直近で偏っていないか判断すること。もし速報偏重が確認されたら alternatives の「クラウドワークスAI関連2大ニュース」(同じく速報)よりも「Claude Code v2.1.237」(ノウハウ)を優先する判断もあり得る。"
     },
     "alternatives": [
       {
-        "notion_page_id": "37f8795a-75fd-8142-8595-e5235cbc9a5d",
-        "title": "Claude Agent SDK 6/15 課金分離｜Pro月20ドルの副業派が3日後の改定をどう乗り切るか"
+        "notion_page_id": "3ce8795a-75fd-81c1-a0fb-c8efca1eacf1",
+        "title": "クラウドワークスAI関連2大ニュース｜AIクラウドワークス正式リリース＋Anthropic公式パートナー認定"
       },
       {
-        "notion_page_id": "37f8795a-75fd-8101-b07f-f35d970eaa07",
-        "title": "Anthropic IPO申請・$965B評価｜Claude本体に賭けてる副業者として、安心した数字を整理した"
-      },
-      {
-        "notion_page_id": "37f8795a-75fd-8197-9306-f389d72d66fd",
-        "title": "Anthropic Claude Corps 始動｜1,000人非営利フェローシップが『副業 vs 組織経験』の選択肢を変える話"
+        "notion_page_id": "3ce8795a-75fd-8174-9b30-cb4301771561",
+        "title": "Claude Code v2.1.237｜承認が『自動モード』デフォルト化で副業の詰まりが減った話"
       }
     ]
   },
 
   "brain": {
     "execute": false,
-    "skip_reason": "Brain直近投稿4/28(3本目メイン商品Brain版)から47日経過・14日ガード自体は解除済み。ただし note メイン商品の累計販売数が業界目安50件未満想定・販売動向観察期間継続。今回 Brain ネタ帳投入もなし(全候補が速報単発で体系化困難)。SNSマーケ業界調査基準では『note 販売実績50件未満は Brain 追加投入を信頼蓄積後に』。",
+    "skip_reason": "直近投稿(Brain3本目・2026-04-28)から127日経過し14日ガードは大幅クリア。ただし今回の新規スキャンでBrain向け新規ネタは0件(速報単発ばかりで体系化材料が薄い・Phase2判定Q3=NO)。既存Brainネタ帳在庫にはhigh target_fit候補が複数残っているが、note販売実績データ自体が2026-04-14時点(PV58・スキ5・推測販売2-3部)で止まっており最新の実績確認ができないため、SNSマーケ業界基準「note販売実績50件未満はBrain追加投入を信頼蓄積後に」を安全側で維持。",
     "primary_topic": null,
     "alternatives": []
   },
@@ -41,35 +39,10 @@
   "x": {
     "execute": true,
     "slots": {
-      "morning": {
-        "type": "速報所感",
-        "topic_id": "37f8795a-75fd-81c4-8f49-f1f1957d1fe4",
-        "title": "Claude Agent SDK 6/15 課金変更 速報所感",
-        "推奨時間帯": "朝07:00（推奨は昼だが速報緊急性高・施行1日前なので朝も自然）"
-      },
-      "noon": {
-        "type": "引用RT",
-        "topic_id": "37f8795a-75fd-8120-89fc-f7f4f01d1129",
-        "title": "Fable 5 / Mythos 5 米政府停止 引用RT 速報所感（@AnthropicAI 8,296万閲覧メガバズへの所感）",
-        "推奨時間帯": "昼12:30"
-      },
-      "night1": {
-        "type": "告知",
-        "topic_id": "pending_cta:auto",
-        "title": "今日のnote記事告知（Fable 5/Mythos 5 米政府停止の副業者視点解説）",
-        "推奨時間帯": "夜20:00",
-        "fallback_if_no_cta": {
-          "notion_page_id": "37f8795a-75fd-8108-a452-d8a2d6d11621",
-          "title": "Anthropic IPO申請 $965B評価 数字報告",
-          "type": "数字報告"
-        }
-      },
-      "night2": {
-        "type": "リアクション",
-        "topic_id": "37f8795a-75fd-81f7-8cf1-de6aeb469e34",
-        "title": "税理士 鯵坂さん Claude Code 承認→送信事故 リアクション（24万バズ）",
-        "推奨時間帯": "夜23:00"
-      }
+      "morning":  { "type": "速報所感", "topic_id": "3ce8795a-75fd-817a-bf24-cc94afb14555", "title": "Claude Fable 5.1 / Mythos 5.1 発表｜Pro/Max副業者への直接ベネフィット速報所感", "推奨時間帯": "朝07:00" },
+      "noon":     { "type": "速報所感", "topic_id": "3ce8795a-75fd-81ff-b196-c0143dc5bdb4", "title": "クラウドワークス、Anthropic Claude Partner Network認定パートナーに選定(8/27)", "推奨時間帯": "昼12:30" },
+      "night1":   { "type": "告知",     "topic_id": "pending_cta:auto", "title": "今日のnote記事告知（Fable 5.1 / CW2大ニュースのどちらか）", "推奨時間帯": "夜20:00", "fallback_if_no_cta": { "notion_page_id": "3ce8795a-75fd-81b5-99eb-c17e22a8247c", "title": "Fable 5.1 ベンチマーク数字報告｜Artificial Analysis 66点", "type": "数字報告" } },
+      "night2":   { "type": "引用RT候補", "topic_id": "3ce8795a-75fd-819a-9573-df0a50e47615", "title": "OpenAI、Cursorとのパートナーシップ終了｜SpaceX買収で業界地殻変動", "推奨時間帯": "夜23:00" }
     },
     "expected_pending_cta_from": ["note-run"]
   },
@@ -89,54 +62,58 @@
     "系統A_副業トレンド": {
       "実行クエリ数": 7,
       "状態": "✅完全実行",
-      "新規ヒット": 1,
-      "新規ネタ": "フリーランスAI関連案件 88→184件 1年で2倍化（ファインディ調査）・月単価K字型二極化",
-      "重複_除外": "AI副業月収46,010円データ(4/25既出)・CW AI案件5,832件(4/24既出)・ChatGPT・Claude 副業ガイド類(汎用過多)"
+      "新規ヒット": 2,
+      "新規ネタ": "クラウドワークスAI関連2大ニュース(AIクラウドワークス正式リリース8/20・Anthropic Claude Partner Network認定8/27)・非エンジニアAI副業月3〜15万円が2026年時点で現実的という業界データ",
+      "重複_除外": "既存ネタ帳の未使用レコードは全て2026-03〜06月発見分で内容が陳腐化・重複判定対象にならず"
     },
     "系統B_Claude新機能": {
       "実行クエリ数": 7,
       "状態": "✅完全実行",
-      "新規ヒット": 4,
-      "新規ネタ": "Anthropic IPO申請$965B評価・Anthropic Q2初の営業黒字+売上3か月倍増(5/21)・Claude Agent SDK 6/15課金分離・Claude Code v2.1.161 nested sub-agents",
-      "重複_除外": "Claude Opus 4.8 リリース(5/28・他記事カバー済)・Code with Claude Tokyo 6/10(他Anthropicイベント既出)・Anthropic AI政策提言(別件として保留)"
+      "新規ヒット": 3,
+      "新規ネタ": "Claude Fable 5.1/Mythos 5.1リリース(9/1・本日最大ニュース)・Claude Code v2.1.237自動権限確認モード(8/14〜)・Anthropic Alignment Security Update(8/31-9/1・Hacker-Opus研究)",
+      "重複_除外": "Claude Opus 4.8/Sonnet 5等は過去のリリースで既に鮮度切れ"
     },
     "系統C_Brain市場": {
-      "WebFetch成功": "ランディングのみ（Content truncated・補助検索4本で構造把握）",
+      "WebFetch成功": "brain-market.com トップページはSPAでコンテンツ抽出不可（ナビゲーションのみ取得）。補助検索4本で代替",
       "補助検索数": 4,
       "状態": "✅完全実行",
-      "新規ヒット": 1,
-      "競合確認": "こうめい(Claude Code × 売れる有料note量産術 + Skill 9本)が hyui の Brain 直接競合(同 Claude Code × note 軸)。hyui は『文系大学生の体験ログ・等身大』で差別化する立ち位置を再確認。terasoluna(Remotion動画)・I.T.(MCPスキル) は別ジャンル。"
+      "新規ヒット": 0,
+      "競合確認": "Claude Code関連Brain商品多数(わど・はる・I.T.等)存在確認。hyuiの「文系大学生×CW×実録」ポジションはまだ差別化可能そうだが、今回は新規Brainネタ帳投入なし(速報単発ばかりで体系化材料薄い)"
     },
     "系統D_X公式19アカウント": {
-      "状態": "⚠️ 部分実施（Tier 1 主要5アカウント個別 + ホームタイムラインで Tier 2/3 をカバー）",
-      "ログイン": "@hyui_cc 確認済",
-      "個別実行アカウント": "@AnthropicAI(Fable 5/Mythos 5 米政府停止 8,296万閲覧メガバズ + Claude Corps 89万閲覧)・@claudeai(Fable 5 プロジェクト紹介 839万閲覧・Ann Nguyen Mythos glass liquid UI引用)・@ClaudeDevs(Fable 5 停止アナウンス連携)・@OpenAI(It's time to fly固定 1,644万閲覧・Codex rate limit reset 保存 418万閲覧 + 友達招待 31万閲覧)・@ChatGPTapp(Adam Fry model picker 更新 32万閲覧・MessiMode 273万閲覧)",
-      "ホームタイムラインカバー": "Tier 2/3 のフォロー中アカウントはホームタイムライン25件取得でカバー（しとちゃ Fable5+GPT5.5 ゲーム作例 9,403いいね・鯵坂税理士 Claude Code 承認事故 24万バズ・ビームマンＰ Fable5 米政府解説風）",
-      "省略": "@ClaudeDevs JS取得失敗・@GeminiApp/@GoogleDeepMind/@AIatMeta は個別未取得・Tier 2/3 全体は時間優先で省略"
+      "状態": "⚠️部分実施（19アカウント中16アカウント取得成功・3アカウント失敗）",
+      "ログイン": "@hyui_cc 確認済（アカウント切り替えボタンで実機確認）",
+      "取得成功": "Tier1: claudeai, ClaudeDevs, AnthropicAI, OpenAI, GoogleDeepMind, GeminiApp, AIatMeta（7/8）／Tier2: xai(→SpaceXAIにリダイレクト), perplexity_ai, runwayml, midjourney（4/5）／Tier3: therundownai, rowancheung, MistralAI, SakanaAILabs, cyberagent_ai（5/6）",
+      "失敗": "ChatGPTapp・suno_ai_・ELYZA_inc の3アカウントは3回リトライ後もタイムアウト（ページ読み込み詰まり・レート制限の可能性）。ログアウトではない",
+      "最大の発見": "Claude Fable 5.1 / Mythos 5.1 が2026-09-01発表・@claudeai 2.9万いいね・@ClaudeDevs 7,298いいね・日本Xトレンド5位のメガニュース"
     },
     "系統E_X検索トレンド": {
-      "状態": "⚠️ 部分実施（Live検索 'Claude Fable 5' / 'Anthropic IPO' 2件・E-2 トレンドタブ未取得）",
-      "発見": "Claude Fable 5 関連は系統 D（@AnthropicAI 公式投稿）で十分にカバー・系統 E の Live 検索結果はロード遅延で空取得"
+      "状態": "✅完全実行",
+      "E-1キーワード検索": "7カテゴリ全部実行（OpenAI次世代/Claude速報/Anthropic発表/競合大手/メディア生成/AIエージェント/副業文脈）",
+      "E-2トレンド取得": "取得成功・Fable5.1が日本トレンド5位にランクイン確認",
+      "発見": "Fable5.1関連の反応多数（ベンチマーク数字含む）。Nano Banana/Sora/Veo検索は無関係なスペイン語ツイートが大半でノイズ"
     }
   },
 
   "投入結果": {
-    "noteネタ帳": "新規5件投入（重複0件・全件 source-run 発案）",
-    "Xネタ帳": "新規8件投入（重複0件・全件 source-run 発案）",
-    "Brainネタ帳": "新規0件投入（全候補が速報単発で体系化困難・既存ネタ帳の在庫を維持）",
-    "3軸判定マトリクス": "3ネタ帳全部YES: 0件 / 2ネタ帳YES (note+X): 5件(Fable5米政府停止・Agent SDK課金変更・IPO申請・Claude Corps・フリーランス案件2倍) / 1ネタ帳YES (X限定): 3件(税理士事故24万バズ・OpenAI Codex・こうめいBrain競合)",
-    "不投入理由_集計": "Brain全件不投入: 速報単発で体系化困難・Brain既存3本(¥1,980-3,980)とのカニバリ回避。note 不投入の主な理由: 副業視点角度作れず(OpenAI Codex/税理士事故/こうめいBrain)。X 不投入の主な理由: 既出ネタ過剰(AI副業46,010円・Sora終了等)"
+    "noteネタ帳": "新規3件投入（重複0件・全件source-run発案）",
+    "Xネタ帳": "新規8件投入（重複0件・全件source-run発案）",
+    "Brainネタ帳": "新規0件投入（全候補が速報単発で体系化困難）",
+    "3軸判定マトリクス": "3ネタ帳全部YES: 0件（今回発見ネタは全てBrain向け体系化材料不足） / 2ネタ帳YES(note+X): 3件（Fable5.1・CW2大ニュース・Claude Code v2.1.237） / 1ネタ帳YES(Xのみ): 5件（Fable5.1数字報告・OpenAI-Cursor・Anthropicセキュリティ・Gemini学生無料・重複気味のClaude Code自動モード）",
+    "不投入理由_集計": "note不投入の主な理由: 技術者向け内容で副業視点角度が弱い(Anthropicセキュリティアップデート)・競合ニュースでhyui角度薄い(OpenAI-Cursor)。Brain不投入の理由: 全候補が速報単発でテンプレ・チェックリスト化に体系化する材料が不足"
   },
 
-  "クリーンアップ": {
-    "30日経過自動見送り": "前回 source-run 6/9 から 5 日経過・大規模クリーンアップ不要・古いネタは next /source-run 起動時に再評価",
-    "today_source_run_failed削除": "today/source-run/ は空（対象なし・スキップ）",
-    "today_作業前残骸検出": "今回スキャン外・next note-run 起動時に today/note/ 残骸チェック必須"
+  "データ鮮度に関する重要な発見（2026-09-02）": {
+    "問題": "前回source-run実行は2026-06-14。published-history.md/note-performance.md/x-performance.mdも同時期で更新停止。約80〜125日間、content-pipelineの運用記録が更新されていない",
+    "today_note_残骸": "today/note/ に 2026-06-14 の draft/delivery ファイル(Fable5 stop記事)が未整理のまま残存。note-run Phase 8 Step 1のクリーンアップが実行されていない可能性",
+    "today_brain_残骸": "today/brain/ に 2026-05-15 のSEO記事関連ファイルが多数未整理のまま残存",
+    "推奨アクション": "note-run/brain-run実行前に、実際にnote.com/Brain-marketで最新の投稿状況をユーザーに確認するか、collect-statsで実データを取得することを推奨。以後定期的なsource-run実行（理想は毎日〜週数回）を再開すべき"
   },
 
   "次のアクション順序": [
-    "1. /note-run（plan.note.execute=true・primary: Claude Fable 5/Mythos 5 米政府停止 副業者視点記事）",
-    "2. /x-run（plan.x.slots + note-run出力のpending_cta取込・夜20:00告知差し替え・4スロット予約）",
-    "※ /brain-run は今日スキップ（plan.brain.execute=false・販売実績観察期間継続）"
+    "1. /note-run（plan.note.execute=true・primary: Fable 5.1/Mythos 5.1 副業者視点記事・ただしデータ鮮度警告を踏まえ直近投稿実績を確認してから記事タイプ最終判断）",
+    "2. /x-run（plan.x.slots + note-run出力のpending_cta取込・4スロット予約）",
+    "※ /brain-run は今日スキップ（plan.brain.execute=false・体系化材料不足）",
+    "※ today/note/・today/brain/ の残骸ファイル整理を note-run/brain-run 起動前に検討"
   ]
 }
